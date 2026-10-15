@@ -127,3 +127,8 @@ are collected only, not executed for this card.
 
 Library references: [read-only mode/dimensions](https://openpyxl.readthedocs.io/en/stable/optimized.html)
 and [workbook loading](https://openpyxl.readthedocs.io/en/stable/tutorial.html#loading-from-a-file).
+
+Verified implementation: [CI run 38678405055](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38678405055)
+passed 283 tests on all four Windows/Linux x Python 3.11/3.12 jobs, including the
+real symlink case. Local verification passed 282 with one privilege-related
+symlink skip; the live test was deselected everywhere. See [testing](testing.md).

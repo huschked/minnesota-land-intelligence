@@ -98,6 +98,12 @@ error must not be handled by disabling the containment check.
 Local ML-125 verification on 2026-10-14 passed 282 tests, skipped the real symlink
 fixture because this Windows account lacks the required privilege, and deselected
 the one live integration test. Ruff passed. Explicit integration collection selected
-one test and deselected 283 offline cases, without executing a request. Hosted
-matrix results are verified after pushing the implementation, not assumed from
-the local run.
+one test and deselected 283 offline cases, without executing a request.
+
+[Hosted ML-125 run 38678405055](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38678405055)
+passed for implementation commit `c359a9271f5d18c5e02e8640814f2cb24cf9e830`.
+All four Windows/Linux x Python 3.11/3.12 jobs passed 283 tests with no skips and
+one live deselection, plus dependency consistency, Ruff, board validation, and
+explicit live collection. The real symlink fixture ran successfully on both
+hosted platforms. The run completed on 2026-10-15 UTC / 2026-10-14 America/Chicago.
+No live government requests were executed by the tests.

@@ -111,7 +111,9 @@ Historical Done cards are based on current implementation and recorded evidence,
 not a claim of independent review or deployment. ML-120 establishes the first local
 Git baseline. ML-118 subsequently passed 72 default offline tests locally and in
 four hosted Windows/Linux x Python 3.11/3.12 jobs, with lint and board validation.
-The live government-service test was collected but not executed. See
+ML-125 then passed 283 offline tests on each of the same four hosted jobs,
+including real symlink containment checks; its local account skipped that one
+privilege-dependent case. The live government-service test was collected but not executed. See
 [testing evidence](../testing.md) and [reproducibility](../reproducibility.md) for
 verification and the separate backup requirements for ignored county data.
 
