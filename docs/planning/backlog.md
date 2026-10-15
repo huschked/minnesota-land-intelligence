@@ -411,7 +411,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-118"></a>
 
-**Status:** Ready
+**Status:** In Progress
+
+**Owner:** Codex
 
 **Priority:** P1
 

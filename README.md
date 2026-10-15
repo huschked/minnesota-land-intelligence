@@ -46,6 +46,23 @@ pytest
 pytest -m integration
 ```
 
+## Tests and GitHub checks
+
+`python -m pytest` runs offline tests by default. Ordinary tests block DNS and TCP
+connections, and unknown markers fail collection. Use mocked transports and
+sanitized fixtures for normal tests; deliberately live tests must carry the
+`integration` marker.
+
+`python -m pytest -m integration` explicitly runs live government-service tests.
+To verify that selection without contacting the service, use
+`python -m pytest -m integration --collect-only -q`.
+
+[GitHub Actions](.github/workflows/ci.yml) runs lint, dependency checks, board
+validation, and offline tests on pushes and pull requests, with a manual trigger
+also available. The matrix covers Windows/Linux and Python 3.11/3.12. CI only
+collects the live tests; it never executes them. It uses no county files or custom
+secrets, and does not deploy the application. See [testing](docs/testing.md).
+
 Raw responses are written to `data/raw/isanti/<run-id>/`; processed artifacts go to `data/processed/`. These generated files are ignored by Git.
 
 When strict classification is gated, `isanti_tax_semantics_review_sample.csv` contains up to ten deterministic examples labeled **NOT A CANDIDATE**. It exists only to help a human ask the county what the source field means. The required candidate verification sample remains empty when there are no verified candidates.

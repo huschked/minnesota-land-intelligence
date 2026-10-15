@@ -20,6 +20,7 @@ mn-land = "mn_land.cli:main"
 packages = ["src/mn_land"]
 
 [tool.pytest.ini_options]
+addopts = ["--strict-markers", "-m", "not integration"]
 testpaths = ["tests"]
 markers = ["integration: accesses a live government service"]
 

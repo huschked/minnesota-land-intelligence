@@ -22,15 +22,16 @@ recover into a separate checkout.
 ## Clean environment
 
 The observed resolution in [constraints-dev.txt](../constraints-dev.txt) targets
-Windows x64, CPython 3.12.14. The project still declares Python >=3.11; other
-Python/platform combinations are not certified by this verification.
+Windows x64, CPython 3.12.14. The project still declares Python >=3.11. ML-118 adds
+CI coverage for Windows/Linux with Python 3.11/3.12; the actual run outcome is
+recorded in [testing](testing.md), not implied for every Python >=3.11 release.
 From the project root in PowerShell, with a standard Python installation:
 
 ```powershell
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]" -c constraints-dev.txt
 .\.venv\Scripts\python.exe -m pip check
-.\.venv\Scripts\python.exe -m pytest -m "not integration" -q
+.\.venv\Scripts\python.exe -m pytest -q
 .\.venv\Scripts\python.exe -m ruff check src tests scripts
 .\.venv\Scripts\python.exe scripts/render_kanban.py --check
 ```
@@ -51,12 +52,14 @@ If Windows denies access to pytest's default temporary directory, use a **new,
 unused** project-local name, for example:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -m "not integration" -q -p no:cacheprovider --basetemp=.test-tmp-recovery-001
+.\.venv\Scripts\python.exe -m pytest -q -p no:cacheprovider --basetemp=.test-tmp-recovery-001
 ```
 
 Never point `--basetemp` at a data/source/backup directory: pytest may clear it.
-Until ML-118 is implemented, bare `pytest` includes the live integration test.
-The explicit offline selector above avoids government-service requests.
+ML-118 makes bare `pytest` offline by default; `pytest -m integration` explicitly
+selects live tests instead. See [testing](testing.md) for the selection regression
+checks and the network guard. Test dependencies may still require network access
+to install; offline here describes test execution, not package installation.
 The two optional PDF comparison scripts additionally need `pypdf`; it is not a
 core pipeline dependency or part of the development resolution.
 
