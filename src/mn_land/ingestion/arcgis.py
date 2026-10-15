@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from collections.abc import Iterable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -49,10 +49,13 @@ class ArcGISClient:
         retrieved_at: datetime,
         where: str = "1=1",
         return_geometry: bool = False,
+        metadata_validator: Callable[[object], None] | None = None,
     ) -> Iterable[dict[str, Any]]:
         raw_run_dir.mkdir(parents=True, exist_ok=False)
         metadata = self.metadata()
         self._write_json(raw_run_dir / "layer_metadata.json", metadata)
+        if metadata_validator is not None:
+            metadata_validator(metadata)
         expected = self.count(where)
         object_id = metadata.get("objectIdField") or "OBJECTID"
         offset = 0

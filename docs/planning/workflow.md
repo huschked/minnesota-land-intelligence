@@ -51,10 +51,9 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-125: implement the strict validation contract and F01-F09 fixtures from
-   [ML-119's discovery](../ingestion-contracts.md).
-2. ML-126 after ML-125: enforce respectful retrieval and source completeness;
-   then ML-127 after both: publish only complete runs and validate reader eligibility.
+1. ML-126: enforce respectful retrieval and source completeness using the
+   [implemented ML-125 schema gate](../validation.md).
+2. ML-127 after ML-126: publish only complete runs and validate reader eligibility.
 3. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
 4. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then

@@ -83,3 +83,21 @@ Configuration references: [pytest configuration](https://docs.pytest.org/en/stab
 [GitHub Python workflows](https://docs.github.com/en/actions/tutorials/build-and-test-code/python),
 [checkout](https://github.com/actions/checkout), and
 [setup-python](https://github.com/actions/setup-python).
+
+## ML-125 regression coverage
+
+[Validation](validation.md) maps F01-F09 to the new fixture groups. They exercise
+strict metadata, evidence containment, text IDs/typed years, CSV/XLSX shapes and
+lineage, formulas/caches/errors, resource budgets, schema drift, GIS quarantines,
+and import/review preservation. The live-source test remains opt-in; it is only
+collected during this task. Windows accounts without symlink privileges skip one
+real symlink test; Linux CI must exercise that path. Strict path resolution can
+require unsandboxed filesystem permissions on this workstation; a permission
+error must not be handled by disabling the containment check.
+
+Local ML-125 verification on 2026-10-14 passed 282 tests, skipped the real symlink
+fixture because this Windows account lacks the required privilege, and deselected
+the one live integration test. Ruff passed. Explicit integration collection selected
+one test and deselected 283 offline cases, without executing a request. Hosted
+matrix results are verified after pushing the implementation, not assumed from
+the local run.

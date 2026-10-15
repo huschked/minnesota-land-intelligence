@@ -14,6 +14,7 @@ from mn_land.models import (
     ParcelDelinquencyMatch,
     TaxPeriodStatus,
 )
+from mn_land.utils.validation import minimum_acres
 
 VERIFIED_FIELDS = (
     "parcel_id",
@@ -50,6 +51,7 @@ VERIFIED_FIELDS = (
 def export_join_result(
     result: JoinResult, output_dir: Path, min_acres: Decimal
 ) -> tuple[tuple[Path, ...], int]:
+    min_acres = minimum_acres(min_acres)
     output_dir.mkdir(parents=True, exist_ok=False)
     candidates = [
         match

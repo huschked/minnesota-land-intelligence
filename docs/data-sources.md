@@ -18,4 +18,7 @@ under [county-confirmed year conventions](counties/isanti-tax-year-confirmation.
 not an assertion that every row is prior-year delinquency. See
 [ingestion contracts](ingestion-contracts.md) for the observed schema evidence,
 planned field/type gates, service limits/retry/completeness rules, file constraints,
-and partial-run policy. Those hardening rules are specified, not yet implemented.
+and partial-run policy. ML-125's [file/schema validation](validation.md) is
+implemented; HTTP retrieval/completeness and atomic publication remain planned
+ML-126/ML-127 work. An active year convention always requires retained evidence;
+strict parsing does not expand the authority or meaning of any source.

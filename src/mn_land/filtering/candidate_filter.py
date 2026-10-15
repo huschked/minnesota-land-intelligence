@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 
 from mn_land.models import Parcel
+from mn_land.utils.validation import minimum_acres
 
 
 @dataclass(slots=True)
@@ -12,6 +13,7 @@ class FilterResult:
 
 
 def filter_candidates(parcels: list[Parcel], min_acres: Decimal) -> FilterResult:
+    min_acres = minimum_acres(min_acres)
     result = FilterResult()
     for parcel in parcels:
         if parcel.deeded_acres is None:

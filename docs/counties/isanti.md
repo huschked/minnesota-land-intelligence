@@ -138,5 +138,7 @@ an ingestion-format issue documented in the [contract and fixture matrix](../ing
 
 That document preserves the mixed prior/current convention, unknown balances,
 and unresolved identities while specifying bounded ML-125/126/127 hardening.
-Historical import notes above remain historical; none of these planned checks
-has been retroactively applied to the retained snapshots.
+ML-125 now implements [strict input/schema checks](../validation.md), including
+typed years, text-only parcel IDs, retained supporting evidence, and GIS row
+quarantines. Historical import notes/results remain historical and unchanged;
+HTTP/completeness and complete-run publication remain ML-126/ML-127 work.

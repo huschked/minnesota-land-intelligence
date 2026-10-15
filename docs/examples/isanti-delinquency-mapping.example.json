@@ -6,8 +6,8 @@
   "delinquency_assertion": "each_row_represents_delinquent_parcel",
   "columns": {
     "parcel_id": "REPLACE WITH EXACT PARCEL ID COLUMN",
-    "taxpayer_name": "REPLACE OR REMOVE IF UNAVAILABLE",
-    "delinquent_years": "REPLACE OR REMOVE IF UNAVAILABLE",
-    "total_taxes_and_penalties_due": "REPLACE OR REMOVE IF UNAVAILABLE"
+    "taxpayer_name": "REPLACE WITH TAXPAYER COLUMN OR REMOVE",
+    "delinquent_years": "REPLACE WITH DELINQUENT YEAR COLUMN OR REMOVE",
+    "total_taxes_and_penalties_due": "REPLACE WITH TOTAL COLUMN OR REMOVE"
   }
 }

@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal
 from pathlib import Path
 
 from mn_land.config.settings import SETTINGS
@@ -14,18 +14,16 @@ from mn_land.delinquency.pipeline import (
     import_and_join_delinquency,
 )
 from mn_land.ingestion.pipeline import run_pipeline
+from mn_land.utils.validation import minimum_acres
 
 LOGGER = logging.getLogger(__name__)
 
 
 def decimal_argument(value: str) -> Decimal:
     try:
-        parsed = Decimal(value)
-    except InvalidOperation as exc:
-        raise argparse.ArgumentTypeError("must be a number") from exc
-    if parsed < 0:
-        raise argparse.ArgumentTypeError("must be non-negative")
-    return parsed
+        return minimum_acres(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(str(exc)) from exc
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -61,7 +59,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "review-delinquency":
         from mn_land.counties.isanti.review import build_review
 
-        output = build_review(args.snapshot, args.min_acres)
+        try:
+            output = build_review(args.snapshot, args.min_acres)
+        except (DelinquencyFileError, DelinquencyPipelineError, ValueError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
         print(f"Review artifacts: {output}")
         print((output / "summary.json").read_text(encoding="utf-8"))
         return 0
@@ -117,7 +119,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "import-delinquency":
         try:
             stats = import_and_join_delinquency(args.file, args.mapping, args.min_acres)
-        except (DelinquencyFileError, DelinquencyPipelineError) as exc:
+        except (DelinquencyFileError, DelinquencyPipelineError, ValueError) as exc:
             LOGGER.error("%s", exc)
             return 2
         print("Minnesota Land Intelligence Platform - Authoritative Delinquency Import\n")
@@ -143,6 +145,11 @@ def main(argv: list[str] | None = None) -> int:
     adapter = IsantiAdapter()
     if args.command == "validate-source":
         metadata = adapter.client.metadata()
+        try:
+            adapter.validate_metadata(metadata)
+        except ValueError as exc:
+            LOGGER.error("%s", exc)
+            return 2
         summary = {
             "name": metadata.get("name"),
             "geometryType": metadata.get("geometryType"),
@@ -155,7 +162,11 @@ def main(argv: list[str] | None = None) -> int:
         }
         print(json.dumps(summary, indent=2))
         return 0
-    stats = run_pipeline(adapter, args.min_acres)
+    try:
+        stats = run_pipeline(adapter, args.min_acres)
+    except ValueError as exc:
+        LOGGER.error("%s", exc)
+        return 2
     print("Minnesota Land Intelligence Platform\n")
     print("County: Isanti")
     print(f"Records retrieved:       {stats.retrieved:,}")

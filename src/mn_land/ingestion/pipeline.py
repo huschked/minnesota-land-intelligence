@@ -16,7 +16,9 @@ from mn_land.export.exporters import (
     export_verification_sample,
 )
 from mn_land.filtering.candidate_filter import filter_candidates
+from mn_land.ingestion.normalization import normalize_with_diagnostics
 from mn_land.provenance import build_provenance
+from mn_land.utils.validation import minimum_acres
 
 LOGGER = logging.getLogger(__name__)
 
@@ -34,19 +36,29 @@ class PipelineStats:
 
 
 def run_pipeline(adapter: CountyAdapter, min_acres: Decimal) -> PipelineStats:
+    min_acres = minimum_acres(min_acres)
     retrieved_at = datetime.now(UTC)
     run_id = retrieved_at.strftime("%Y-%m-%dT%H%M%SZ")
     raw_run_dir = SETTINGS.raw_dir / "isanti" / run_id
     parcels = []
     retrieved = 0
     errors = 0
+    diagnostics = []
     for raw in adapter.fetch_parcels(raw_run_dir, retrieved_at):
         retrieved += 1
-        try:
-            parcels.append(adapter.normalize_parcel(raw, retrieved_at))
-        except ValueError as exc:
+        parcel = normalize_with_diagnostics(
+            adapter, raw, retrieved_at,
+            {"raw_snapshot": str(raw_run_dir), "record_number": retrieved}, diagnostics,
+        )
+        if parcel is None:
             errors += 1
-            LOGGER.warning("normalization_failed record=%s error=%s", retrieved, exc)
+            LOGGER.warning("normalization_failed record=%s error=%s", retrieved, diagnostics[-1]["reason"])
+        else:
+            parcels.append(parcel)
+    diagnostics_path = raw_run_dir / "normalization_diagnostics.json"
+    with diagnostics_path.open("x", encoding="utf-8") as handle:
+        json.dump(diagnostics, handle, indent=2, allow_nan=False)
+        handle.write("\n")
     filtered = filter_candidates(parcels, min_acres)
     csv_path, json_path = export_candidates(filtered.accepted, SETTINGS.processed_dir)
     sample_path = export_verification_sample(filtered.accepted, SETTINGS.processed_dir)

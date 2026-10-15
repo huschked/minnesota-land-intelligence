@@ -18,7 +18,9 @@ from mn_land.counties.isanti import IsantiAdapter
 from mn_land.counties.isanti.delinquency import normalize_parcel_id
 from mn_land.delinquency.file_loader import parse_money
 from mn_land.delinquency.pipeline import DelinquencyPipelineError, load_parcel_snapshot
+from mn_land.delinquency.tabular import read_table
 from mn_land.provenance import build_provenance
+from mn_land.utils.validation import minimum_acres
 
 SPECIAL_CLASSES = {"PILT-Payment In-Lieu of Taxes", "5E-Exempt Properties"}
 ACCOUNTING_FIELDS = (
@@ -61,8 +63,9 @@ def duplicate_profile(rows: list[dict[str, str]]) -> dict[str, Any]:
 
 def build_review(snapshot: Path, min_acres: Decimal = Decimal(10)) -> Path:
     """Write new review artifacts derived from one explicit import snapshot."""
+    min_acres = minimum_acres(min_acres)
     manifest = json.loads((snapshot / "manifest.json").read_text(encoding="utf-8"))
-    if min_acres < Decimal(manifest["minimum_acres"]):
+    if min_acres < minimum_acres(manifest["minimum_acres"]):
         raise DelinquencyPipelineError(
             "Review minimum acreage cannot be lower than the imported candidate threshold."
         )
@@ -83,15 +86,18 @@ def build_review(snapshot: Path, min_acres: Decimal = Decimal(10)) -> Path:
     if comparisons:
         comparison = json.loads(comparisons[-1].read_text(encoding="utf-8"))
         held = comparison.get("operational_status") == "HOLD_COUNTY_RECONCILIATION_REQUIRED"
-    with (raw_import / "source.csv").open(encoding="utf-8-sig", newline="") as handle:
-        source_rows = list(csv.DictReader(handle))
+    listing_path = raw_import / "source.csv"
+    if not listing_path.is_file():
+        listing_path = raw_import / "source.xlsx"
+    _, source_rows = read_table(listing_path)
     grouped: dict[str, list[tuple[int, dict[str, str]]]] = defaultdict(list)
-    for row_number, row in enumerate(source_rows, start=2):
-        grouped[normalize_parcel_id(row["PARID"])].append((row_number, row))
+    for entry in source_rows:
+        grouped[normalize_parcel_id(entry.values["PARID"])].append((entry.number, entry.values))
 
     # Pin the exact recorded GIS snapshot, rather than substituting a later run.
     adapter = IsantiAdapter()
-    parcels, errors, _ = load_parcel_snapshot(adapter, parcel_snapshot)
+    diagnostics: list[dict[str, Any]] = []
+    parcels, errors, _ = load_parcel_snapshot(adapter, parcel_snapshot, diagnostics=diagnostics)
     parcel_groups: dict[str, list[Any]] = defaultdict(list)
     for parcel in parcels:
         parcel_groups[normalize_parcel_id(parcel.parcel_id)].append(parcel)
@@ -187,7 +193,7 @@ def build_review(snapshot: Path, min_acres: Decimal = Decimal(10)) -> Path:
                 "normalized_parcel_id": key,
                 "source_row_count": len(group),
                 "source_row_numbers": row_refs,
-                "listed_TAXYR": ";".join(sorted({row["TAXYR"] for _, row in group})),
+                "listed_TAXYR": ";".join(sorted({str(row["TAXYR"]) for _, row in group})),
                 "original_OWN1_values": json.dumps(
                     sorted({row["OWN1"] for _, row in group}), ensure_ascii=False
                 ),
@@ -230,6 +236,7 @@ def build_review(snapshot: Path, min_acres: Decimal = Decimal(10)) -> Path:
             for row in duplicate_rows
         ),
         "parcel_normalization_errors": errors,
+        "parcel_normalization_diagnostics": diagnostics,
         "worklist_records": len(sample),
         "manual_verification_status": (
             "reports_compared_unreconciled" if held
@@ -247,7 +254,7 @@ def build_review(snapshot: Path, min_acres: Decimal = Decimal(10)) -> Path:
         {"command": "review-delinquency", "county": "Isanti", "minimum_acres": str(min_acres)},
         inputs=[
             snapshot / "manifest.json", snapshot / "isanti_verified_delinquent_candidates.json",
-            raw_import / "source.csv", parcel_snapshot / "manifest.json",
+            listing_path, parcel_snapshot / "manifest.json",
             *parcel_snapshot.glob("page_*.json"),
             *([raw_import / "mapping.json"] if (raw_import / "mapping.json").is_file() else []),
             *([comparisons[-1]] if comparisons else []),
@@ -265,7 +272,7 @@ def _report_url(parcel_id: str) -> str:
 
 
 def _source_values(rows: list[dict[str, Any]], field: str) -> str | None:
-    values = sorted({row.get(field) for row in rows if row.get(field) is not None})
+    values = sorted({str(row[field]) for row in rows if row.get(field) is not None})
     return ";".join(values) or None
 
 

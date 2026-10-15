@@ -23,7 +23,7 @@ def test_isanti_field_mapping_preserves_cautious_tax_semantics() -> None:
 
 
 def test_null_values_remain_unknown() -> None:
-    record = {"PARCELID": "x", "DEEDEDACRES": None, "TOTPRVTXTOD": None}
+    record = {"PARCELID": "02.001.0200", "DEEDEDACRES": None, "TOTPRVTXTOD": None}
     parcel = IsantiAdapter(client=object()).normalize_parcel(record, datetime.now(UTC))
     assert parcel.deeded_acres is None
     assert parcel.previous_taxes_owed is None

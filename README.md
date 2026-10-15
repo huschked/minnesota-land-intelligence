@@ -63,6 +63,11 @@ also available. The matrix covers Windows/Linux and Python 3.11/3.12. CI only
 collects the live tests; it never executes them. It uses no county files or custom
 secrets, and does not deploy the application. See [testing](docs/testing.md).
 
+[Strict input validation](docs/validation.md) rejects malformed mappings, unsafe
+evidence paths, non-finite values, numeric parcel-ID cells, ragged CSV rows, and
+ambiguous/formula-bearing workbooks. It preserves source row/sheet locations and
+GIS quarantine diagnostics. Existing county snapshots/results are not regenerated.
+
 Raw responses are written to `data/raw/isanti/<run-id>/`; processed artifacts go to `data/processed/`. These generated files are ignored by Git.
 
 When strict classification is gated, `isanti_tax_semantics_review_sample.csv` contains up to ten deterministic examples labeled **NOT A CANDIDATE**. It exists only to help a human ask the county what the source field means. The required candidate verification sample remains empty when there are no verified candidates.

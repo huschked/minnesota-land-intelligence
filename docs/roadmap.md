@@ -28,6 +28,6 @@ verified financial comparisons, not all factual parcel review. No future-phase
 implementation is started by adding it to this plan.
 
 ML-119's [ingestion contracts and fixture matrix](ingestion-contracts.md) refine
-the remaining Phase 1.1 reliability work into ML-125 (validation), ML-126
-(retrieval/completeness), then ML-127 (complete-run publication). The discovery
-does not itself implement those guarantees or expand county/GIS/UI scope.
+the Phase 1.1 reliability work into ML-125 ([validation, now implemented](validation.md)),
+ML-126 (retrieval/completeness), then ML-127 (complete-run publication). The latter
+two remain planned; validation does not expand county/GIS/UI scope or tax meanings.

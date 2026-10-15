@@ -58,6 +58,18 @@ artifacts with unknown code identity; never backfill an assumed revision.
 The proposed distinction between complete raw acquisition and complete processed
 publication, manifest version 2, row quarantine accounting, and legacy reader
 eligibility is specified in [ML-119's contract](ingestion-contracts.md). It is not
-the current manifest implementation; ML-127 owns that change. Required finite
-numeric values and strict input representations are likewise ML-125 work, not
-guarantees supplied merely by annotating a value as `Decimal`.
+the current manifest implementation; ML-127 owns that change. ML-125 now enforces
+finite numeric values and strict input representations at ingestion boundaries;
+Python type annotations alone do not supply those checks.
+
+## Input validation lineage (ML-125)
+
+`SourceMetadata` adds nullable `source_sheet`, `source_line_start`, and
+`source_line_end`, plus `validation_warnings`. CSV record ordinals preserve blank
+records; line ranges preserve multiline locations. XLSX records retain actual
+worksheet rows across gaps. Unmapped spreadsheet date/time/duration cells are
+typed JSON evidence, not canonical facts; see [validation](validation.md).
+Malformed GIS rows retain source ID/location/reason diagnostics while unknown
+optional fields remain unknown with warnings. New join manifests record effective
+`input_limits` and parcel normalization diagnostics; review summaries retain the
+same diagnostics. Historical manifests/outputs are not rewritten or certified.

@@ -8,6 +8,7 @@ import pytest
 from mn_land import __version__, provenance
 from mn_land.config.settings import Settings
 from mn_land.counties.isanti import IsantiAdapter
+from mn_land.counties.isanti.schema import EXPECTED_ALIASES, EXPECTED_TYPES
 from mn_land.ingestion.arcgis import ArcGISClient
 from mn_land.ingestion.pipeline import run_pipeline
 from mn_land.provenance import build_provenance, sha256_file
@@ -102,7 +103,11 @@ def test_offline_parcel_pipeline_records_output_and_source_hashes(tmp_path, monk
     class Transport:
         def get_json(self, url, params):
             if not url.endswith("/query"):
-                return {"objectIdField": "OBJECTID"}
+                return {"objectIdField": "OBJECTID", "fields": [
+                    {"name": name, "type": kind, "nullable": name != "OBJECTID",
+                     "alias": EXPECTED_ALIASES.get(name, name)}
+                    for name, kind in EXPECTED_TYPES.items()
+                ]}
             if params.get("returnCountOnly"):
                 return {"count": 1}
             return {"features": [record]}

@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 import tempfile
+from argparse import ArgumentTypeError
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import patch
@@ -33,12 +35,19 @@ from mn_land.utils.http import UrllibJsonTransport
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def observe(function: Callable[[], object]) -> dict[str, object]:
+    try:
+        return {"outcome": "accepted", "value": function()}
+    except (ValueError, TypeError, RuntimeError, AttributeError, ArgumentTypeError) as exc:
+        return {"outcome": "rejected", "error_type": type(exc).__name__, "reason": str(exc)}
+
+
 def main() -> None:
     findings: dict[str, object] = {
-        "money_NaN_is_finite": parse_money("NaN").is_finite(),
-        "GIS_Infinity_is_finite": parse_decimal("Infinity").is_finite(),
-        "CLI_Infinity_accepted": str(decimal_argument("Infinity")),
-        "numeric_identifier_123_point_5": normalize_parcel_id(123.5),
+        "money_NaN": observe(lambda: str(parse_money("NaN"))),
+        "GIS_Infinity": observe(lambda: str(parse_decimal("Infinity"))),
+        "CLI_Infinity": observe(lambda: str(decimal_argument("Infinity"))),
+        "numeric_identifier_123_point_5": observe(lambda: normalize_parcel_id(123.5)),
     }
     with tempfile.TemporaryDirectory(prefix=".test-tmp-ml119-", dir=ROOT) as temporary:
         directory = Path(temporary)
@@ -54,11 +63,9 @@ def main() -> None:
 
         csv_path = directory / "width.csv"
         csv_path.write_text("PARID,OWN1\n020010200,Example,extra\n", encoding="utf-8")
-        _, rows = read_tabular_file(csv_path)
-        findings["extra_CSV_field_keys"] = sorted(rows[0])
+        findings["extra_CSV_fields"] = observe(lambda: sorted(read_tabular_file(csv_path)[1][0]))
         csv_path.write_text("PARID,OWN1\n020010200\n", encoding="utf-8")
-        _, rows = read_tabular_file(csv_path)
-        findings["short_CSV_row_accepted"] = rows[0]["OWN1"] is None
+        findings["short_CSV_row"] = observe(lambda: read_tabular_file(csv_path)[1][0]["OWN1"] is None)
 
         formula_path = directory / "formula.xlsx"
         workbook = Workbook()
@@ -71,8 +78,10 @@ def main() -> None:
             {k: v for k, v in mapping.columns.items() if k not in {"owner_name", "mailing_address"}},
             mapping.delinquency_assertion,
         )
-        record = FileDelinquencySource(formula_path, formula_mapping).load_records()[0]
-        findings["uncached_formula_becomes_null"] = record.total_taxes_and_penalties_due is None
+        findings["uncached_formula"] = observe(lambda: (
+            FileDelinquencySource(formula_path, formula_mapping).load_records()[0]
+            .total_taxes_and_penalties_due is None
+        ))
 
         year_path = directory / "years.xlsx"
         workbook = Workbook()
@@ -83,10 +92,9 @@ def main() -> None:
         mixed_mapping = DelinquencyMapping.from_json(
             ROOT / "docs/counties/isanti-delinquency-2026-10-13.mapping.json"
         )
-        try:
-            FileDelinquencySource(year_path, mixed_mapping).load_records()
-        except ValueError as exc:
-            findings["mixed_XLSX_numeric_year_error"] = str(exc)
+        findings["mixed_XLSX_numeric_years"] = observe(lambda: (
+            FileDelinquencySource(year_path, mixed_mapping).load_records()[0].taxes_payable_year
+        ))
 
         class Transport:
             requested_page_size: object = None

@@ -3,12 +3,13 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+from mn_land.config.input_limits import DEFAULT_INPUT_LIMITS, InputLimits
 from mn_land.config.settings import SETTINGS
 from mn_land.counties.isanti import IsantiAdapter
 from mn_land.delinquency.exporters import export_join_result
@@ -17,8 +18,10 @@ from mn_land.delinquency.file_loader import (
     FileDelinquencySource,
 )
 from mn_land.delinquency.join import JoinResult, join_delinquency_records
+from mn_land.ingestion.normalization import normalize_with_diagnostics
 from mn_land.models import Parcel
 from mn_land.provenance import build_provenance
+from mn_land.utils.validation import minimum_acres
 
 
 class DelinquencyPipelineError(RuntimeError):
@@ -48,12 +51,11 @@ def import_and_join_delinquency(
     adapter: IsantiAdapter | None = None,
     raw_root: Path | None = None,
     processed_root: Path | None = None,
+    limits: InputLimits = DEFAULT_INPUT_LIMITS,
 ) -> DelinquencyPipelineStats:
-    mapping = DelinquencyMapping.from_json(mapping_path)
-    for document in mapping.supporting_documents:
-        if not (mapping_path.parent / document).is_file():
-            raise DelinquencyPipelineError(f"supporting source document missing: {document}")
-    source = FileDelinquencySource(file_path, mapping)
+    min_acres = minimum_acres(min_acres)
+    mapping = DelinquencyMapping.from_json(mapping_path, limits=limits)
+    source = FileDelinquencySource(file_path, mapping, limits=limits)
     records = source.load_records()
     run_at = datetime.now(UTC)
     run_id = run_at.strftime("%Y-%m-%dT%H%M%S%fZ")
@@ -61,10 +63,11 @@ def import_and_join_delinquency(
     processed_root = processed_root or SETTINGS.processed_dir
     raw_snapshot = raw_root / "isanti" / "delinquency" / run_id
     processed_snapshot = processed_root / "isanti" / "delinquency" / run_id
-    _preserve_import(file_path, mapping_path, raw_snapshot, records, run_at)
+    _preserve_import(file_path, mapping_path, raw_snapshot, records, run_at, mapping)
 
+    diagnostics: list[dict[str, Any]] = []
     parcels, parcel_errors, parcel_snapshot = load_latest_parcel_snapshot(
-        adapter or IsantiAdapter(), raw_root / "isanti"
+        adapter or IsantiAdapter(), raw_root / "isanti", diagnostics=diagnostics,
     )
     result = join_delinquency_records(parcels, records)
     outputs, candidate_count = export_join_result(result, processed_snapshot, min_acres)
@@ -79,8 +82,11 @@ def import_and_join_delinquency(
         run_at,
     )
     manifest_path = processed_snapshot / "manifest.json"
+    manifest["parcel_normalization_diagnostics"] = diagnostics
+    manifest["input_limits"] = asdict(limits)
     manifest["provenance"] = build_provenance(
-        {"command": "import-delinquency", "county": "Isanti", "minimum_acres": str(min_acres)},
+        {"command": "import-delinquency", "county": "Isanti", "minimum_acres": str(min_acres),
+         "input_limits": asdict(limits)},
         inputs=[
             *[path for path in raw_snapshot.rglob("*") if path.is_file()],
             parcel_snapshot / "manifest.json",
@@ -105,7 +111,7 @@ def import_and_join_delinquency(
 
 
 def load_latest_parcel_snapshot(
-    adapter: IsantiAdapter, county_raw_root: Path
+    adapter: IsantiAdapter, county_raw_root: Path, *, diagnostics: list[dict[str, Any]] | None = None,
 ) -> tuple[list[Parcel], int, Path]:
     snapshots = sorted(
         path
@@ -117,24 +123,35 @@ def load_latest_parcel_snapshot(
             "no preserved Isanti parcel snapshot found; run find-candidates first"
         )
     snapshot = snapshots[-1]
-    return load_parcel_snapshot(adapter, snapshot)
+    return load_parcel_snapshot(adapter, snapshot, diagnostics=diagnostics)
 
 
 def load_parcel_snapshot(
-    adapter: IsantiAdapter, snapshot: Path
+    adapter: IsantiAdapter, snapshot: Path, *, diagnostics: list[dict[str, Any]] | None = None,
 ) -> tuple[list[Parcel], int, Path]:
     """Normalize an explicitly selected preserved GIS snapshot."""
     manifest = json.loads((snapshot / "manifest.json").read_text(encoding="utf-8"))
     retrieved_at = datetime.fromisoformat(manifest["retrieved_at"])
     parcels: list[Parcel] = []
     errors = 0
+    diagnostics = diagnostics if diagnostics is not None else []
+    metadata_path = snapshot / "layer_metadata.json"
+    if metadata_path.is_file():
+        adapter.validate_metadata(json.loads(metadata_path.read_text(encoding="utf-8")))
+    else:
+        diagnostics.append({"raw_snapshot": str(snapshot), "severity": "warning", "field": "schema",
+                            "reason": "legacy snapshot has no layer metadata; declaration checks unavailable"})
     for page_path in sorted(snapshot.glob("page_*.json")):
         payload = json.loads(page_path.read_text(encoding="utf-8"))
-        for raw_record in payload.get("features", []):
-            try:
-                parcels.append(adapter.normalize_parcel(raw_record, retrieved_at))
-            except ValueError:
+        for index, raw_record in enumerate(payload.get("features", []), start=1):
+            parcel = normalize_with_diagnostics(
+                adapter, raw_record, retrieved_at,
+                {"raw_page": str(page_path), "feature_number": index}, diagnostics,
+            )
+            if parcel is None:
                 errors += 1
+            else:
+                parcels.append(parcel)
     expected = manifest.get("record_count")
     if expected is not None and len(parcels) + errors != expected:
         raise DelinquencyPipelineError(
@@ -149,19 +166,19 @@ def _preserve_import(
     snapshot: Path,
     records: list[Any],
     run_at: datetime,
+    mapping: DelinquencyMapping,
 ) -> None:
     snapshot.mkdir(parents=True, exist_ok=False)
     source_copy = snapshot / f"source{file_path.suffix.lower()}"
     mapping_copy = snapshot / "mapping.json"
     shutil.copy2(file_path, source_copy)
     shutil.copy2(mapping_path, mapping_copy)
-    mapping = DelinquencyMapping.from_json(mapping_copy)
     supporting = []
-    for document in mapping.supporting_documents:
-        source_document = mapping_path.parent / document
-        target_dir = snapshot / "supporting"
-        target_dir.mkdir(exist_ok=True)
-        target_document = target_dir / source_document.name
+    for document, source_document in mapping.supporting_paths(mapping_path.parent).items():
+        target_document = snapshot / "supporting" / document
+        target_document.parent.mkdir(parents=True, exist_ok=True)
+        if target_document.exists():
+            raise DelinquencyPipelineError("supporting document destination already exists")
         shutil.copy2(source_document, target_document)
         supporting.append({"file": str(target_document), "sha256": _sha256(target_document)})
     manifest = {

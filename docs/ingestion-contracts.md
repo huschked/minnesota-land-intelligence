@@ -1,7 +1,8 @@
 # Ingestion contracts and hardening plan (ML-119)
 
-Status: discovery complete; **the target contracts below are not implemented by
-this document**. Production behavior was inspected at baseline commit
+Status: discovery complete; ML-125 subsequently implements section 2 and F01-F09
+as described in [validation](validation.md). **Sections 3 and 4 remain planned
+ML-126/ML-127 work, not current guarantees.** Discovery behavior was inspected at baseline commit
 `4374e65b5bda9d15ab2f3aaf4b4110060f85ffa0`. ML-125, ML-126, and ML-127 own
 implementation and regression fixtures. Scope is existing Isanti ingestion,
 normalization boundaries, and safe output publication, not new county semantics,
@@ -84,13 +85,13 @@ Additional code-inspection findings:
   two already documented missing parcel IDs); other exception types can abort.
   File-import invalid rows fail the import. Neither is a reason to invent values.
 
-## 2. Target input and schema contract — ML-125
+## 2. Input and schema contract — implemented by ML-125
 
 ### 2.1 GIS fields and canonical values
 
 The Isanti adapter owns a declared schema contract, rather than hardcoding county
-fields into the generic client. Validate requested field declarations before
-normalization; ML-126 calls this gate before paging.
+fields into the generic client. ML-125's callback checks declarations before
+queries/normalization. ML-126 adds capability, OID, paging and completeness policy.
 
 | Source fields | Expected declared type | Value policy |
 |---|---|---|
@@ -124,7 +125,7 @@ and equality to the threshold remain supported. Keep Decimal calculations.
 | `delinquency_assertion` | Exactly one of the two existing supported assertions; no truthy strings/objects or inferred assertion. |
 | `columns` | Nonempty object, `parcel_id` required, known canonical keys only, nonblank string source-header names, no conflicting duplicate source-column assignments. Exact reviewed header matching after existing whitespace trimming. |
 | `source_url`, `publication_date`, `verification_hold_reason` | Null or strings; URL must be HTTP(S) when provided, date must be valid ISO `YYYY-MM-DD`, hold must be nonblank when present. No file retrieval is triggered by metadata URLs. |
-| `tax_year_convention`, `year_semantics_reference` | Null or existing supported convention/nonblank reference. Mixed assertion requires the convention and a reference to a declared retained supporting document. Do not broaden county interpretation. |
+| `tax_year_convention`, `year_semantics_reference` | Null or existing supported convention/nonblank reference. Every active convention requires a declared retained reference; a mixed assertion also requires the convention. Do not broaden county interpretation. |
 | `supporting_documents` | Array of unique, nonblank relative path strings; resolve under mapping directory, forbid absolute/drive/UNC/traversal or symlink escape, require regular files, preserve relative layout and reject destination collisions. Never flatten or overwrite evidence. |
 | `review_notes` | Existing optional array of strings; retain the source mapping bytes. Other unknown top-level keys fail clearly so misspelled controls cannot be ignored. |
 
@@ -163,11 +164,13 @@ path errors stop before any referenced external supporting file is copied.
   location, field, and reason. Do not silently drop them or reinterpret repeated
   rows as duplicates to remove. ML-127 retains failed-input evidence privately.
 
-Initial engineering safety budgets: 25 MiB input file/JSON response, 100 MiB total
+Implemented local-input engineering budgets: 25 MiB input file, 100 MiB total
 expanded XLSX members, 100,000 data records, 256 columns, and 1 MiB per field/cell.
+ML-125 additionally bounds archive members to 4096. The proposed 25 MiB HTTP
+response cap remains ML-126 work, not a guarantee supplied by the local reader.
 Check ZIP expansion before workbook parsing; never extract archive member paths.
 Exceeding a budget fails with a diagnostic; it does not truncate data. These are
-proposed configurable resource protections, **not county limits**. The retained
+configurable resource protections, **not county limits**. The retained
 CSV is 608,656 bytes and the documented report has 1,783 records, so this fixture
 fits comfortably. Record effective budgets; revising them does not authorize
 bypassing a public service's smaller limits.
@@ -277,7 +280,8 @@ ignored/private and are never added to CI fixtures or GitHub artifacts.
 
 ## 5. Prioritized fixture matrix
 
-All entries below are **planned tests**, unless named as existing coverage.
+F01-F09 are implemented and traced in [validation](validation.md).
+H01-H08 and R01-R07 below are **planned tests**, not implemented by ML-125.
 Construct sanitized inputs; mock transport, clock, file failures, and inventories.
 The discovery probe confirms selected gaps but does not replace implementation
 regressions. P0 fixtures gate the owning story; P1 fixtures also belong to that
@@ -317,9 +321,9 @@ data. Keep deterministic clocks/IDs separate from county dates.
 
 ## 6. Bounded delivery decisions and unresolved limits
 
-1. **ML-125 next:** implement input/schema/numeric/path validation and the F01–F09
-   matrix. County schema ownership stays in the adapter. Do not change joins,
-   financial meanings, or the run publication protocol in that card.
+1. **ML-125 implementation:** input/schema/numeric/path validation and the F01–F09
+   matrix. County schema ownership stays in the adapter. Joins, financial meanings,
+   and the run publication protocol are unchanged.
 2. **ML-126 after ML-125:** implement actual transport limits, retry/pacing/body
    capture, inventories, and H01–H08. It depends on the schema gate; it does not
    add scraping, cache refresh jobs, or an alternate county/API.
@@ -346,8 +350,9 @@ probe, and traced each finding to a planned fixture and a bounded owner. No
 production ingestion/normalization changes or live government requests were made.
 Existing snapshots/listings/correspondence remain unchanged. Local verification
 passed 72 default offline tests (one live test deselected), Ruff, the 13-epic /
-84-story board check, and 213 relative documentation links/anchors. The production
-`src/` and existing `tests/` trees are unchanged. Hosted CI for the completion
+84-story board check, and 213 relative documentation links/anchors. At discovery
+completion the production `src/` and existing `tests/` trees were unchanged;
+subsequent ML-125 implementation is documented in [validation](validation.md). Hosted CI for the completion
 commit is available from its GitHub checks; local results alone do not imply a
 hosted pass. The backlog records discovery completion, not implementation of the
 planned F/H/R fixtures.

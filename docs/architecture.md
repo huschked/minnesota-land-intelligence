@@ -1,6 +1,6 @@
 # Architecture
 
-The parcel pipeline is deliberately linear: official ArcGIS service → county adapter → canonical parcel → validation/filtering → exports. `ArcGISClient` owns HTTP, retries, metadata, count checks, and pagination. `IsantiAdapter` is the only module that knows Isanti GIS field names. Core filtering accepts `Parcel` instances and records deterministic rejection reasons.
+The parcel pipeline is deliberately linear: official ArcGIS service → county adapter → canonical parcel → validation/filtering → exports. `ArcGISClient` owns HTTP, retries, metadata, count checks, and pagination. The Isanti county adapter package owns county GIS field names and schema declarations. Core filtering accepts `Parcel` instances and records deterministic rejection reasons.
 
 Phase 1.1 separates source responsibilities. A `DelinquencySource` produces county-independent `DelinquencyRecord` objects from an authoritative delinquency-specific publication. The parcel and delinquency snapshots are normalized independently, joined only by a county-specific deterministic parcel-ID key, and retain independent lineage.
 
@@ -52,7 +52,9 @@ overwritten by subsequent runs; failure/atomic-publication hardening is ML-127.
 
 [ML-119's contracts and fixture matrix](ingestion-contracts.md) distinguish
 observed behavior from proposed validation/retrieval/publication guarantees.
-ML-125 owns strict file/schema gates; ML-126 then calls those gates and hardens
-retrieval/completeness; ML-127 follows with staged publication and shared reader
-eligibility. Existing raw manifests and recorded hashes are not proof that those
-future checks are already enforced. Discovery does not change working ingestion.
+ML-125 implements [strict validation](validation.md): bounded CSV/XLSX readers,
+mapping/evidence checks, finite numeric representations, an adapter-owned metadata
+callback, and explicit normalization diagnostics. The callback runs before query
+requests but does not itself harden HTTP/pagination/completeness (ML-126).
+ML-127 still owns staged publication and shared reader eligibility. Existing raw
+manifests and recorded hashes are not proof those future checks are enforced.
