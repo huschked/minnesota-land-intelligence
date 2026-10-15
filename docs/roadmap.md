@@ -26,3 +26,8 @@ source/requirements discovery and have explicit exit criteria in the backlog.
 PostGIS remains conditional on measured need. County accounting questions block
 verified financial comparisons, not all factual parcel review. No future-phase
 implementation is started by adding it to this plan.
+
+ML-119's [ingestion contracts and fixture matrix](ingestion-contracts.md) refine
+the remaining Phase 1.1 reliability work into ML-125 (validation), ML-126
+(retrieval/completeness), then ML-127 (complete-run publication). The discovery
+does not itself implement those guarantees or expand county/GIS/UI scope.

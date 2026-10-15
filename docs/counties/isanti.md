@@ -125,3 +125,18 @@ sample is exported for human county-record comparison. No manual viewer
 verification has yet been claimed.
 
 The public data carries an accuracy/currency/suitability disclaimer. Parcel reports can support human comparison but do not replace county confirmation of field semantics.
+
+## Ingestion hardening discovery (ML-119)
+
+The two retained August 23 and October 14 `layer_metadata.json` files inspected
+during ML-119 have identical SHA-256 hashes, field names/types/aliases/nullability,
+and advertised limits. No actual GIS schema drift was observed between those
+captures; this is not a fresh live-service check or a promise against future drift.
+The known year-heading clarification is an existing county semantic correction,
+not permission to infer a new field meaning. CSV versus XLSX year-cell types are
+an ingestion-format issue documented in the [contract and fixture matrix](../ingestion-contracts.md).
+
+That document preserves the mixed prior/current convention, unknown balances,
+and unresolved identities while specifying bounded ML-125/126/127 hardening.
+Historical import notes above remain historical; none of these planned checks
+has been retroactively applied to the retained snapshots.

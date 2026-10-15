@@ -51,10 +51,13 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-119: define the hardening contract, then refine/pull ML-125 through ML-127.
-2. ML-201: define the basic local viewer workflow and technology choice. This
+1. ML-125: implement the strict validation contract and F01-F09 fixtures from
+   [ML-119's discovery](../ingestion-contracts.md).
+2. ML-126 after ML-125: enforce respectful retrieval and source completeness;
+   then ML-127 after both: publish only complete runs and validate reader eligibility.
+3. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
-3. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then
+4. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then
    implement the viewer on that stable data boundary.
 
 ML-117, ML-121, and ML-122 wait for actual county information. They do not block

@@ -54,3 +54,10 @@ Installed distributions record actual names/versions, not package-index credenti
 Source dates and tax semantics remain in existing county/source records, not in
 these runtime fields. Earlier artifacts without provenance remain valid historical
 artifacts with unknown code identity; never backfill an assumed revision.
+
+The proposed distinction between complete raw acquisition and complete processed
+publication, manifest version 2, row quarantine accounting, and legacy reader
+eligibility is specified in [ML-119's contract](ingestion-contracts.md). It is not
+the current manifest implementation; ML-127 owns that change. Required finite
+numeric values and strict input representations are likewise ML-125 work, not
+guarantees supplied merely by annotating a value as `Decimal`.

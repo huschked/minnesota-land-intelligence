@@ -438,7 +438,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-119"></a>
 
-**Status:** Ready
+**Status:** Done
+
+**Owner:** Codex
 
 **Priority:** P0
 
@@ -450,14 +452,14 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Document required fields/types, known schema drift, file-format constraints, retry/page-limit expectations, and failure/partial-run behavior against current code.
-- [ ] Produce a prioritized fixture matrix and concrete changes for ML-125, ML-126, and ML-127, with no new county semantics inferred.
+- [x] Document required fields/types, known schema drift, file-format constraints, retry/page-limit expectations, and failure/partial-run behavior against current code.
+- [x] Produce a prioritized fixture matrix and concrete changes for ML-125, ML-126, and ML-127, with no new county semantics inferred.
 
-**Validation:** Review the documented findings, source evidence, decision, and bounded follow-up tasks against the acceptance criteria.
+**Validation:** Inspected source modules and existing tests; compared retained August/October metadata (identical hashes, no observed field drift); reproduced D01-D08 using synthetic offline probes. Existing 72 offline tests, Ruff, board validation, and 213 local documentation links/anchors passed; one live test was deselected. Reviewed the contract, evidence inventory, and 24 F/H/R fixture groups against both acceptance criteria; no production ingestion changes or new county meanings. Hosted verification is linked to the completion commit's GitHub checks.
 
-**Notes:** Discovery spike only. Keep implementation changes in the bounded follow-up stories.
+**Notes:** Discovery complete. Follow-up chain is ML-125 validation, then ML-126 retrieval/completeness, then ML-127 publication/read eligibility. Only ML-125 is Ready; future target guarantees are explicitly not existing capabilities. Monetary definitions and unmatched identities remain blocked on county evidence. No live government calls or original-input changes.
 
-**Evidence / starting points:** [1](../../src/mn_land/utils/http.py), [2](../../src/mn_land/ingestion/arcgis.py), [3](../../src/mn_land/delinquency/file_loader.py)
+**Evidence / starting points:** [Contract and prioritized fixture matrix](../ingestion-contracts.md), [repeatable synthetic probe](../../scripts/probe_ingestion_contracts.py), [HTTP](../../src/mn_land/utils/http.py), [ArcGIS](../../src/mn_land/ingestion/arcgis.py), [file loader](../../src/mn_land/delinquency/file_loader.py)
 
 ### ML-120 - Establish version-control baseline and reproducible release identity
 
@@ -592,7 +594,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-125"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P0
 
@@ -604,14 +606,17 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Validate required metadata fields/types, mapping assertions, nonblank unique headers, row widths, finite Decimal values, year conventions, and supported worksheet/formula handling.
-- [ ] Constrain supporting-document paths and untrusted input handling; preserve raw bytes and test failures with sanitized fixtures.
+- [ ] Implement the adapter-owned GIS field/type gate and strict reviewed-mapping object/type/date/assertion checks in contract section 2; malformed metadata fails clearly and added unrequested fields remain permissible.
+- [ ] Enforce finite numeric/acreage inputs in parsers, CLI, and callable pipelines; reject numeric parcel-ID cells rather than coercing/padding, preserve nulls and finite negative accounting values, and retain explicit GIS row quarantines.
+- [ ] Validate CSV encoding/unique nonblank headers/exact widths/quoted multiline records and XLSX one-data-sheet/value-only rules; support exact typed year representations and preserve actual source row/sheet references across blank rows.
+- [ ] Enforce contained relative supporting-document paths without symlink escape or destination collision, clear malformed-file errors and workbook closure, and the documented input/expanded-archive/row/column/cell budgets.
+- [ ] Complete F01-F09 sanitized fixtures and valid-output regression checks without changing mixed-year status, holds, duplicate/monetary semantics, or production source bytes. Failed-input evidence/publication is integrated by ML-127, not silently claimed here.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Run the contract's F01-F09 fixtures plus existing offline tests/lint/board CI on both supported platforms/minor versions. Verify all existing reviewed mappings remain valid, no actual county inputs are mutated, and error diagnostics include source locations without fabricated facts.
 
-**Notes:** Do not invent missing values or silently repair ambiguous schemas.
+**Notes:** Bounded strict-input/schema work; no HTTP retry/paging changes (ML-126), atomic publication (ML-127), portable replay (ML-123), or accounting inference. New behavior and fixture changes must be documented before Done. Discovery probe results describe old behavior, not desired regression assertions.
 
-**Evidence / starting points:** [1](../../src/mn_land/delinquency/file_loader.py)
+**Evidence / starting points:** [Contract section 2 and F01-F09 matrix](../ingestion-contracts.md), [file loader](../../src/mn_land/delinquency/file_loader.py), [Isanti adapter](../../src/mn_land/counties/isanti/adapter.py), [county years/IDs](../../src/mn_land/counties/isanti/delinquency.py), [CLI](../../src/mn_land/cli.py)
 
 ### ML-126 - Harden respectful HTTP retrieval and source completeness
 
@@ -623,20 +628,22 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Kind:** Chore
 
-**Depends on:** ML-119
+**Depends on:** ML-119, ML-125
 
 **User outcome:** As an operator, I can respect source capabilities and detect incomplete or changing data.
 
 **Acceptance criteria:**
 
-- [ ] Enforce service-advertised page limits/capabilities; distinguish retryable HTTP/JSON errors, honor Retry-After/backoff, and use respectful pacing.
-- [ ] Detect missing/repeated IDs, empty/unexpected pages, schema changes, and relevant source changes during a run; cover failures without live calls.
+- [ ] Call ML-125's schema gate, validate Query/OID/pagination/order capabilities and non-boolean counts, and clamp requested page size to valid advertised limits without guessing unsupported fallbacks.
+- [ ] Implement contract section 3's explicit transient/permanent retry classification, total-attempt/socket-timeout/wait budgets, sequential pacing, and delta/date Retry-After handling; stop rather than retry before an excessive server delay.
+- [ ] Reconcile initial/final count, OID inventories, fetched membership/order and page/transfer-limit behavior; reject detectable count/ID/schema/capability changes and disclose unknown same-ID attribute consistency when no edit token exists.
+- [ ] Retain bounded original HTTP bodies and parsed JSON evidence with hashes, wire effective Settings into transport, and complete H01-H08 fixtures with fake transport/clocks and no government calls or real sleeps.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** H01-H08 fixture matrix and existing offline CI; assert exact requests, waits, attempt limits, body sizes/hashes and completeness failures. Keep a valid zero-record case and the existing multi-page success case. Any optional live check must be explicit and dated, not required by ordinary tests.
 
-**Notes:** Caching must preserve date/version lineage, not silently substitute stale data.
+**Notes:** Depends on ML-125's schema gate, so remains Backlog until that card is Done. No automatic cache substitution, alternate source, scraping, concurrency, scheduled refresh, point-in-time source guarantee, or new county semantics. ML-127 owns completion/read eligibility.
 
-**Evidence / starting points:** [1](../../src/mn_land/ingestion/arcgis.py), [2](../../src/mn_land/utils/http.py)
+**Evidence / starting points:** [Contract section 3 and H01-H08 matrix](../ingestion-contracts.md), [ArcGIS client](../../src/mn_land/ingestion/arcgis.py), [HTTP transport](../../src/mn_land/utils/http.py), [settings](../../src/mn_land/config/settings.py)
 
 ### ML-127 - Publish only complete processed runs
 
@@ -648,20 +655,23 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Kind:** Chore
 
-**Depends on:** ML-119
+**Depends on:** ML-119, ML-125, ML-126
 
 **User outcome:** As an operator, I can distinguish successful outputs from partially written or failed runs.
 
 **Acceptance criteria:**
 
-- [ ] Write staged outputs and mark success atomically only after retrieval, validation, exports, hashes, and count reconciliation pass.
-- [ ] Preserve failure diagnostics and raw evidence; prevent failed runs from becoming latest usable snapshots and test interruption/recovery behavior.
+- [ ] Implement contract section 4's distinct raw-complete/processed-complete stages and new versioned completion manifests; normalize exact retained input copies, use exclusive run identities, stage on the destination filesystem, and publish completion atomically only after inventory/hash/count checks.
+- [ ] Make status/latest/explicit parcel loads/imports/reviews share manifest kind/county/status/path/count/hash eligibility checks; staging, failures, tampered/missing files, and invalid newest directories cannot become usable results.
+- [ ] Preserve bounded failure diagnostics/raw evidence and exact source-row/quarantine accounting; do not double-count overlapping duplicate reviews or prior/current parcel views, aggregate unknown balances, or overwrite prior success.
+- [ ] Publish immutable per-run parcel outputs; any legacy flat compatibility files are non-authoritative. Preserve historical manifests unchanged, disclose legacy eligibility limitations, and leave portable replay/data backup to ML-123/ML-128.
+- [ ] Complete R01-R07 failure-injection, interruption, collision, legacy, reader, and successful empty-result fixtures across parcel/import/review paths, including the nine join exports and seven review CSVs.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** R01-R07 plus full offline CI; inject failures at every publication boundary and verify previous successful files/pointers are unchanged, no partial run is eligible, actual published hashes match, and unversioned history is neither rewritten nor silently certified.
 
-**Notes:** Preserve existing historical results; do not overwrite a prior successful run.
+**Notes:** Remains Backlog until ML-125 and ML-126 are Done. No new database, UI, remote backups, historical migration, arbitrary filesystem deletion, or claimed power-loss durability. A complete raw acquisition is not automatically a successful processed run.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Contract section 4 and R01-R07 matrix](../ingestion-contracts.md), [parcel pipeline](../../src/mn_land/ingestion/pipeline.py), [join pipeline](../../src/mn_land/delinquency/pipeline.py), [review](../../src/mn_land/counties/isanti/review.py), [CLI status](../../src/mn_land/cli.py), [provenance](../../src/mn_land/provenance.py)
 
 ### ML-128 - Back up and restore ignored raw data and correspondence
 

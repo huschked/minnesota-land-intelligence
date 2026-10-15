@@ -12,7 +12,7 @@ Official delinquency file -> DelinquencyRecord --+
 
 Absence from a snapshot does not establish that a parcel is current. Duplicate delinquency rows and duplicate parcel join keys are ambiguous, not silently aggregated. Unmatched source rows are exported for review.
 
-Each parcel run stores layer metadata, request parameters, and each unmodified ArcGIS response page under a timestamped raw directory. Each delinquency import copies the original file and reviewed mapping into a new timestamped snapshot with SHA-256 hashes. Processed join results are also timestamped so historical runs are not overwritten.
+Each parcel run stores layer metadata, request parameters, and reserialized parsed ArcGIS response pages under a timestamped raw directory; these are not original HTTP body bytes. Each delinquency import copies the original file and reviewed mapping into a new timestamped snapshot with SHA-256 hashes, currently after parsing. Processed join results are timestamped, but a failed run can leave a partial new directory; timestamping alone is not atomic publication.
 
 Additional counties should implement `CountyAdapter` and produce the same canonical model. Future GIS enrichment can attach derived observations after normalization; persistent spatial processing can move to PostGIS only when scale warrants it. None of that is part of Phase 1.
 
@@ -47,3 +47,12 @@ inputs to the derived exports. Join manifests and review summaries carry their o
 `provenance` object. Their self-hashes are deliberately excluded. Historical
 snapshots are not rewritten, and the compatibility parcel exports can still be
 overwritten by subsequent runs; failure/atomic-publication hardening is ML-127.
+
+## Planned ingestion hardening
+
+[ML-119's contracts and fixture matrix](ingestion-contracts.md) distinguish
+observed behavior from proposed validation/retrieval/publication guarantees.
+ML-125 owns strict file/schema gates; ML-126 then calls those gates and hardens
+retrieval/completeness; ML-127 follows with staged publication and shared reader
+eligibility. Existing raw manifests and recorded hashes are not proof that those
+future checks are already enforced. Discovery does not change working ingestion.
