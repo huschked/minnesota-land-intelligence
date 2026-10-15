@@ -2,7 +2,7 @@
 
 Updated: 2026-10-14. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project is a working local CLI, not yet a UI or deployed service. The current source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view. ML-120 verification passed 66 offline tests in both existing and fresh environments; the live integration test was not rerun. Current results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project is a working local CLI, not yet a UI or deployed service. The current source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view. ML-118 verification passed 72 default offline tests locally and in all four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. See [testing evidence](../testing.md). Current results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -191,7 +191,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Existing implementation/evidence below supports this historical completion; shared regression requirements continue to apply.
 
-**Notes:** Default offline test selection and CI are separate unfinished work in ML-118.
+**Notes:** Default offline test selection and hosted CI were subsequently completed in ML-118; this card retains the original live-check boundary.
 
 **Evidence / starting points:** [1](../../tests/unit/test_http.py), [2](../../README.md)
 
@@ -411,7 +411,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-118"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Owner:** Codex
 
@@ -425,14 +425,14 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Default pytest selection excludes live integration tests; an explicit integration command still works.
-- [ ] A CI configuration for the selected repository host runs lint and offline tests on supported Python with sanitized fixtures.
+- [x] Default pytest selection excludes live integration tests; an explicit integration command still works.
+- [x] A CI configuration for the selected repository host runs lint and offline tests on supported Python with sanitized fixtures.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** 72 default offline tests passed locally and in all four Windows/Linux x Python 3.11/3.12 jobs. Hosted dependency, Ruff, and Kanban checks passed. Isolated sentinel suites prove default/explicit selection; real integration collection selected one live test without running it. Hosted run 38673156552 succeeded for implementation commit 44114fc.
 
-**Notes:** The current pytest marker alone does not exclude integration tests by default. Local checks must work even before a remote host is selected.
+**Notes:** Default options exclude integration and enforce registered markers. Unmarked tests block standard DNS/TCP calls. GitHub Actions runs on push/PR/manual dispatch with read-only token permissions and SHA-pinned official actions. No custom secrets, county-data upload, deployment, live-source test execution, branch-protection changes, or billing-setting changes.
 
-**Evidence / starting points:** [1](../../pyproject.toml), [2](../../tests/integration/test_isanti_pipeline.py)
+**Evidence / starting points:** [Testing and hosted evidence](../testing.md), [workflow](../../.github/workflows/ci.yml), [pytest defaults](../../pyproject.toml), [selection/guard regression tests](../../tests/unit/test_test_policy.py), [network guard](../../tests/conftest.py), [successful hosted run](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38673156552)
 
 ### ML-119 - Specify ingestion contracts and a bounded hardening plan
 

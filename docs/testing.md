@@ -69,9 +69,15 @@ contact. The real live test is collected separately, not executed for this card.
 
 2026-10-14 local verification: default selection passed 72 tests with one live
 test deselected. Explicit live-test collection selected the single existing
-integration test and deselected the 72 offline cases. Lint and board validation
-are checked before commit. The hosted matrix outcome is recorded after the push;
-a local pass is not evidence of a hosted CI pass.
+integration test and deselected the 72 offline cases. Ruff and board validation
+passed locally.
+
+The [first hosted CI run](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38673156552)
+passed for implementation commit `44114fcd7bc719237be50390da0ee23d1a5febf5`.
+All four Windows/Linux x Python 3.11/3.12 jobs passed dependency consistency,
+Ruff, board validation, 72 default offline tests (one deselected), and explicit
+live-test collection (one selected, 72 deselected). The run completed on
+2026-10-15 UTC / 2026-10-14 America/Chicago. No live county test was executed.
 
 Configuration references: [pytest configuration](https://docs.pytest.org/en/stable/reference/customize.html),
 [GitHub Python workflows](https://docs.github.com/en/actions/tutorials/build-and-test-code/python),

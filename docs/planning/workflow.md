@@ -51,11 +51,10 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-118: make normal test runs offline by default and add host-appropriate CI.
-2. ML-119: define the hardening contract, then refine/pull ML-125 through ML-127.
-3. ML-201: define the basic local viewer workflow and technology choice. This
+1. ML-119: define the hardening contract, then refine/pull ML-125 through ML-127.
+2. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
-4. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then
+3. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then
    implement the viewer on that stable data boundary.
 
 ML-117, ML-121, and ML-122 wait for actual county information. They do not block
@@ -108,9 +107,11 @@ Every applicable item must hold:
 
 Historical Done cards are based on current implementation and recorded evidence,
 not a claim of independent review or deployment. ML-120 establishes the first local
-Git baseline and passed 66 offline tests in existing and fresh environments. The
-live government-service test was not rerun. See [reproducibility](../reproducibility.md)
-for verification and the separate backup requirements for ignored county data.
+Git baseline. ML-118 subsequently passed 72 default offline tests locally and in
+four hosted Windows/Linux x Python 3.11/3.12 jobs, with lint and board validation.
+The live government-service test was collected but not executed. See
+[testing evidence](../testing.md) and [reproducibility](../reproducibility.md) for
+verification and the separate backup requirements for ignored county data.
 
 ## Updating the board
 
