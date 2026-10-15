@@ -1,0 +1,12 @@
+# Observed resolution: Windows x64, CPython 3.12.14, 2026-10-14.
+# Install with: python -m pip install -e ".[dev]" -c constraints-dev.txt
+# These are version constraints, not a cross-platform or hash-locked build.
+colorama==0.4.6
+et_xmlfile==2.0.0
+iniconfig==2.3.1
+openpyxl==3.1.5
+packaging==26.3
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+ruff==0.17.0

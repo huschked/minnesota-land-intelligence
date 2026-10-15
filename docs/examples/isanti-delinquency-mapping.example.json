@@ -1,0 +1,13 @@
+{
+  "source_agency": "Isanti County Auditor-Treasurer",
+  "dataset": "REPLACE WITH OFFICIAL FILE TITLE",
+  "source_url": null,
+  "publication_date": null,
+  "delinquency_assertion": "each_row_represents_delinquent_parcel",
+  "columns": {
+    "parcel_id": "REPLACE WITH EXACT PARCEL ID COLUMN",
+    "taxpayer_name": "REPLACE OR REMOVE IF UNAVAILABLE",
+    "delinquent_years": "REPLACE OR REMOVE IF UNAVAILABLE",
+    "total_taxes_and_penalties_due": "REPLACE OR REMOVE IF UNAVAILABLE"
+  }
+}

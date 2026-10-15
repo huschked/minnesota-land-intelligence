@@ -1,0 +1,22 @@
+{
+  "attributes": {
+    "OBJECTID": 101,
+    "PARCELID": "02.001.0200",
+    "OWNERNME1": "Example Owner",
+    "PSTLADDRESS": "100 Main St",
+    "PSTLADDRESS2": null,
+    "PSTLCITY": "Cambridge",
+    "PSTLSTATE": "MN",
+    "PSTLZIP5": "55008",
+    "PSTLZIP4": null,
+    "DEEDEDACRES": 25.5,
+    "TOTPRVTXTOD": 5000.01,
+    "TOTCNTTXOD": 1200,
+    "LNDVALUE": 150000,
+    "IMPRVALUE": 25000,
+    "CNTASSDVAL": 175000,
+    "PRIMARYCLASS": "AGRICULTURAL",
+    "LEGALDESCRIPT": "EXAMPLE ONLY",
+    "PARCEL_REPORT": "https://gis.co.isanti.mn.us/ParcelReports/PublicParcelReport.ashx?PIN=02.001.0200"
+  }
+}

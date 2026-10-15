@@ -1,0 +1,23 @@
+{
+  "source_agency": "Isanti County Finance & Property Services Division",
+  "dataset": "Delinquent Tax Listing 10-13-26.csv",
+  "source_url": null,
+  "publication_date": "2026-10-13",
+  "delinquency_assertion": "mixed_unpaid_prior_and_overdue_current_year_taxes",
+  "verification_hold_reason": null,
+  "tax_year_convention": "isanti_assessment_year_plus_one",
+  "year_semantics_reference": "isanti-tax-year-confirmation.md",
+  "supporting_documents": ["isanti-tax-year-confirmation.md"],
+  "columns": {
+    "parcel_id": "PARID",
+    "owner_name": "OWN1"
+  },
+  "review_notes": [
+    "Provenance: county Property Tax Coordinator delivery and year conventions are supported by the supplied email thread and follow-up reply. Monetary field definitions remain pending.",
+    "October 13 is the listing date supplied by the user and filename. All EFFDATE and LTRDT values are 7-Oct-26; do not claim balances are effective October 13.",
+    "PARID values are nine-digit strings and match GIS parcel IDs after punctuation removal. No padding or numeric coercion is needed.",
+    "TAXYR=2025 is report assessment year (payable 2026). ASMTYR is the individual charge assessment year. Only earlier ASMTYR rows establish prior-year delinquency; equal years establish overdue first-half current-year installments.",
+    "Do not map abbreviated money columns to canonical balances without county definitions. All original amounts remain preserved in the source CSV.",
+    "TOTAMT reconciles to TAXAMT+PENAMT+INTAMT+FEEAMT for every row. This is arithmetic evidence, not an authoritative field definition."
+  ]
+}

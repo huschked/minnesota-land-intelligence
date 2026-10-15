@@ -1,0 +1,15 @@
+{
+  "source_agency": "Isanti County Auditor-Treasurer",
+  "dataset": "Test fixture - not production data",
+  "source_url": "https://www.isanticountymn.gov/731/Delinquent-Taxes",
+  "publication_date": "2026-03-20",
+  "delinquency_assertion": "each_row_represents_delinquent_parcel",
+  "columns": {
+    "parcel_id": "Parcel ID",
+    "taxpayer_name": "Taxpayer",
+    "owner_name": "Owner",
+    "mailing_address": "Mailing Address",
+    "delinquent_years": "Delinquent Year",
+    "total_taxes_and_penalties_due": "Taxes/Penalties"
+  }
+}
