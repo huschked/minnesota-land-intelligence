@@ -7,8 +7,12 @@ planning, scripts, sanitized test fixtures, and empty data-directory placeholder
 It excludes the virtual environments, raw county downloads, imported listings,
 processed results, original correspondence, secrets, and private key files.
 Documentation contains reviewed factual summaries and public parcel examples, not
-the original county dataset or email files. No remote, push, or publication is
-configured by this task. **A local commit is not an off-device backup.**
+the original county dataset or email files. ML-120 initially created a local-only
+baseline. A separately authorized follow-up on 2026-10-14 connects `origin` to
+[huschked/minnesota-land-intelligence](https://github.com/huschked/minnesota-land-intelligence),
+verified private before the first push. This backs up committed code and docs,
+not ignored county data, and does not deploy the application. **County data still
+requires its own private backup.**
 
 Find the exact baseline with `git log --max-parents=0 --oneline`. Future runs record
 the current revision, rather than embedding a circular self-reference in this file.
@@ -106,6 +110,12 @@ the retained record. If the run was dirty or its revision unknown, the commit
 alone cannot recover it. If data or dependency wheels were not backed up, do not
 claim complete offline recovery; a new county retrieval is a new dated snapshot,
 not a replacement for historical evidence.
+
+The private code repository can be cloned to a new, empty destination with
+`git clone https://github.com/huschked/minnesota-land-intelligence.git` after
+authenticating with an authorized GitHub account. Do not put credentials in the
+URL or source files. Preserve the private visibility; adding collaborators or
+publishing the repository requires a separate decision.
 
 ## Verification record
 

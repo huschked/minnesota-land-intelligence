@@ -4,7 +4,7 @@ Updated: 2026-10-14. This is the authoritative source for story status, priority
 
 The project is a working local CLI, not yet a UI or deployed service. The current source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view. ML-120 verification passed 66 offline tests in both existing and fresh environments; the live integration test was not rerun. Current results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
-Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; no remote backup or deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
+Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
 All stories inherit the shared Definition of Ready/Done in [workflow.md](workflow.md). Future acceptance criteria are planned requirements, not existing capabilities. Creating this backlog does not authorize starting later phases, contacting people, publishing data, installing future stacks, or deploying services.
 
@@ -480,7 +480,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** 66 offline tests passed in existing and fresh constrained environments, including provenance and mocked end-to-end ingestion; Ruff, dependency consistency, and CLI startup passed. See the reproducibility verification record. Live county tests were not rerun.
 
-**Notes:** Initial local baseline only; no push/publication. Actual runtime/source/configuration/input/output identity is recorded for future runs, not retroactively applied to historical snapshots. Constraints reproduce observed runtime/dev versions but do not hash-lock isolated build dependencies. Ignored county data still needs its own private backup.
+**Notes:** Initial baseline was local-only. The user subsequently authorized a private GitHub repository and code push; see the reproducibility guide. Actual runtime/source/configuration/input/output identity is recorded for future runs, not retroactively applied to historical snapshots. Constraints reproduce observed runtime/dev versions but do not hash-lock isolated build dependencies. Ignored county data still needs its own private backup.
 
 **Evidence / starting points:** [Recovery and verification](../reproducibility.md), [identity helper](../../src/mn_land/provenance.py), [tests](../../tests/unit/test_provenance.py), [constraints](../../constraints-dev.txt), [ignore rules](../../.gitignore)
 
