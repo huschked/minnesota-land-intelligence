@@ -411,6 +411,7 @@ class RunWorkspace:
                     self.path / "failure.json",
                     {
                         "stage": self.stage,
+                    "location": str(self.path)[:1000],
                         "error_class": type(exc).__name__,
                         "reason": str(exc)[:2000],
                         "counts": self.counts,

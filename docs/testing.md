@@ -134,7 +134,14 @@ test and deselected all 539 offline cases, without executing a request. Ruff,
 passed. The updated synthetic probe rejects D08's manifest-only empty snapshot;
 no original county rows were imported or live government APIs called.
 
-Hosted matrix results are pending; the card remains In Progress until verification.
+[Hosted ML-127 run 38943524762](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38943524762)
+passed for implementation commit `1ac55f3c0e33257bef7128683aeb00077f0a5c6b`.
+Each Windows/Linux x Python 3.11/3.12 job passed 539 offline tests with no skips
+and one live deselection, plus dependency consistency, Ruff, board validation and
+explicit live collection. Both real symlink fixtures ran on both hosted platforms.
+The run completed 2026-10-16 UTC / America/Chicago. The final bounded failure-location
+field was checked by a targeted local fixture before the completion commit.
+No original county inputs/results were changed or live government requests made.
 
 ## ML-126 regression coverage
 
@@ -151,8 +158,8 @@ and one live test deselected. Explicit integration collection selected one test
 and deselected 468 offline tests; no requests executed. Ruff and the generated
 13-epic/84-story board check passed. The updated synthetic discovery probe rejects
 D06, clamps page size to one, makes one HTTP 404 attempt, and honors two 30-second
-mocked waits for three HTTP 429 attempts. D08 remains an explicitly deferred
-ML-127 reader-eligibility gap, not a desired regression assertion. Documentation
+mocked waits for three HTTP 429 attempts. At ML-126 completion D08 was still a
+deferred ML-127 reader-eligibility gap; ML-127 subsequently fixed it. Documentation
 relative links/anchors passed a read-only check before completion edits.
 
 [Hosted ML-126 run 38834485822](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38834485822)

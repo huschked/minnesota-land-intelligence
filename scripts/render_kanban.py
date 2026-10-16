@@ -152,7 +152,7 @@ def render(epics: list[Epic], date: str) -> str:
         "",
     ]
     by_id = {story.identity: story for story in stories}
-    for identity in ("ML-120", "ML-118", "ML-119", "ML-125", "ML-126", "ML-127", "ML-201"):
+    for identity in ("ML-120", "ML-118", "ML-119", "ML-125", "ML-126", "ML-127", "ML-123", "ML-201"):
         story = by_id.get(identity)
         if story and story.status == "Ready":
             lines.append(f"- {link(story)} ({story.priority}).")

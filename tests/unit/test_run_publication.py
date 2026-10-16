@@ -370,6 +370,7 @@ def test_R02_invalid_file_retains_original_bytes_and_bounded_failure(tmp_path, s
     failure = next(workspace_path(settings.raw_dir).glob("isanti/delinquency/*/failure.json"))
     assert (failure.parent / "source.csv").read_bytes() == source.read_bytes()
     assert read_json(failure)["stage"] == "validate_retained_import"
+    assert read_json(failure)["location"] == str(failure.parent)
     assert failure.stat().st_size < 16384
 
 

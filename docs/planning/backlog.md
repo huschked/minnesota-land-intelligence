@@ -2,7 +2,7 @@
 
 Updated: 2026-10-16. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125 and ML-126 did not regenerate those results. ML-126 passed 468 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. See [validation](../validation.md), [retrieval](../retrieval.md), and [testing evidence](../testing.md). Current retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125/126/127 did not regenerate those results. ML-127 passed 539 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical runs now remain legacy/unverified and are excluded from automatic new-protocol selection, not deleted or certified. ML-123 owns explicit replay. See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -543,7 +543,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-123"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -561,7 +561,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** Existing review pins its recorded GIS snapshot; imports still select the latest complete parcel snapshot.
+**Notes:** ML-127 is Done, so this card is Ready, not started. Existing review pins its recorded GIS snapshot; imports select the latest eligible complete parcel snapshot. New-protocol selection deliberately excludes legacy inputs. Explicit legacy compatibility must preserve/disclose missing checks and cannot backfill completion status, invent county API inventories, or silently claim current payment status.
 
 **Evidence / starting points:** [1](../../src/mn_land/delinquency/pipeline.py)
 
@@ -651,7 +651,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-127"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P0
 
@@ -669,9 +669,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [x] Publish immutable per-run parcel outputs; any legacy flat compatibility files are non-authoritative. Preserve historical manifests unchanged, disclose legacy eligibility limitations, and leave portable replay/data backup to ML-123/ML-128.
 - [x] Complete R01-R07 failure-injection, interruption, collision, legacy, reader, and successful empty-result fixtures across parcel/import/review paths, including the nine join exports and seven review CSVs.
 
-**Validation:** R01-R07 implemented. Local release suite: 536 passed, two Windows symlink-privilege skips, one live deselection, plus the final boolean-counter fixture passed separately. Ruff, board, documentation links and explicit live-test collection passed; no government requests. Hosted four-job CI pending. See [testing evidence](../testing.md).
+**Validation:** R01-R07 implemented. Local release suite: 536 passed, two Windows symlink-privilege skips, one live deselection, plus the final boolean-counter fixture and bounded failure-location check passed separately. All four hosted Windows/Linux x Python 3.11/3.12 jobs passed 539 tests with no skips and one live deselection for implementation commit `1ac55f3c0e33257bef7128683aeb00077f0a5c6b`. Dependency checks, Ruff, board and explicit integration collection passed. No government requests. See [testing evidence](../testing.md).
 
-**Notes:** Owner: Codex. Selected 2026-10-16. ML-125 and ML-126 are Done. No new database, UI, remote backups, historical migration, arbitrary filesystem deletion, or claimed power-loss durability. A complete raw acquisition is not automatically a successful processed run.
+**Notes:** Owner: Codex. Completed 2026-10-16 after local and hosted verification. Version-2 completion records/pointers, exact pinned sources, required artifact/hash/row reconciliation, bounded failure evidence and shared reader checks are implemented. Old flat exports and all historical county files remain unchanged; legacy inputs are not auto-certified. No new database, UI, remote backup, migration or power-loss guarantee. A complete raw acquisition is not automatically a successful processed run. ML-123 is now Ready.
 
 **Evidence / starting points:** [Implemented publication protocol](../publication.md), [R01-R07 fixtures](../../tests/unit/test_run_publication.py), [shared validator/publisher](../../src/mn_land/runs.py), [content accounting](../../src/mn_land/run_checks.py), [contract section 4](../ingestion-contracts.md), [parcel pipeline](../../src/mn_land/ingestion/pipeline.py), [join pipeline](../../src/mn_land/delinquency/pipeline.py), [review](../../src/mn_land/counties/isanti/review.py), [CLI status](../../src/mn_land/cli.py)
 

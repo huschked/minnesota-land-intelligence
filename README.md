@@ -48,7 +48,7 @@ mn-land find-candidates --county isanti --min-acres 10
 python -m mn_land.cli find-candidates --county isanti --min-acres 10
 python -m mn_land.cli inspect-delinquency-file --county isanti --file data/import/county-file.xlsx
 python -m mn_land.cli import-delinquency --county isanti --file data/import/county-file.xlsx --mapping reviewed-mapping.json --min-acres 10
-python -m mn_land.cli review-delinquency --county isanti --snapshot data/processed/isanti/delinquency/2026-10-14T170022005639Z --min-acres 10
+python -m mn_land.cli review-delinquency --county isanti --snapshot data/processed/isanti/delinquency/COMPLETE_RUN_ID --min-acres 10
 pytest
 pytest -m integration
 ```
