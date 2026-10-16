@@ -18,6 +18,14 @@ from mn_land.ingestion.pipeline import run_pipeline
 
 def metadata() -> dict:
     return {
+        "id": 0,
+        "name": "TaxParcels_Public",
+        "maxRecordCount": 2000,
+        "capabilities": "Query",
+        "advancedQueryCapabilities": {
+            "supportsPagination": True,
+            "supportsOrderBy": True,
+        },
         "objectIdField": "OBJECTID",
         "fields": [
             {
@@ -158,6 +166,11 @@ def test_F02_live_pipeline_and_offline_loader_retain_quarantine_locations(
                 return metadata()
             if params.get("returnCountOnly"):
                 return {"count": 2}
+            if params.get("returnIdsOnly"):
+                return {
+                    "objectIdFieldName": "OBJECTID",
+                    "objectIds": [good["attributes"]["OBJECTID"], 102],
+                }
             return {"features": [good, bad]}
 
     monkeypatch.setattr(

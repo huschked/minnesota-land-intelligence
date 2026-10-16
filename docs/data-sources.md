@@ -17,8 +17,8 @@ The reviewed October export supports the existing mixed prior/current assertion
 under [county-confirmed year conventions](counties/isanti-tax-year-confirmation.md),
 not an assertion that every row is prior-year delinquency. See
 [ingestion contracts](ingestion-contracts.md) for the observed schema evidence,
-planned field/type gates, service limits/retry/completeness rules, file constraints,
+field/type gates, service limits/retry/completeness rules, file constraints,
 and partial-run policy. ML-125's [file/schema validation](validation.md) is
-implemented; HTTP retrieval/completeness and atomic publication remain planned
-ML-126/ML-127 work. An active year convention always requires retained evidence;
+implemented, as is ML-126's [HTTP retrieval/completeness](retrieval.md). Atomic
+publication remains planned ML-127 work. An active year convention always requires retained evidence;
 strict parsing does not expand the authority or meaning of any source.

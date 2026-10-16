@@ -29,5 +29,6 @@ implementation is started by adding it to this plan.
 
 ML-119's [ingestion contracts and fixture matrix](ingestion-contracts.md) refine
 the Phase 1.1 reliability work into ML-125 ([validation, now implemented](validation.md)),
-ML-126 (retrieval/completeness), then ML-127 (complete-run publication). The latter
-two remain planned; validation does not expand county/GIS/UI scope or tax meanings.
+ML-126 ([retrieval/completeness, now implemented](retrieval.md)), then ML-127
+(complete-run publication, still planned). Neither implemented card expands
+county/GIS/UI scope or tax meanings.

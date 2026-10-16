@@ -18,6 +18,10 @@ Phase 1 is a conservative command-line pipeline for the official Isanti County p
 
 Phase 1.1 adds a separate authoritative delinquency-file importer. Delinquency status never comes from the parcel GIS unless its semantics are independently verified.
 
+ML-126 adds [respectful HTTP and source-completeness checks](docs/retrieval.md):
+bounded paced retries, retained response evidence, and initial/final count, ID and
+schema reconciliation. Atomic processed publication/read eligibility is still ML-127.
+
 The county service describes `TOTPRVTXTOD` only as **Total Previous Taxes Owed**. That does not by itself prove delinquent/past-due status, so strict candidate classification is intentionally disabled until an authoritative definition is documented. The pipeline still preserves that source value as `previous_taxes_owed` and reports the semantic gate clearly.
 
 ## Setup

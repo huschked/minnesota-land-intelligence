@@ -141,4 +141,6 @@ and unresolved identities while specifying bounded ML-125/126/127 hardening.
 ML-125 now implements [strict input/schema checks](../validation.md), including
 typed years, text-only parcel IDs, retained supporting evidence, and GIS row
 quarantines. Historical import notes/results remain historical and unchanged;
-HTTP/completeness and complete-run publication remain ML-126/ML-127 work.
+ML-126 now implements [HTTP/completeness checks](../retrieval.md), including the
+adapter's expected layer name and schema callback. No live refresh or original
+result regeneration was performed. Complete-run publication remains ML-127 work.

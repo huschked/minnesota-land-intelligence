@@ -1,8 +1,9 @@
 # Ingestion contracts and hardening plan (ML-119)
 
 Status: discovery complete; ML-125 subsequently implements section 2 and F01-F09
-as described in [validation](validation.md). **Sections 3 and 4 remain planned
-ML-126/ML-127 work, not current guarantees.** Discovery behavior was inspected at baseline commit
+as described in [validation](validation.md). ML-126 implements section 3 and H01-H08
+as described in [retrieval](retrieval.md). **Section 4 remains planned ML-127 work,
+not a current guarantee.** Discovery behavior was inspected at baseline commit
 `4374e65b5bda9d15ab2f3aaf4b4110060f85ffa0`. ML-125, ML-126, and ML-127 own
 implementation and regression fixtures. Scope is existing Isanti ingestion,
 normalization boundaries, and safe output publication, not new county semantics,
@@ -167,7 +168,7 @@ path errors stop before any referenced external supporting file is copied.
 Implemented local-input engineering budgets: 25 MiB input file, 100 MiB total
 expanded XLSX members, 100,000 data records, 256 columns, and 1 MiB per field/cell.
 ML-125 additionally bounds archive members to 4096. The proposed 25 MiB HTTP
-response cap remains ML-126 work, not a guarantee supplied by the local reader.
+response cap is now implemented by ML-126's transport, not the local file reader.
 Check ZIP expansion before workbook parsing; never extract archive member paths.
 Exceeding a budget fails with a diagnostic; it does not truncate data. These are
 configurable resource protections, **not county limits**. The retained
@@ -175,7 +176,7 @@ CSV is 608,656 bytes and the documented report has 1,783 records, so this fixtur
 fits comfortably. Record effective budgets; revising them does not authorize
 bypassing a public service's smaller limits.
 
-## 3. Target retrieval/completeness contract — ML-126
+## 3. Retrieval/completeness contract — implemented by ML-126
 
 1. Validate metadata as an object with expected layer identity, Query capability,
    declared OID, requested fields/types, positive non-boolean `maxRecordCount`,
@@ -281,7 +282,8 @@ ignored/private and are never added to CI fixtures or GitHub artifacts.
 ## 5. Prioritized fixture matrix
 
 F01-F09 are implemented and traced in [validation](validation.md).
-H01-H08 and R01-R07 below are **planned tests**, not implemented by ML-125.
+H01-H08 are implemented by ML-126 in the source/HTTP fixtures linked from
+[retrieval](retrieval.md). R01-R07 remain **planned tests**, not current guarantees.
 Construct sanitized inputs; mock transport, clock, file failures, and inventories.
 The discovery probe confirms selected gaps but does not replace implementation
 regressions. P0 fixtures gate the owning story; P1 fixtures also belong to that

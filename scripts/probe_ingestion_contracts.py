@@ -65,7 +65,9 @@ def main() -> None:
         csv_path.write_text("PARID,OWN1\n020010200,Example,extra\n", encoding="utf-8")
         findings["extra_CSV_fields"] = observe(lambda: sorted(read_tabular_file(csv_path)[1][0]))
         csv_path.write_text("PARID,OWN1\n020010200\n", encoding="utf-8")
-        findings["short_CSV_row"] = observe(lambda: read_tabular_file(csv_path)[1][0]["OWN1"] is None)
+        findings["short_CSV_row"] = observe(
+            lambda: read_tabular_file(csv_path)[1][0]["OWN1"] is None
+        )
 
         formula_path = directory / "formula.xlsx"
         workbook = Workbook()
@@ -74,14 +76,23 @@ def main() -> None:
         workbook.save(formula_path)
         workbook.close()
         formula_mapping = DelinquencyMapping(
-            mapping.source_agency, mapping.dataset,
-            {k: v for k, v in mapping.columns.items() if k not in {"owner_name", "mailing_address"}},
+            mapping.source_agency,
+            mapping.dataset,
+            {
+                k: v
+                for k, v in mapping.columns.items()
+                if k not in {"owner_name", "mailing_address"}
+            },
             mapping.delinquency_assertion,
         )
-        findings["uncached_formula"] = observe(lambda: (
-            FileDelinquencySource(formula_path, formula_mapping).load_records()[0]
-            .total_taxes_and_penalties_due is None
-        ))
+        findings["uncached_formula"] = observe(
+            lambda: (
+                FileDelinquencySource(formula_path, formula_mapping)
+                .load_records()[0]
+                .total_taxes_and_penalties_due
+                is None
+            )
+        )
 
         year_path = directory / "years.xlsx"
         workbook = Workbook()
@@ -92,49 +103,82 @@ def main() -> None:
         mixed_mapping = DelinquencyMapping.from_json(
             ROOT / "docs/counties/isanti-delinquency-2026-10-13.mapping.json"
         )
-        findings["mixed_XLSX_numeric_years"] = observe(lambda: (
-            FileDelinquencySource(year_path, mixed_mapping).load_records()[0].taxes_payable_year
-        ))
+        findings["mixed_XLSX_numeric_years"] = observe(
+            lambda: (
+                FileDelinquencySource(year_path, mixed_mapping).load_records()[0].taxes_payable_year
+            )
+        )
 
         class Transport:
             requested_page_size: object = None
 
             def get_json(self, url: str, params: dict) -> dict:
                 if not url.endswith("/query"):
-                    return {"objectIdField": "OBJECTID", "maxRecordCount": 1}
+                    return {
+                        "id": 0,
+                        "name": "Synthetic",
+                        "objectIdField": "OBJECTID",
+                        "maxRecordCount": 1,
+                        "capabilities": "Query",
+                        "advancedQueryCapabilities": {
+                            "supportsPagination": True,
+                            "supportsOrderBy": True,
+                        },
+                        "fields": [
+                            {"name": "OBJECTID", "type": "esriFieldTypeOID", "nullable": False},
+                            {"name": "PARCELID", "type": "esriFieldTypeString"},
+                        ],
+                    }
                 if params.get("returnCountOnly"):
                     return {"count": 1}
+                if params.get("returnIdsOnly"):
+                    return {"objectIdFieldName": "OBJECTID", "objectIds": [1]}
                 self.requested_page_size = params["resultRecordCount"]
                 return {"features": [{"attributes": {"PARCELID": "020010200"}}]}
 
         transport = Transport()
-        client = ArcGISClient("https://example.test/FeatureServer", 0, page_size=2, transport=transport)
-        records = list(client.fetch_all(
-            out_fields=("OBJECTID", "PARCELID"), raw_run_dir=directory / "GIS",
-            retrieved_at=datetime.now(UTC),
-        ))
-        findings["missing_first_OBJECTID_accepted"] = len(records) == 1
+        client = ArcGISClient(
+            "https://example.test/FeatureServer", 0, page_size=2, transport=transport
+        )
+        findings["missing_first_OBJECTID"] = observe(
+            lambda: list(
+                client.fetch_all(
+                    out_fields=("OBJECTID", "PARCELID"),
+                    raw_run_dir=directory / "GIS",
+                    retrieved_at=datetime.now(UTC),
+                )
+            )
+        )
         findings["requested_page_size_with_advertised_limit_1"] = transport.requested_page_size
 
         latest = directory / "snapshots" / "latest"
         latest.mkdir(parents=True)
         (latest / "manifest.json").write_text(
-            json.dumps({"retrieved_at": "2026-10-14T00:00:00+00:00"}), encoding="utf-8",
+            json.dumps({"retrieved_at": "2026-10-14T00:00:00+00:00"}),
+            encoding="utf-8",
         )
         parcels, _, _ = load_latest_parcel_snapshot(IsantiAdapter(client=object()), latest.parent)
         findings["manifest_only_snapshot_loaded_as_empty"] = len(parcels) == 0
 
         for status in (404, 429):
-            error = HTTPError("https://example.test", status, "Synthetic", {"Retry-After": "30"}, None)
+
+            def failure(*args, status=status, **kwargs):
+                return_error = HTTPError(
+                    "https://example.test", status, "Synthetic", {"Retry-After": "30"}, None
+                )
+                raise return_error
+
             with (
-                patch("mn_land.utils.http.urlopen", side_effect=error) as request,
+                patch("mn_land.utils.http.urlopen", side_effect=failure) as request,
                 patch("mn_land.utils.http.time.sleep") as sleep,
             ):
                 try:
                     UrllibJsonTransport().get_json("https://example.test", {})
                 except RuntimeError:
                     findings[f"HTTP_{status}_attempts"] = request.call_count
-                    findings[f"HTTP_{status}_waits"] = [call.args[0] for call in sleep.call_args_list]
+                    findings[f"HTTP_{status}_waits"] = [
+                        call.args[0] for call in sleep.call_args_list
+                    ]
     print(json.dumps(findings, indent=2))
 
 

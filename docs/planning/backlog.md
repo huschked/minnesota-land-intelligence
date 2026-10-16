@@ -1,6 +1,6 @@
 # Epics and story backlog
 
-Updated: 2026-10-14. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
+Updated: 2026-10-15. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
 The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125 did not regenerate those results. ML-125 passed 283 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. See [validation](../validation.md) and [testing evidence](../testing.md). Current retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
@@ -624,7 +624,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-126"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P0
 
@@ -636,16 +636,16 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Call ML-125's schema gate, validate Query/OID/pagination/order capabilities and non-boolean counts, and clamp requested page size to valid advertised limits without guessing unsupported fallbacks.
-- [ ] Implement contract section 3's explicit transient/permanent retry classification, total-attempt/socket-timeout/wait budgets, sequential pacing, and delta/date Retry-After handling; stop rather than retry before an excessive server delay.
-- [ ] Reconcile initial/final count, OID inventories, fetched membership/order and page/transfer-limit behavior; reject detectable count/ID/schema/capability changes and disclose unknown same-ID attribute consistency when no edit token exists.
-- [ ] Retain bounded original HTTP bodies and parsed JSON evidence with hashes, wire effective Settings into transport, and complete H01-H08 fixtures with fake transport/clocks and no government calls or real sleeps.
+- [x] Call ML-125's schema gate, validate Query/OID/pagination/order capabilities and non-boolean counts, and clamp requested page size to valid advertised limits without guessing unsupported fallbacks.
+- [x] Implement contract section 3's explicit transient/permanent retry classification, total-attempt/socket-timeout/wait budgets, sequential pacing, and delta/date Retry-After handling; stop rather than retry before an excessive server delay.
+- [x] Reconcile initial/final count, OID inventories, fetched membership/order and page/transfer-limit behavior; reject detectable count/ID/schema/capability changes and disclose unknown same-ID attribute consistency when no edit token exists.
+- [x] Retain bounded original HTTP bodies and parsed JSON evidence with hashes, wire effective Settings into transport, and complete H01-H08 fixtures with fake transport/clocks and no government calls or real sleeps.
 
-**Validation:** H01-H08 fixture matrix and existing offline CI; assert exact requests, waits, attempt limits, body sizes/hashes and completeness failures. Keep a valid zero-record case and the existing multi-page success case. Any optional live check must be explicit and dated, not required by ordinary tests.
+**Validation:** H01-H08 implemented, including exact requests/waits/attempt/timeouts, body sizes/hashes, valid zero, short/multiple pages, drift and failure evidence. Local suite: 467 passed, one symlink-privilege skip, one live deselection; explicit collection selected one live test without execution. Ruff, board and documentation links pass. Hosted four-job CI pending; see [testing evidence](../testing.md).
 
-**Notes:** ML-125's schema gate is implemented and its prerequisite is Done, so this card is Ready. Existing retrieval already receives the schema callback; this card adds the remaining HTTP/capability/OID/completeness policy. No automatic cache substitution, alternate source, scraping, concurrency, scheduled refresh, point-in-time source guarantee, or new county semantics. ML-127 owns completion/read eligibility.
+**Notes:** Owner: Codex. Selected for implementation on 2026-10-15. ML-125's schema gate is implemented. This card adds the remaining HTTP/capability/OID/completeness policy. No automatic cache substitution, alternate source, scraping, concurrency, scheduled refresh, point-in-time source guarantee, or new county semantics. ML-127 owns completion/read eligibility.
 
-**Evidence / starting points:** [Contract section 3 and H01-H08 matrix](../ingestion-contracts.md), [ArcGIS client](../../src/mn_land/ingestion/arcgis.py), [HTTP transport](../../src/mn_land/utils/http.py), [settings](../../src/mn_land/config/settings.py)
+**Evidence / starting points:** [Implemented retrieval rules and limitations](../retrieval.md), [Contract section 3 and H01-H08 matrix](../ingestion-contracts.md), [source fixtures H01-H05](../../tests/unit/test_retrieval_contract.py), [HTTP fixtures H06-H08](../../tests/unit/test_http_contract.py), [ArcGIS client](../../src/mn_land/ingestion/arcgis.py), [HTTP transport](../../src/mn_land/utils/http.py), [settings](../../src/mn_land/config/settings.py)
 
 ### ML-127 - Publish only complete processed runs
 

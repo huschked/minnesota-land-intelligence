@@ -6,7 +6,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
-from mn_land.config.settings import SETTINGS
+from mn_land.config.settings import SETTINGS, Settings
 from mn_land.counties.base import CountyAdapter
 from mn_land.ingestion.arcgis import ArcGISClient
 from mn_land.models import Parcel, SourceMetadata
@@ -55,11 +55,15 @@ class IsantiAdapter(CountyAdapter):
             else None
         )
 
-    def __init__(self, client: ArcGISClient | None = None) -> None:
+    def __init__(
+        self, client: ArcGISClient | None = None, *, settings: Settings = SETTINGS
+    ) -> None:
         self.client = client or ArcGISClient(
             SERVICE_URL,
             LAYER_ID,
-            page_size=SETTINGS.page_size,
+            page_size=settings.page_size,
+            policy=settings.retrieval_policy(),
+            expected_layer_name=DATASET,
         )
 
     def fetch_parcels(

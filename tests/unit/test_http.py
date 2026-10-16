@@ -24,13 +24,14 @@ def test_invalid_json_is_reported(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_network_error_is_reported(monkeypatch: pytest.MonkeyPatch) -> None:
     def fail(*args, **kwargs):
         raise URLError("offline")
+
     monkeypatch.setattr("mn_land.utils.http.urlopen", fail)
-    with pytest.raises(ArcGISError, match="offline"):
+    with pytest.raises(ArcGISError, match="network failure"):
         UrllibJsonTransport(max_retries=1).get_json("https://example.test", {})
 
 
 def test_arcgis_error_payload_is_reported(monkeypatch: pytest.MonkeyPatch) -> None:
     payload = json.dumps({"error": {"message": "bad query"}}).encode()
     monkeypatch.setattr("mn_land.utils.http.urlopen", lambda *a, **k: Response(payload))
-    with pytest.raises(ArcGISError, match="bad query"):
+    with pytest.raises(ArcGISError, match="ArcGIS error code unknown"):
         UrllibJsonTransport(max_retries=1).get_json("https://example.test", {})

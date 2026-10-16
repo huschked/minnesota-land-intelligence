@@ -65,8 +65,10 @@ core pipeline dependency or part of the development resolution.
 
 ## What new runs record
 
-- GIS raw `manifest.json`: actual request settings, transport timeout/retries when
-  available, code/runtime identity, hashes for metadata and raw pages.
+- GIS raw `manifest.json`: effective request/HTTP policy, code/runtime identity,
+  initial/final metadata/count/ID checks, original-body/parsed attempt evidence,
+  consistency limitations, and hashes for all retained artifacts. See
+  [retrieval](retrieval.md); historical parsed-only manifests remain unchanged.
 - Parcel `execution.json` inside its raw run directory: minimum acreage, adapter,
   raw input hashes, and the four derived export hashes.
 - Delinquency processed `manifest.json`: code/runtime, minimum acreage, preserved

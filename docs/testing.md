@@ -107,3 +107,25 @@ one live deselection, plus dependency consistency, Ruff, board validation, and
 explicit live collection. The real symlink fixture ran successfully on both
 hosted platforms. The run completed on 2026-10-15 UTC / 2026-10-14 America/Chicago.
 No live government requests were executed by the tests.
+
+## ML-126 regression coverage
+
+[Retrieval](retrieval.md) traces H01-H05 to synthetic capability/count/inventory/
+page/drift fixtures and H06-H08 to the real urllib transport using fake responses
+and clocks. Tests assert exact attempts/timeouts/waits, Retry-After delta/date
+behavior, permanent/transient classification, capped/incomplete original bodies,
+parsed/body hashes, request associations, failure evidence and successful end-to-end
+acquisition provenance. CLI failure exits, effective Settings, valid zero records,
+short pages and existing normalization/join/review behavior are also covered.
+
+Local verification on 2026-10-15: 467 passed, one Windows symlink-privilege skip,
+and one live test deselected. Explicit integration collection selected one test
+and deselected 468 offline tests; no requests executed. Ruff and the generated
+13-epic/84-story board check passed. The updated synthetic discovery probe rejects
+D06, clamps page size to one, makes one HTTP 404 attempt, and honors two 30-second
+mocked waits for three HTTP 429 attempts. D08 remains an explicitly deferred
+ML-127 reader-eligibility gap, not a desired regression assertion. Documentation
+relative links/anchors passed a read-only check before completion edits.
+
+Hosted matrix verification is pending; the card remains In Progress until the
+four existing CI jobs have run for the implementation commit.

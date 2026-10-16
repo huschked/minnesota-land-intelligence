@@ -73,3 +73,14 @@ Malformed GIS rows retain source ID/location/reason diagnostics while unknown
 optional fields remain unknown with warnings. New join manifests record effective
 `input_limits` and parcel normalization diagnostics; review summaries retain the
 same diagnostics. Historical manifests/outputs are not rewritten or certified.
+
+## Acquisition observations (ML-126)
+
+New parcel manifests add effective `retrieval_policy`, configured/effective page
+sizes, actual attempt/wait totals, HTTP-evidence availability, and `source_checks`.
+The latter records initial/final counts, schema/capability/edit-token fingerprints,
+observed edit tokens, reconciled membership, per-request observation times and
+attempt ranges, warnings, and `transactional_snapshot: false`. Retained count/ID
+responses and original-body/parsed sidecars are hashed alongside pages. These are
+acquisition observations, not a new county fact, proven atomic source version or
+ML-127 completion manifest. See [retrieval evidence](retrieval.md).

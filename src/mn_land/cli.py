@@ -14,6 +14,7 @@ from mn_land.delinquency.pipeline import (
     import_and_join_delinquency,
 )
 from mn_land.ingestion.pipeline import run_pipeline
+from mn_land.utils.http import ArcGISError
 from mn_land.utils.validation import minimum_acres
 
 LOGGER = logging.getLogger(__name__)
@@ -27,7 +28,9 @@ def decimal_argument(value: str) -> Decimal:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="mn-land", description="Minnesota Land Intelligence Platform")
+    parser = argparse.ArgumentParser(
+        prog="mn-land", description="Minnesota Land Intelligence Platform"
+    )
     sub = parser.add_subparsers(dest="command", required=True)
     for name in ("validate-source", "find-candidates", "status"):
         command = sub.add_parser(name)
@@ -131,11 +134,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Duplicate parcel IDs:       {stats.duplicate_parcel_ids:,}")
         print(f"Ambiguous records:          {stats.ambiguous_records:,}")
         print(f"Verified 10+ candidates:    {stats.verified_candidates:,}")
-        manifest = json.loads((stats.processed_snapshot_dir / "manifest.json").read_text(encoding="utf-8"))
+        manifest = json.loads(
+            (stats.processed_snapshot_dir / "manifest.json").read_text(encoding="utf-8")
+        )
         if manifest.get("prior_year_source_rows") or manifest.get("current_year_source_rows"):
             print(f"Prior-year unpaid rows:     {manifest['prior_year_source_rows']:,}")
             print(f"Overdue current-year rows:  {manifest['current_year_source_rows']:,}")
-            print("Current-year installments are exported separately; repeated balances are not summed.")
+            print(
+                "Current-year installments are exported separately; repeated balances are not summed."
+            )
         mapping = json.loads(args.mapping.read_text(encoding="utf-8"))
         if mapping.get("verification_hold_reason"):
             print(f"VERIFICATION HOLD: {mapping['verification_hold_reason']}")
@@ -144,10 +151,11 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     adapter = IsantiAdapter()
     if args.command == "validate-source":
-        metadata = adapter.client.metadata()
         try:
+            metadata = adapter.client.metadata()
             adapter.validate_metadata(metadata)
-        except ValueError as exc:
+            record_count = adapter.client.count()
+        except (ValueError, ArcGISError) as exc:
             LOGGER.error("%s", exc)
             return 2
         summary = {
@@ -155,8 +163,10 @@ def main(argv: list[str] | None = None) -> int:
             "geometryType": metadata.get("geometryType"),
             "spatialReference": metadata.get("spatialReference"),
             "maxRecordCount": metadata.get("maxRecordCount"),
-            "supportsPagination": metadata.get("advancedQueryCapabilities", {}).get("supportsPagination"),
-            "recordCount": adapter.client.count(),
+            "supportsPagination": metadata.get("advancedQueryCapabilities", {}).get(
+                "supportsPagination"
+            ),
+            "recordCount": record_count,
             "taxSemanticsVerified": False,
             "taxWarning": "TOTPRVTXTOD means Total Previous Taxes Owed; delinquent/past-due semantics are not officially defined.",
         }
@@ -164,7 +174,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     try:
         stats = run_pipeline(adapter, args.min_acres)
-    except ValueError as exc:
+    except (ValueError, ArcGISError) as exc:
         LOGGER.error("%s", exc)
         return 2
     print("Minnesota Land Intelligence Platform\n")
@@ -176,7 +186,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Rejected ({reason}): {count:,}")
     print(f"Candidates accepted:     {stats.candidates:,}")
     print(f"Tax-semantics review:    {stats.tax_semantics_review_records:,}")
-    print("\nWARNING: Past-due tax semantics are unverified; strict candidate classification is disabled.")
+    print(
+        "\nWARNING: Past-due tax semantics are unverified; strict candidate classification is disabled."
+    )
     print(f"Raw run: {stats.raw_run_dir}")
     print("Output:")
     for path in stats.output_paths:
