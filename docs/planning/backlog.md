@@ -797,7 +797,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-202"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -809,22 +809,22 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Load validated outputs through an application service rather than reimplementing Isanti mappings in the UI.
-- [ ] Show listing/report/GIS dates, row counts, active holds, unknown fields, and helpful missing/corrupt-file states.
-- [ ] Add a minimal read-only Streamlit selector/error-state shell and optional tested UI dependency without making the CLI depend on it; resolve/pin a compatible version and verify loopback/telemetry/security configuration. Explicitly label synthetic fixtures and legacy/no-eligible states, never silently recertify or fall back.
-- [ ] Implement U01-U03/U08/U11 service boundaries: validate selected graphs and expose allowlisted DTOs, preserve selected identity across reruns, revalidate new disk reads/export, and prohibit acquisition/replay/network calls on UI interactions. Keep service tests independent of UI dependencies; use supported AppTest controls for the shell.
+- [x] Load validated outputs through an application service rather than reimplementing Isanti mappings in the UI.
+- [x] Show listing/report/GIS dates, row counts, active holds, unknown fields, and helpful missing/corrupt-file states.
+- [x] Add a minimal read-only Streamlit selector/error-state shell and optional tested UI dependency without making the CLI depend on it; resolve/pin a compatible version and verify loopback/telemetry/security configuration. Explicitly label synthetic fixtures and legacy/no-eligible states, never silently recertify or fall back.
+- [x] Implement U01-U03/U08/U11 service boundaries: validate selected graphs and expose allowlisted DTOs, preserve selected identity across reruns, revalidate new disk reads/export, and prohibit acquisition/replay/network calls on UI interactions. Keep service tests independent of UI dependencies; use supported AppTest controls for the shell.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Implementation revision `3b430e75b8eecbc346f3493b7ef65bb495d0b7c8` passed 687 offline tests without skips in all four hosted Windows/Linux x Python 3.11/3.12 jobs, dependency/version/lint/board checks, explicit live collection and final CI gate. Local regression passed 685 with two existing symlink-privilege skips and one live deselection. Actual ML-130 review loaded through service and AppTest with 62/49/15 views, null balances and pending report verification. All 658 baseline saved county files unchanged; loopback listener/health/configuration verified. No live pytest government test or browser accessibility pass claimed. See [testing evidence](../testing.md#ml-202-selectorservice-verification).
 
-**Notes:** Owner: Codex. Selected 2026-10-16. Implemented framework-independent overview loader, explicit selector/error shell, optional pinned Streamlit 1.66.0 and constrained loopback launcher. Local regression: 685 passed, two symlink-privilege skips, one live deselection; actual ML-130 review loaded through AppTest, all 658 baseline saved county files unchanged. User approved local startup; loopback listener/health/dependency checks passed. Full hosted platform/Python verification pending before completion. See [startup and boundaries](../viewer.md). Tables/details/exports and browser accessibility remain later cards; no county calls or reimport occurred.
+**Notes:** Owner: Codex. Completed 2026-10-16. Framework-independent overview loader, explicit selector/error shell, optional pinned Streamlit 1.66.0 and constrained loopback launcher are implemented. User approved local startup. Source/report/capture dates stay distinct, report date is unknown where not established, synthetic and held states remain visible, new disk actions revalidate and no latest/acquisition/replay fallback exists. Tables/details/exports and final browser/accessibility workflow remain later cards; no county request, reimport, source edit or hosting occurred. Completion docs use fast Linux CI, not another unchanged Windows rerun.
 
-**Evidence / starting points:** [UI decision and acceptance examples](../ui-plan.md), [completion reader](../../src/mn_land/runs.py), [replay evidence](../../src/mn_land/replay.py), [county review](../../src/mn_land/counties/isanti/review.py)
+**Evidence / starting points:** [viewer/startup](../viewer.md), [service](../../src/mn_land/review_service.py), [shell](../../src/mn_land/ui/app.py), [launcher](../../src/mn_land/ui/launcher.py), [service fixtures](../../tests/unit/test_review_service.py), [AppTest fixtures](../../tests/unit/test_viewer_shell.py), [configuration fixtures](../../tests/unit/test_viewer_launcher.py), [full CI](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38983351802), [UI plan](../ui-plan.md)
 
 ### ML-203 - Build searchable and filterable parcel tables
 
 <a id="ml-203"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -850,7 +850,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-204"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 

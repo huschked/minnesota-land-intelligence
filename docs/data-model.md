@@ -113,3 +113,21 @@ content; UUIDs, execution identity, paths and quarantine locations are run metad
 No canonical parcel/tax field or monetary/year meaning changes. Older complete runs
 without fingerprints retain unknown historical normalized hashes; legacy inputs do
 not gain completion status. See [replay evidence and commands](replay.md).
+
+## Read-only viewer overview (ML-202)
+
+`SnapshotKey` identifies a supported join/review kind and run ID within configured
+Isanti result folders. Immutable `SnapshotOverview` is an application projection,
+not another parcel/tax source or persisted county model. It carries the selected
+completion hash, pinned join/GIS/file run identities, validation/completion times,
+listing publication/capture and GIS dates, source agency/dataset/layer, imported
+acreage threshold, named counts, unknown-field counts, holds and warnings. Source
+run identities are not property parcel IDs. The current overview has no parcel
+record array, raw source dictionaries, local filesystem paths or computed debt.
+
+Missing report verification dates remain null: source acquisition, file capture,
+result completion and integrity-validation times do not establish report/payment
+verification dates. Per-view prior/current counts may overlap and cannot be added
+as a unique population. Synthetic provenance/dataset labels are surfaced explicitly.
+New disk-backed operations revalidate; an in-memory observation retains the time
+it was checked and is not presented as continuously verified. See [the viewer](viewer.md).

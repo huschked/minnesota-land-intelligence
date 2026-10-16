@@ -21,7 +21,7 @@ field/type gates, service limits/retry/completeness rules, file constraints,
 and partial-run policy. ML-125's [file/schema validation](validation.md) is
 implemented, as are ML-126's [HTTP retrieval/completeness](retrieval.md) and ML-127's
 [completion publication and reader validation](publication.md). Existing retained
-snapshots remain legacy/unverified, not silently migrated. An active year convention always requires retained evidence;
+pre-completion snapshots remain legacy/unverified, not silently migrated. An active year convention always requires retained evidence;
 strict parsing does not expand the authority or meaning of any source.
 
 [ML-123 replay](replay.md) selects completed retained parcel/import inputs explicitly
@@ -30,3 +30,11 @@ old absolute paths or silently replace inputs with latest. County/service/layer/
 query compatibility, source dates and missing publication dates are surfaced. Date
 differences are not a freshness or payment-status conclusion. Pre-completion inputs
 remain legacy/unverified; no source inventories or completion evidence are backfilled.
+
+[ML-130](reviews/isanti-viewer-preparation-2026-10-16.md) subsequently captured
+genuine new eligible runs from the same official Isanti GIS and unchanged October
+13 county listing. Historical files remain untouched. The [ML-202 viewer](viewer.md)
+reads those saved graphs without a source request, replay or reimport; a new UI
+load/validation date is not a fresh tax statement or payment-status check. No new
+county source, monetary definition, report verification or source-year meaning is
+introduced by the UI.

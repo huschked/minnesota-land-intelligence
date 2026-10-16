@@ -331,6 +331,15 @@ rewritten. New private check/log artifacts live outside completed runs and stay
 ignored. AppTest/server health are not browser keyboard/focus/200%-zoom or screen-
 reader conformance tests; those remain ML-206, along with the later full workflow.
 
-Full hosted Windows/Linux x Python 3.11/3.12 verification is pending for this
-implementation revision. CI installs `.[dev,ui]`, asserts Streamlit 1.66.0 and runs
-all offline cases, lint, dependency consistency, board and explicit live collection.
+[Hosted run 38983351802](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38983351802)
+passed at implementation revision `3b430e75b8eecbc346f3493b7ef65bb495d0b7c8`:
+**687 passed, one live deselected, no skips** in every Windows/Linux x Python
+3.11/3.12 job. All jobs installed `.[dev,ui]`, verified Streamlit 1.66.0 and passed
+dependency consistency, lint, board and explicit live collection (one selected,
+687 deselected). The final CI gate passed. Test execution took Linux 35.34/45.02
+seconds and Windows 168.00/124.18 seconds for Python 3.11/3.12 respectively; whole
+check jobs took 1m09s/1m17s and 4m08s/3m41s. The real symlink cases ran in hosted
+jobs. These version/platform passes establish the optional framework compatibility
+for this shell, not browser accessibility or a transitive dependency lock.
+Completion documentation/board-only changes use fast Linux CI under ML-129;
+no repeated unchanged local or hosted Windows suite is required.

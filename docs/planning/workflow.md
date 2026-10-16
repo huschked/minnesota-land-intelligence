@@ -51,15 +51,20 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-202: implement the thin review service, optional Streamlit selector shell
-   and clear validated/legacy/error states. It can proceed against fixtures
-   independently of ML-130 when implementation is selected.
-2. ML-124: validate refresh/difference behavior without inferring payment from
-   disappearance. ML-203/204 then add tables/details, ML-205 exports, ML-206 packaging.
+1. ML-124: validate refresh/difference behavior without inferring payment from
+   disappearance.
+2. ML-203/204: add parcel tables/filters and source-linked details to the existing
+   selector shell. Both are Ready after ML-202; ML-205 exports and ML-206 packaging
+   follow their recorded dependencies. No later card starts automatically.
 
 ML-201 is Done: [the UI decision](../ui-plan.md) selects Streamlit and maps U01-U12
 workflow/accessibility/data-safety examples to implementation cards. No framework
-was installed or app built. ML-130 is Done: [actual preparation evidence](../reviews/isanti-viewer-preparation-2026-10-16.md)
+was installed or app built by that discovery. ML-202 is now Done: [the selector](../viewer.md)
+loads explicit validated snapshots through an independent service, with optional
+Streamlit 1.66.0, read-only overview/error states and loopback-only startup. All
+687 offline tests passed on four hosted platform/Python combinations; actual
+ML-130 inputs also loaded through AppTest without modifying saved data. This is
+not yet the table/detail/export or browser accessibility release. ML-130 is Done: [actual preparation evidence](../reviews/isanti-viewer-preparation-2026-10-16.md)
 records new eligible GIS/file/join/review inputs, an identical offline replay and
 190 unchanged historical files. The 62/49/15 views match historical parcel IDs,
 but tax amounts and new manual verification remain unresolved. ML-206 must still
