@@ -62,3 +62,11 @@ ML-127 implements [staged completion publication and shared reader eligibility](
 Producers pin validated source graphs and reconcile actual artifacts/rows before
 installing version-2 completion records and latest pointers. Legacy manifests and
 recorded hashes alone are not new-protocol eligibility. No migration is performed.
+
+ML-123 adds [explicit snapshot selection and offline replay](replay.md). File capture
+and joining retained inputs share one processing path; replay never calls acquisition
+or latest selection. It reuses captured input limits and dates, checks the selected
+county/service/layer/query, pins exact inputs, records normalized/export fingerprints
+and rejects unexpected drift before completion. Moved join graphs remain self-contained.
+Historical pre-completion runs are not migrated or certified; current code/runtime
+identity is recorded rather than pretending to restore historical software.

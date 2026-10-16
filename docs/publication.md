@@ -102,7 +102,9 @@ allow_legacy=True)` is a deliberate read-only inspection path: it requires an
 explicit record count, checks available hashes/pages/schema, discloses missing
 checks, and never creates a marker. It cannot downgrade a new-protocol staging,
 failed or invalid completed run. There is no silent legacy fallback in producers.
-Portable user-selected replay/migration remains **ML-123**; backups remain ML-128.
+[ML-123 portable user-selected replay](replay.md) is available for completed
+version-2 inputs, not migration/certification of pre-completion inputs. Backups
+remain ML-128.
 Existing CSV/JSON files remain on disk for historical inspection.
 
 Reviews no longer write beneath and mutate a completed join. Report-comparison

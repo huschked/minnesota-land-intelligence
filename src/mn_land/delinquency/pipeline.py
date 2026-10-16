@@ -17,10 +17,12 @@ from mn_land.delinquency.tabular import read_input
 from mn_land.ingestion.normalization import normalize_with_diagnostics
 from mn_land.models import Parcel, TaxPeriodStatus
 from mn_land.provenance import build_provenance, sha256_file
+from mn_land.replay import check_destination, input_dates, normalized_digest, selected_snapshot
 from mn_land.runs import (
     JOIN_OUTPUTS,
     RunValidationError,
     RunWorkspace,
+    ValidatedRun,
     artifact_row_count,
     read_json,
     safe_path,
@@ -68,8 +70,18 @@ def import_and_join_delinquency(
     raw_root: Path | None = None,
     processed_root: Path | None = None,
     limits: InputLimits = DEFAULT_INPUT_LIMITS,
+    parcel_snapshot: Path | None = None,
 ) -> DelinquencyPipelineStats:
     min_acres = minimum_acres(min_acres)
+    check_destination((processed_root or SETTINGS.processed_dir) / "isanti/delinquency")
+    check_destination((raw_root or SETTINGS.raw_dir) / "isanti/delinquency")
+    if parcel_snapshot is not None:
+        selected = selected_snapshot(parcel_snapshot, "parcel_raw")
+        (adapter or IsantiAdapter()).validate_snapshot_source(selected.manifest)
+        check_destination(
+            (processed_root or SETTINGS.processed_dir) / "isanti/delinquency", selected.path
+        )
+        check_destination((raw_root or SETTINGS.raw_dir) / "isanti/delinquency", selected.path)
     # Capture the bounded mapping first. Resolve/validate its references before
     # copying any source/supporting bytes; rejected mappings remain private evidence.
     raw_root = raw_root or SETTINGS.raw_dir
@@ -116,16 +128,79 @@ def import_and_join_delinquency(
         )
         raw.publish()
 
+    return _join_snapshots(
+        raw.path, min_acres, parcel_snapshot=parcel_snapshot, adapter=adapter,
+        raw_root=raw_root, processed_root=processed_root,
+        command="import-delinquency", enforce_source=parcel_snapshot is not None,
+    )
+
+
+def replay_delinquency(
+    *, snapshot: Path | None = None,
+    parcel_snapshot: Path | None = None, import_snapshot: Path | None = None,
+    min_acres: Decimal | None = None, processed_root: Path | None = None,
+    adapter: IsantiAdapter | None = None,
+) -> DelinquencyPipelineStats:
+    """Reprocess explicit completed retained inputs, without raw writes or HTTP.
+
+    An existing join supplies its pinned sources and recorded threshold. Selecting
+    a raw pair instead never consults latest or historical absolute path fields.
+    Legacy/failed inputs cannot be certified by replay.
+    """
+    expected = None
+    if snapshot is not None:
+        if parcel_snapshot is not None or import_snapshot is not None:
+            raise ValueError("Choose a completed join OR an explicit parcel/import pair, not both")
+        expected = selected_snapshot(snapshot, "delinquency_processed")
+        parcel_snapshot, import_snapshot = expected.source("parcel"), expected.source("delinquency")
+        threshold = minimum_acres(expected.manifest["minimum_acres"])
+    else:
+        if parcel_snapshot is None or import_snapshot is None:
+            raise ValueError("Replay requires both --parcel-snapshot and --import-snapshot")
+        threshold = Decimal(SETTINGS.default_min_acres)
+    threshold = threshold if min_acres is None else minimum_acres(min_acres)
+    parcel = selected_snapshot(parcel_snapshot, "parcel_raw")
+    imported = selected_snapshot(import_snapshot, "delinquency_raw")
+    if imported.manifest.get("county") != "Isanti":
+        raise RunValidationError("Import snapshot is incompatible with Isanti County")
+    (adapter or IsantiAdapter()).validate_snapshot_source(parcel.manifest)
+    root = (processed_root or SETTINGS.processed_dir) / "isanti/delinquency"
+    check_destination(root, parcel.path, imported.path, *([expected.path] if expected else []))
+    return _join_snapshots(
+        imported.path, threshold, parcel_snapshot=parcel.path, adapter=adapter,
+        processed_root=processed_root or SETTINGS.processed_dir,
+        command="replay-delinquency", enforce_source=True, expected=expected,
+    )
+
+
+def _join_snapshots(
+    import_snapshot: Path, min_acres: Decimal, *,
+    parcel_snapshot: Path | None, adapter: IsantiAdapter | None,
+    processed_root: Path, raw_root: Path | None = None,
+    command: str, enforce_source: bool, expected: ValidatedRun | None = None,
+) -> DelinquencyPipelineStats:
+    adapter = adapter or IsantiAdapter()
     with RunWorkspace(
         processed_root / "isanti" / "delinquency", "delinquency_processed"
     ) as processed:
         processed.stage = "select_and_pin_sources"
         selection_diagnostics = []
-        selected = select_latest(
-            raw_root / "isanti", "parcel_raw", diagnostics=selection_diagnostics
+        selected = (
+            validate_run(parcel_snapshot, "parcel_raw")
+            if parcel_snapshot is not None else select_latest(
+                (raw_root or SETTINGS.raw_dir) / "isanti", "parcel_raw",
+                diagnostics=selection_diagnostics,
+            )
         )
         parcel_snapshot = processed.pin(selected.path, "parcel")
-        raw_snapshot = processed.pin(raw.path, "delinquency")
+        raw_snapshot = processed.pin(import_snapshot, "delinquency")
+        parcel_input = validate_run(parcel_snapshot, "parcel_raw")
+        retained_input = validate_run(raw_snapshot, "delinquency_raw")
+        if retained_input.manifest.get("county") != "Isanti":
+            raise RunValidationError("Import snapshot is incompatible with Isanti County")
+        if enforce_source:
+            adapter.validate_snapshot_source(parcel_input.manifest)
+        limits = InputLimits(**retained_input.manifest["input_limits"])
         # Re-normalize from these pinned inputs, not the original/copy used to validate raw completion.
         pinned_mapping = DelinquencyMapping.from_json(
             raw_snapshot / "mapping.json",
@@ -143,7 +218,7 @@ def import_and_join_delinquency(
         ).load_records()
         diagnostics: list[dict[str, Any]] = []
         parcels, parcel_errors, _ = load_parcel_snapshot(
-            adapter or IsantiAdapter(), parcel_snapshot, diagnostics=diagnostics
+            adapter, parcel_snapshot, diagnostics=diagnostics
         )
         result = join_delinquency_records(parcels, records)
         accounting = {
@@ -185,9 +260,61 @@ def import_and_join_delinquency(
             result, processed.path, min_acres, directory_reserved=True
         )
         row_counts = {name: artifact_row_count(processed.path / name) for name in JOIN_OUTPUTS}
+        reproduction = {
+            "schema_version": 1,
+            "normalized_parcels_sha256": normalized_digest(parcels),
+            "normalized_delinquency_sha256": normalized_digest(records),
+            "exports_sha256": {name: sha256_file(processed.path / name) for name in JOIN_OUTPUTS},
+            "candidate_ids": sorted(
+                row["parcel_id"] for row in read_json(
+                    processed.path / "isanti_verified_delinquent_candidates.json"
+                )
+            ),
+        }
+        comparison = "not_requested"
+        if expected is not None:
+            previous = expected.manifest.get("reproducibility")
+            if previous is not None and any(
+                previous[name] != reproduction[name]
+                for name in ("normalized_parcels_sha256", "normalized_delinquency_sha256")
+            ):
+                raise RunValidationError("Replay normalized content differs from the selected result")
+            if min_acres == minimum_acres(expected.manifest["minimum_acres"]):
+                old_exports = {
+                    entry["path"]: entry["sha256"] for entry in expected.completion["artifacts"]
+                }
+                if any(
+                    old_exports[name] != digest
+                    for name, digest in reproduction["exports_sha256"].items()
+                ):
+                    raise RunValidationError("Replay exports differ from the selected result")
+                comparison = (
+                    "identical_exports_and_recorded_normalization" if previous
+                    else "identical_exports_historical_normalization_unknown"
+                )
+            else:
+                comparison = "threshold_changed_exports_not_compared"
+        selection = {
+            "mode": (
+                "recorded_join" if expected else "explicit_pair" if enforce_source
+                else "latest_eligible_parcel"
+            ),
+            "parcel_run_id": parcel_input.path.name,
+            "import_run_id": retained_input.path.name,
+            "parcel_completion_sha256": parcel_input.completion_sha256,
+            "import_completion_sha256": retained_input.completion_sha256,
+            "dates": input_dates(
+                parcel_input.manifest, retained_input.manifest, pinned_mapping.publication_date
+            ),
+            "replayed_from": None if expected is None else {
+                "run_id": expected.path.name, "completion_sha256": expected.completion_sha256,
+                "minimum_acres": expected.manifest["minimum_acres"],
+            },
+            "comparison": comparison,
+        }
         manifest = {
             "county": "Isanti",
-            "created_at": run_at.isoformat(),
+            "created_at": datetime.now(UTC).isoformat(),
             "parcel_snapshot": str(parcel_snapshot),
             "delinquency_snapshot": str(raw_snapshot),
             "processed_snapshot": str(processed.path),
@@ -213,10 +340,12 @@ def import_and_join_delinquency(
             "parcel_normalization_diagnostics": diagnostics,
             "selection_diagnostics": selection_diagnostics,
             "input_limits": asdict(limits),
+            "selection": selection,
+            "reproducibility": reproduction,
         }
         manifest["provenance"] = build_provenance(
             {
-                "command": "import-delinquency",
+                "command": command,
                 "county": "Isanti",
                 "minimum_acres": str(min_acres),
                 "input_limits": asdict(limits),
@@ -235,7 +364,7 @@ def import_and_join_delinquency(
         duplicate_parcel_ids=len(result.duplicate_records),
         ambiguous_records=len(result.ambiguous_records),
         verified_candidates=candidate_count,
-        raw_snapshot_dir=raw.path,
+        raw_snapshot_dir=import_snapshot,
         processed_snapshot_dir=processed.path,
         output_paths=(
             *outputs,

@@ -12,6 +12,7 @@ from mn_land.delinquency.file_loader import DelinquencyFileError, inspect_delinq
 from mn_land.delinquency.pipeline import (
     DelinquencyPipelineError,
     import_and_join_delinquency,
+    replay_delinquency,
 )
 from mn_land.ingestion.pipeline import run_pipeline
 from mn_land.runs import RunValidationError, select_latest
@@ -48,8 +49,24 @@ def build_parser() -> argparse.ArgumentParser:
     import_command.add_argument("--file", type=Path, required=True)
     import_command.add_argument("--mapping", type=Path, required=True)
     import_command.add_argument(
+        "--parcel-snapshot", type=Path,
+        help="Explicit completed raw parcel snapshot instead of latest eligible",
+    )
+    import_command.add_argument("--output-root", type=Path, help="Processed data root")
+    import_command.add_argument(
         "--min-acres", type=decimal_argument, default=Decimal(SETTINGS.default_min_acres)
     )
+    replay_command = sub.add_parser("replay-delinquency")
+    replay_command.add_argument("--county", choices=("isanti",), required=True)
+    replay_input = replay_command.add_mutually_exclusive_group(required=True)
+    replay_input.add_argument("--snapshot", type=Path, help="Completed join with pinned inputs")
+    replay_input.add_argument("--import-snapshot", type=Path, help="Completed raw delinquency import")
+    replay_command.add_argument("--parcel-snapshot", type=Path, help="Completed raw parcel acquisition")
+    replay_command.add_argument(
+        "--min-acres", type=decimal_argument,
+        help="Default: recorded join threshold, or configured default for an explicit raw pair",
+    )
+    replay_command.add_argument("--output-root", type=Path, help="Processed data root")
     review_command = sub.add_parser("review-delinquency")
     review_command.add_argument("--county", choices=("isanti",), required=True)
     review_command.add_argument("--snapshot", type=Path, required=True)
@@ -146,13 +163,27 @@ def main(argv: list[str] | None = None) -> int:
             print(f"WARNING ambiguous {target}: {', '.join(columns)}")
         print("Import requires an explicit reviewed mapping JSON file.")
         return 0
-    if args.command == "import-delinquency":
+    if args.command in {"import-delinquency", "replay-delinquency"}:
         try:
-            stats = import_and_join_delinquency(args.file, args.mapping, args.min_acres)
+            if args.command == "replay-delinquency":
+                stats = replay_delinquency(
+                    snapshot=args.snapshot, parcel_snapshot=args.parcel_snapshot,
+                    import_snapshot=args.import_snapshot, min_acres=args.min_acres,
+                    processed_root=args.output_root,
+                )
+            else:
+                stats = import_and_join_delinquency(
+                    args.file, args.mapping, args.min_acres,
+                    parcel_snapshot=args.parcel_snapshot, processed_root=args.output_root,
+                )
         except (DelinquencyFileError, DelinquencyPipelineError, ValueError, OSError) as exc:
             LOGGER.error("%s", exc)
             return 2
-        print("Minnesota Land Intelligence Platform - Authoritative Delinquency Import\n")
+        heading = (
+            "Offline Delinquency Replay" if args.command == "replay-delinquency"
+            else "Authoritative Delinquency Import"
+        )
+        print(f"Minnesota Land Intelligence Platform - {heading}\n")
         print("County: Isanti")
         print(f"Delinquency records loaded: {stats.records_loaded:,}")
         print(f"Parcel records loaded:      {stats.parcels_loaded:,}")
@@ -175,6 +206,17 @@ def main(argv: list[str] | None = None) -> int:
             print(f"VERIFICATION HOLD: {mapping['verification_hold_reason']}")
         print(f"Raw snapshot: {stats.raw_snapshot_dir}")
         print(f"Processed snapshot: {stats.processed_snapshot_dir}")
+        selection = manifest["selection"]
+        print(f"Input selection: {selection['mode']}")
+        print(f"Parcel snapshot: {selection['parcel_run_id']}")
+        print(f"Import snapshot: {selection['import_run_id']}")
+        print(f"Parcel captured: {selection['dates']['parcel_retrieved_at']}")
+        print(f"Listing captured: {selection['dates']['delinquency_imported_at']}")
+        print(f"Listing published: {selection['dates']['delinquency_publication_date'] or 'UNKNOWN'}")
+        for warning in selection["dates"]["warnings"]:
+            print(f"WARNING: {warning}")
+        print(f"Replay comparison: {selection['comparison']}")
+        print(selection["dates"]["limitation"])
         return 0
     adapter = IsantiAdapter()
     if args.command == "validate-source":

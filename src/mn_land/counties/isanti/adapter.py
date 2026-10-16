@@ -79,6 +79,23 @@ class IsantiAdapter(CountyAdapter):
             directory_reserved=directory_reserved,
         )
 
+    def validate_snapshot_source(self, manifest: Mapping[str, Any]) -> None:
+        """Selected evidence must belong to this configured county service/layer.
+
+        Tests can inject a synthetic client, but the CLI uses the reviewed official
+        service. No request or alternate-source discovery is performed here.
+        """
+        if (
+            manifest.get("service_url") != self.client.service_url
+            or type(manifest.get("layer_id")) is not int
+            or manifest["layer_id"] != self.client.layer_id
+            or manifest.get("where") != "1=1"
+        ):
+            raise ValueError(
+                "Parcel snapshot is incompatible with the configured Isanti "
+                "source/layer or full-county query"
+            )
+
     def normalize_parcel(self, raw_record: Mapping[str, Any], retrieved_at: datetime) -> Parcel:
         if not isinstance(raw_record, Mapping):
             raise ParcelRowError("attributes", "feature must be an object")

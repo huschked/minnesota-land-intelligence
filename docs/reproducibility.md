@@ -65,6 +65,11 @@ core pipeline dependency or part of the development resolution.
 
 ## What new runs record
 
+For explicit selection, portable retained-input replay, source-date warnings and
+normalized/export comparisons, see [ML-123 replay](replay.md). It records the current
+execution environment and does not automatically install historical code, certify
+legacy inputs, or claim current tax status.
+
 - GIS raw `manifest.json`: effective request/HTTP policy, code/runtime identity,
   initial/final metadata/count/ID checks, original-body/parsed attempt evidence,
   consistency limitations, and hashes for all retained artifacts. See

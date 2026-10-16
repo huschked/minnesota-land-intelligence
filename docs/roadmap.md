@@ -31,5 +31,6 @@ ML-119's [ingestion contracts and fixture matrix](ingestion-contracts.md) refine
 the Phase 1.1 reliability work into ML-125 ([validation, now implemented](validation.md)),
 ML-126 ([retrieval/completeness, implemented](retrieval.md)), and ML-127
 ([complete-run publication, implemented](publication.md)). None expands county/GIS/UI
-scope or tax meanings. Explicit selected-snapshot/portable replay remains ML-123;
-historical runs are not retroactively certified by these reliability changes.
+scope or tax meanings. ML-123 adds [explicit selected-snapshot/portable replay](replay.md)
+for completed version-2 inputs; historical pre-completion runs are not retroactively
+certified, converted or reimported by these reliability changes.

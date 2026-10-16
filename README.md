@@ -23,7 +23,8 @@ bounded paced retries, retained response evidence, and initial/final count, ID a
 schema reconciliation. ML-127 adds [complete-run publication and shared reader
 validation](docs/publication.md), with immutable per-run outputs and pinned inputs.
 Historical snapshots remain legacy/unverified and are not automatically selected;
-they are not deleted or backfilled. Explicit replay is the next ML-123 task.
+they are not deleted or backfilled. ML-123 adds [explicit snapshot selection and
+offline replay](docs/replay.md) for completed version-2 inputs, not legacy migration.
 
 The county service describes `TOTPRVTXTOD` only as **Total Previous Taxes Owed**. That does not by itself prove delinquent/past-due status, so strict candidate classification is intentionally disabled until an authoritative definition is documented. The pipeline still preserves that source value as `previous_taxes_owed` and reports the semantic gate clearly.
 
@@ -48,6 +49,7 @@ mn-land find-candidates --county isanti --min-acres 10
 python -m mn_land.cli find-candidates --county isanti --min-acres 10
 python -m mn_land.cli inspect-delinquency-file --county isanti --file data/import/county-file.xlsx
 python -m mn_land.cli import-delinquency --county isanti --file data/import/county-file.xlsx --mapping reviewed-mapping.json --min-acres 10
+python -m mn_land.cli replay-delinquency --county isanti --snapshot data/processed/isanti/delinquency/COMPLETE_RUN_ID
 python -m mn_land.cli review-delinquency --county isanti --snapshot data/processed/isanti/delinquency/COMPLETE_RUN_ID --min-acres 10
 pytest
 pytest -m integration
@@ -66,7 +68,8 @@ To verify that selection without contacting the service, use
 
 [GitHub Actions](.github/workflows/ci.yml) runs lint, dependency checks, board
 validation, and offline tests on pushes and pull requests, with a manual trigger
-also available. The matrix covers Windows/Linux and Python 3.11/3.12. CI only
+also available. Code changes use the full Windows/Linux x Python 3.11/3.12 matrix;
+documentation-only completion updates use Linux-only fast CI. CI only
 collects the live tests; it never executes them. It uses no county files or custom
 secrets, and does not deploy the application. See [testing](docs/testing.md).
 
@@ -79,7 +82,7 @@ Raw responses are written to `data/raw/isanti/<run-id>/`; processed artifacts go
 
 When strict classification is gated, `isanti_tax_semantics_review_sample.csv` contains up to ten deterministic examples labeled **NOT A CANDIDATE**. It exists only to help a human ask the county what the source field means. The required candidate verification sample remains empty when there are no verified candidates.
 
-Delinquency inspection reports columns and cautious potential mappings but never auto-accepts them. Copy and review `docs/examples/isanti-delinquency-mapping.example.json`; remove unavailable optional fields and replace every placeholder. Import preserves the source and mapping under a timestamped raw snapshot, joins against the latest retained parcel snapshot, and writes verified candidates plus unmatched/duplicate review files to a timestamped processed directory.
+Delinquency inspection reports columns and cautious potential mappings but never auto-accepts them. Copy and review `docs/examples/isanti-delinquency-mapping.example.json`; remove unavailable optional fields and replace every placeholder. Import preserves source/mapping/supporting bytes in an immutable UUID raw snapshot and joins against the latest eligible complete parcel acquisition, or the explicit `--parcel-snapshot`. New UUID processed results retain candidate/issue exports, source dates and reproducibility evidence. Replay reads completed retained inputs without a new raw capture or government request.
 
 The October 13 county listing uses the reviewed mapping in
 `docs/counties/isanti-delinquency-2026-10-13.mapping.json`, with supporting county

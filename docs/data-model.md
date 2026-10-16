@@ -102,3 +102,14 @@ source-row ordinals into matched/unmatched/ambiguous and disjoint tax-period set
 Duplicate-review rows overlap, and prior/current parcel views may overlap, without
 being added to source totals. Unknown balances and source holds are unchanged.
 See [publication and validation boundaries](publication.md).
+
+## Selected inputs and reproducibility (ML-123)
+
+New join operation manifests add `selection` (mode, source run IDs/completion hashes,
+date offsets/warnings, optional prior-result reference and comparison outcome) and
+`reproducibility` schema version 1 (normalized parcel/record SHA-256, nine export
+hashes, sorted candidate IDs). Captured source dates/rows/nulls remain canonical
+content; UUIDs, execution identity, paths and quarantine locations are run metadata.
+No canonical parcel/tax field or monetary/year meaning changes. Older complete runs
+without fingerprints retain unknown historical normalized hashes; legacy inputs do
+not gain completion status. See [replay evidence and commands](replay.md).

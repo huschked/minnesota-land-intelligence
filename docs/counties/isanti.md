@@ -13,6 +13,11 @@ also appear in the prior-year view. Balances remain unaggregated. See
 
 Accessed: 2026-08-23
 
+[ML-123 replay](../replay.md) checks selected completed parcel inputs against this
+configured county service/layer and full-county query. File and GIS dates remain
+independent. The historical October results above were not regenerated or certified
+under the new protocol; replay adds no monetary definitions or tax-currentness claim.
+
 ## Selected source
 
 - Agency: Isanti County GIS

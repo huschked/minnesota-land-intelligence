@@ -206,3 +206,22 @@ in the performance document and logs. The plan selected full coverage for code
 changes, and the gate passed only after all four jobs succeeded. Fixture checks
 also cover fast diff classification and failure/cancellation/skip gate outcomes.
 No government API tests were executed and historical county data remains unchanged.
+
+## ML-123 selected snapshots and replay
+
+[Replay commands and boundaries](replay.md) describe explicit raw parcel/import
+selection, moved self-contained completed joins, captured source dates/limits,
+canonical fingerprints, export comparisons and intentional threshold overrides.
+[S01-S07 fixtures](../tests/unit/test_snapshot_replay.py) cover CSV/XLSX, later
+execution dates, unavailable old roots, no latest/acquisition/raw writes, source
+compatibility, date offsets/unknowns, source holds, mixed years, drift failures,
+prior-success preservation, nested destinations and older complete runs without
+historical normalization fingerprints. Pre-completion legacy inputs are rejected,
+not recertified; no original county rows are reimported.
+
+Local verification on 2026-10-16 passed 643 offline tests, skipped the two real
+symlink fixtures because this Windows account lacks privileges, and deselected
+one live test in 147.17 seconds. Ruff and the 13-epic/85-story board check passed.
+Explicit live collection selected one test and deselected 645 offline cases,
+without making requests. CLI replay help was checked. Hosted full-matrix
+verification is pending; no hosted success is claimed yet.

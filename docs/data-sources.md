@@ -23,3 +23,10 @@ implemented, as are ML-126's [HTTP retrieval/completeness](retrieval.md) and ML-
 [completion publication and reader validation](publication.md). Existing retained
 snapshots remain legacy/unverified, not silently migrated. An active year convention always requires retained evidence;
 strict parsing does not expand the authority or meaning of any source.
+
+[ML-123 replay](replay.md) selects completed retained parcel/import inputs explicitly
+or from a completed join's contained graph; it does not fetch another source, follow
+old absolute paths or silently replace inputs with latest. County/service/layer/full
+query compatibility, source dates and missing publication dates are surfaced. Date
+differences are not a freshness or payment-status conclusion. Pre-completion inputs
+remain legacy/unverified; no source inventories or completion evidence are backfilled.

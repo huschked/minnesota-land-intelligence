@@ -543,7 +543,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-123"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -561,7 +561,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** ML-127 is Done, so this card is Ready, not started. Existing review pins its recorded GIS snapshot; imports select the latest eligible complete parcel snapshot. New-protocol selection deliberately excludes legacy inputs. Explicit legacy compatibility must preserve/disclose missing checks and cannot backfill completion status, invent county API inventories, or silently claim current payment status.
+**Notes:** Owner: Codex. Started 2026-10-16. Implement explicit complete parcel/import selection, self-contained offline replay and dated input/reproducibility evidence. New-protocol selection deliberately excludes legacy inputs. Legacy evidence remains read-only/unverified; no completion backfill, invented county inventories or current-payment claim. Historical inputs/results will not be reimported or modified as part of implementation.
 
 **Evidence / starting points:** [1](../../src/mn_land/delinquency/pipeline.py)
 

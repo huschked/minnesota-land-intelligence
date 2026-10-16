@@ -265,6 +265,9 @@ def validate_content(path: Path, completion: dict, manifest: dict) -> None:
             "Candidate export count mismatch",
         )
     elif kind == "delinquency_processed":
+        from mn_land.replay import validate_replay_evidence
+
+        validate_replay_evidence(path, completion, manifest)
         from mn_land.delinquency.tabular import read_table
 
         raw = _source(path, completion, "delinquency")
