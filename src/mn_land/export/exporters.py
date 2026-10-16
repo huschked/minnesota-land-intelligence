@@ -59,11 +59,11 @@ def export_candidates(parcels: list[Parcel], output_dir: Path) -> tuple[Path, Pa
     csv_path = output_dir / "isanti_candidates.csv"
     json_path = output_dir / "isanti_candidates.json"
     rows = [parcel_row(parcel) for parcel in parcels]
-    with csv_path.open("w", encoding="utf-8", newline="") as handle:
+    with csv_path.open("x", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=FIELDS)
         writer.writeheader()
         writer.writerows(rows)
-    with json_path.open("w", encoding="utf-8") as handle:
+    with json_path.open("x", encoding="utf-8") as handle:
         json.dump(rows, handle, ensure_ascii=False, indent=2)
         handle.write("\n")
     return csv_path, json_path
@@ -80,7 +80,7 @@ def export_verification_sample(parcels: list[Parcel], output_dir: Path, size: in
         "assessed_value",
         "source_reference",
     )
-    with path.open("w", encoding="utf-8", newline="") as handle:
+    with path.open("x", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for parcel in selected:
@@ -112,7 +112,7 @@ def export_tax_semantics_review_sample(
         "source_reference",
         "review_status",
     )
-    with path.open("w", encoding="utf-8", newline="") as handle:
+    with path.open("x", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for parcel in selected:

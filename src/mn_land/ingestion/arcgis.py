@@ -62,6 +62,7 @@ class ArcGISClient:
         where: str = "1=1",
         return_geometry: bool = False,
         metadata_validator: Callable[[object], None] | None = None,
+        directory_reserved: bool = False,
     ) -> Iterable[dict[str, Any]]:
         if (
             not out_fields
@@ -75,7 +76,11 @@ class ArcGISClient:
             raise ValueError("Request explicit unique mapped fields")
         if return_geometry is not False:
             raise ValueError("Attribute acquisition does not request geometry")
-        raw_run_dir.mkdir(parents=True, exist_ok=False)
+        if directory_reserved:
+            if {path.name for path in raw_run_dir.iterdir()} != {"reservation.json"}:
+                raise ArcGISError("Reserved acquisition directory must be fresh")
+        else:
+            raw_run_dir.mkdir(parents=True, exist_ok=False)
         captures_http = isinstance(self.transport, UrllibJsonTransport)
         if captures_http:
             self.transport.begin_capture(raw_run_dir / "http")

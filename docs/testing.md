@@ -108,6 +108,34 @@ explicit live collection. The real symlink fixture ran successfully on both
 hosted platforms. The run completed on 2026-10-15 UTC / 2026-10-14 America/Chicago.
 No live government requests were executed by the tests.
 
+## ML-127 regression coverage
+
+[Publication](publication.md) traces R01-R07 to
+[publication tests](../tests/unit/test_run_publication.py). They cover exact
+retained originals, input changes during validation/pinning, every parcel/join/
+review export failure, normalization/hash/manifest/completion/pointer failures,
+malformed inputs, failed/staging/legacy and malicious manifests, pointer fallback,
+available legacy hashes, symlinks, concurrent identity reservation, actual output
+inventories, empty candidates, quarantine locations, disjoint source partitions,
+overlapping prior/current parcel views and preserved source holds.
+
+Fixtures create actual synthetic raw-complete sources through the retrieval and
+completion code; historical fixture directories are not certified. Optional
+report-script tests stub PDF dependencies and verify input validation happens
+before work; they do not parse PDFs or contact the county. Core dependencies and
+the existing CI matrix are unchanged. Windows accounts without symlink privileges
+skip two real symlink tests; hosted Windows/Linux jobs must exercise them.
+
+Local verification on 2026-10-16: the release suite passed 536 tests with two
+Windows symlink-privilege skips and one live deselection. The final added boolean
+counter fixture passed separately. Explicit integration collection selected one
+test and deselected all 539 offline cases, without executing a request. Ruff,
+13-epic/84-story board validation and 291 relative documentation links/anchors
+passed. The updated synthetic probe rejects D08's manifest-only empty snapshot;
+no original county rows were imported or live government APIs called.
+
+Hosted matrix results are pending; the card remains In Progress until verification.
+
 ## ML-126 regression coverage
 
 [Retrieval](retrieval.md) traces H01-H05 to synthetic capability/count/inventory/

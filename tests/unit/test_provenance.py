@@ -164,8 +164,8 @@ def test_offline_parcel_pipeline_records_output_and_source_hashes(tmp_path, monk
     stats = run_pipeline(adapter, __import__("decimal").Decimal(10))
     manifest = json.loads((stats.raw_run_dir / "manifest.json").read_text())
     assert manifest["provenance"]["configuration"]["service_url"].startswith("https://example")
-    assert len(manifest["provenance"]["outputs"]) == 7
-    execution = json.loads((stats.raw_run_dir / "execution.json").read_text())
+    assert len(manifest["provenance"]["outputs"]) == 8
+    execution = json.loads((stats.processed_run_dir / "execution.json").read_text())
     assert execution["configuration"]["minimum_acres"] == "10"
     assert len(execution["outputs"]) == 4
     for artifact in execution["outputs"] + execution["inputs"]:

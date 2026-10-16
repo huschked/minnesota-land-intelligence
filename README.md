@@ -20,7 +20,10 @@ Phase 1.1 adds a separate authoritative delinquency-file importer. Delinquency s
 
 ML-126 adds [respectful HTTP and source-completeness checks](docs/retrieval.md):
 bounded paced retries, retained response evidence, and initial/final count, ID and
-schema reconciliation. Atomic processed publication/read eligibility is still ML-127.
+schema reconciliation. ML-127 adds [complete-run publication and shared reader
+validation](docs/publication.md), with immutable per-run outputs and pinned inputs.
+Historical snapshots remain legacy/unverified and are not automatically selected;
+they are not deleted or backfilled. Explicit replay is the next ML-123 task.
 
 The county service describes `TOTPRVTXTOD` only as **Total Previous Taxes Owed**. That does not by itself prove delinquent/past-due status, so strict candidate classification is intentionally disabled until an authoritative definition is documented. The pipeline still preserves that source value as `previous_taxes_owed` and reports the semantic gate clearly.
 

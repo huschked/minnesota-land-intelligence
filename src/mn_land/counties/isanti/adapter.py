@@ -40,6 +40,7 @@ class ParcelRowError(ValueError):
 
 
 class IsantiAdapter(CountyAdapter):
+    layer_name = DATASET
     validate_metadata = staticmethod(validate_metadata)
 
     def record_identifier(self, raw_record: Mapping[str, Any]) -> str | int | None:
@@ -67,7 +68,7 @@ class IsantiAdapter(CountyAdapter):
         )
 
     def fetch_parcels(
-        self, raw_run_dir: Path, retrieved_at: datetime
+        self, raw_run_dir: Path, retrieved_at: datetime, *, directory_reserved: bool = False
     ) -> Iterable[Mapping[str, Any]]:
         return self.client.fetch_all(
             out_fields=QUERY_FIELDS,
@@ -75,6 +76,7 @@ class IsantiAdapter(CountyAdapter):
             retrieved_at=retrieved_at,
             return_geometry=False,
             metadata_validator=self.validate_metadata,
+            directory_reserved=directory_reserved,
         )
 
     def normalize_parcel(self, raw_record: Mapping[str, Any], retrieved_at: datetime) -> Parcel:

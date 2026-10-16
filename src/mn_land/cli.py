@@ -14,6 +14,7 @@ from mn_land.delinquency.pipeline import (
     import_and_join_delinquency,
 )
 from mn_land.ingestion.pipeline import run_pipeline
+from mn_land.runs import RunValidationError, select_latest
 from mn_land.utils.http import ArcGISError
 from mn_land.utils.validation import minimum_acres
 
@@ -53,6 +54,11 @@ def build_parser() -> argparse.ArgumentParser:
     review_command.add_argument("--county", choices=("isanti",), required=True)
     review_command.add_argument("--snapshot", type=Path, required=True)
     review_command.add_argument("--min-acres", type=decimal_argument, default=Decimal(10))
+    review_command.add_argument(
+        "--comparison",
+        type=Path,
+        help="Explicit retained comparison evidence; no automatic legacy discovery",
+    )
     return parser
 
 
@@ -63,40 +69,61 @@ def main(argv: list[str] | None = None) -> int:
         from mn_land.counties.isanti.review import build_review
 
         try:
-            output = build_review(args.snapshot, args.min_acres)
-        except (DelinquencyFileError, DelinquencyPipelineError, ValueError) as exc:
+            output = build_review(args.snapshot, args.min_acres, comparison_path=args.comparison)
+        except (DelinquencyFileError, DelinquencyPipelineError, ValueError, OSError) as exc:
             LOGGER.error("%s", exc)
             return 2
         print(f"Review artifacts: {output}")
         print((output / "summary.json").read_text(encoding="utf-8"))
         return 0
     if args.command == "status":
-        parcel_root = SETTINGS.raw_dir / "isanti"
-        parcel_ready = parcel_root.is_dir() and any(
-            path.is_dir() and (path / "manifest.json").is_file()
-            for path in parcel_root.iterdir()
-            if path.name != "delinquency"
-        )
-        delinquency_root = parcel_root / "delinquency"
-        imported = delinquency_root.is_dir() and any(
-            path.is_dir() and (path / "manifest.json").is_file()
-            for path in delinquency_root.iterdir()
-        )
-        print(f"Parcel ingestion: {'READY' if parcel_ready else 'NO PARCEL SNAPSHOT'}")
-        print("Delinquency ingestion: READY")
-        print(
-            "Authoritative Isanti delinquency source: "
-            f"{'IMPORTED' if imported else 'NOT YET IMPORTED'}"
-        )
-        processed = SETTINGS.processed_dir / "isanti" / "delinquency"
-        manifests = sorted(processed.glob("*/manifest.json")) if processed.is_dir() else []
-        if manifests:
-            latest = json.loads(manifests[-1].read_text(encoding="utf-8"))
-            print(f"Verified candidates: {latest['verified_candidates']}")
-            if latest.get("unverified_matches"):
-                print("Verification: HOLD - source requires reconciliation with county records")
-        else:
-            print("Verified candidates: NOT GENERATED")
+        for label, root, kind in (
+            ("Parcel raw acquisition", SETTINGS.raw_dir / "isanti", "parcel_raw"),
+            (
+                "Parcel processed results",
+                SETTINGS.processed_dir / "isanti" / "parcels",
+                "parcel_processed",
+            ),
+            (
+                "Delinquency raw import",
+                SETTINGS.raw_dir / "isanti" / "delinquency",
+                "delinquency_raw",
+            ),
+            (
+                "Delinquency processed results",
+                SETTINGS.processed_dir / "isanti" / "delinquency",
+                "delinquency_processed",
+            ),
+            ("Review results", SETTINGS.processed_dir / "isanti" / "review", "review"),
+        ):
+            diagnostics = []
+            try:
+                latest = select_latest(root, kind, diagnostics=diagnostics)
+            except (RunValidationError, OSError):
+                print(f"{label}: NO ELIGIBLE COMPLETE RUN")
+            else:
+                print(f"{label}: COMPLETE {latest.path.name}")
+                if kind == "delinquency_processed":
+                    print(f"Verified candidates: {latest.manifest['verified_candidates']}")
+                    if latest.manifest.get("unverified_matches"):
+                        print("Verification: HOLD - county reconciliation required")
+            legacy = (
+                [
+                    path
+                    for path in root.iterdir()
+                    if path.is_dir()
+                    and (path / "manifest.json").is_file()
+                    and not (path / "completion.json").exists()
+                ]
+                if root.is_dir()
+                else []
+            )
+            if legacy:
+                print(
+                    f"  Legacy/unverified or incomplete snapshots: {len(legacy)} (not auto-selected)"
+                )
+            for diagnostic in diagnostics:
+                print(f"  WARNING: {diagnostic['reason']}")
         return 0
     if args.command == "inspect-delinquency-file":
         try:
@@ -122,7 +149,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "import-delinquency":
         try:
             stats = import_and_join_delinquency(args.file, args.mapping, args.min_acres)
-        except (DelinquencyFileError, DelinquencyPipelineError, ValueError) as exc:
+        except (DelinquencyFileError, DelinquencyPipelineError, ValueError, OSError) as exc:
             LOGGER.error("%s", exc)
             return 2
         print("Minnesota Land Intelligence Platform - Authoritative Delinquency Import\n")
@@ -143,7 +170,7 @@ def main(argv: list[str] | None = None) -> int:
             print(
                 "Current-year installments are exported separately; repeated balances are not summed."
             )
-        mapping = json.loads(args.mapping.read_text(encoding="utf-8"))
+        mapping = json.loads((stats.raw_snapshot_dir / "mapping.json").read_text(encoding="utf-8"))
         if mapping.get("verification_hold_reason"):
             print(f"VERIFICATION HOLD: {mapping['verification_hold_reason']}")
         print(f"Raw snapshot: {stats.raw_snapshot_dir}")
@@ -174,7 +201,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     try:
         stats = run_pipeline(adapter, args.min_acres)
-    except (ValueError, ArcGISError) as exc:
+    except (ValueError, ArcGISError, OSError) as exc:
         LOGGER.error("%s", exc)
         return 2
     print("Minnesota Land Intelligence Platform\n")

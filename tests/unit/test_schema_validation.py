@@ -184,10 +184,12 @@ def test_F02_live_pipeline_and_offline_loader_retain_quarantine_locations(
     adapter = IsantiAdapter(client=ArcGISClient("https://example.test", 0, transport=Transport()))
     stats = run_pipeline(adapter, Decimal(10))
     assert (stats.retrieved, stats.normalized, stats.normalization_errors) == (2, 1, 1)
-    diagnostics = json.loads((stats.raw_run_dir / "normalization_diagnostics.json").read_text())
+    diagnostics = json.loads(
+        (stats.processed_run_dir / "normalization_diagnostics.json").read_text()
+    )
     assert diagnostics[0]["source_record_id"] == 102
     assert diagnostics[0]["field"] == "DEEDEDACRES"
-    assert diagnostics[0]["record_number"] == 2
+    assert diagnostics[0]["feature_number"] == 2
     reloaded = []
     parcels, errors, _ = load_parcel_snapshot(adapter, stats.raw_run_dir, diagnostics=reloaded)
     assert len(parcels) == 1 and errors == 1

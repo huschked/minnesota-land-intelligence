@@ -53,8 +53,9 @@ and case-folded destination collisions fail. Nested evidence is retained under
 `DelinquencyMapping.from_json` can explicitly receive
 `supporting_root=snapshot / "supporting"` to validate retained copies. That is not
 a new portable replay CLI. Containment assumes stable filesystem paths. Source
-copying still happens after validation; race-proof publication/failure archiving
-remains ML-127 work.
+copying and complete-run publication now use [ML-127's pinned-input protocol](publication.md).
+This validates captured bytes before use; it is not a universal filesystem sandbox
+or distributed transaction.
 
 `SourceMetadata` adds `source_sheet`, `source_line_start`, and `source_line_end`.
 CSV row numbers are logical record ordinals (including header/blank records),
@@ -83,7 +84,7 @@ with severity/field/reason, source record ID and retrieval ordinal. Retained
 snapshot loads identify raw page/feature position. New join manifests/review
 summaries retain the diagnostics and counts. File import rows instead fail the
 whole import. Legacy snapshots without metadata get an explicit warning, not an
-assumed schema pass. Shared complete-run eligibility remains ML-127.
+assumed schema pass. Shared complete-run eligibility is implemented by [ML-127](publication.md).
 
 ## Engineering resource limits
 
@@ -118,7 +119,7 @@ are implemented separately by [ML-126](retrieval.md). This is not an OS sandbox 
 
 Use the [offline suite](testing.md), Ruff and board validation. The synthetic probe
 reports D01-D05 rejection (and valid typed years). ML-126 subsequently fixes
-D06/D07; only D08's publication/reader gap remains deferred to ML-127.
+D06/D07; ML-127 subsequently fixes D08's publication/reader gap as well.
 The probe does not assert that bugs must persist.
 Tests use sanitized fixtures and owned temporary files, not actual county rows.
 Windows strict path resolution may need unsandboxed filesystem access; do not

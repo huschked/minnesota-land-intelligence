@@ -20,11 +20,16 @@ from urllib.request import urlopen
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 
+from mn_land.runs import validate_run
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--review-dir", type=Path, required=True)
     args = parser.parse_args()
+    # Validate before creating output or contacting a county service. Historical
+    # experiment folders are not silently upgraded into version-2 review inputs.
+    validate_run(args.review_dir, "review")
     now = datetime.now(UTC)
     root = Path(__file__).resolve().parents[1]
     output = root / "data/raw/isanti/verification" / now.strftime("%Y-%m-%dT%H%M%S%fZ")
@@ -48,13 +53,15 @@ def main() -> None:
             reader = PdfReader(io.BytesIO(data))
             text = "\n".join(page.extract_text() or "" for page in reader.pages)
             (output / f"{parcel_id}.txt").write_text(text, encoding="utf-8")
-            evidence.update({
-                "status": "retrieved_not_yet_compared",
-                "sha256": hashlib.sha256(data).hexdigest(),
-                "pages": len(reader.pages),
-                "pdf_path": str(path),
-                "contains_parcel_id": parcel_id in text,
-            })
+            evidence.update(
+                {
+                    "status": "retrieved_not_yet_compared",
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                    "pages": len(reader.pages),
+                    "pdf_path": str(path),
+                    "contains_parcel_id": parcel_id in text,
+                }
+            )
         except (OSError, ValueError, PdfReadError) as exc:
             evidence.update({"status": "retrieval_failed", "error": str(exc)})
         results.append(evidence)
@@ -86,17 +93,21 @@ def main() -> None:
             (output / (suffix.replace("/", "_") + "_unmatched_query.json")).write_text(
                 json.dumps(payload, indent=2), encoding="utf-8"
             )
-            diagnostic.update({
-                "status": "queried", "layer_name": metadata.get("name"),
-                "feature_count": len(payload.get("features", [])),
-            })
+            diagnostic.update(
+                {
+                    "status": "queried",
+                    "layer_name": metadata.get("name"),
+                    "feature_count": len(payload.get("features", [])),
+                }
+            )
         except (OSError, ValueError) as exc:
             diagnostic.update({"status": "failed", "error": str(exc)})
         diagnostics.append(diagnostic)
         time.sleep(0.25)
     manifest = {
         "review_dir": str(args.review_dir.resolve()),
-        "retrieved_at": now.isoformat(), "reports": results,
+        "retrieved_at": now.isoformat(),
+        "reports": results,
         "unmatched_identity_diagnostics": diagnostics,
         "manual_comparison_status": "pending",
     }

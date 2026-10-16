@@ -143,4 +143,7 @@ typed years, text-only parcel IDs, retained supporting evidence, and GIS row
 quarantines. Historical import notes/results remain historical and unchanged;
 ML-126 now implements [HTTP/completeness checks](../retrieval.md), including the
 adapter's expected layer name and schema callback. No live refresh or original
-result regeneration was performed. Complete-run publication remains ML-127 work.
+result regeneration was performed. ML-127 implements [complete-run publication](../publication.md)
+and shared reader checks for new inputs/results. Historical Isanti snapshots remain
+legacy/unverified in status and are not automatically selected. Monetary-field and
+unmatched-account questions still require county evidence.

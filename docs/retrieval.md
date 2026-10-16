@@ -86,9 +86,9 @@ CLI acquisition errors produce a clear error exit instead of an unhandled traceb
 
 This is **not** atomic processed publication or shared reader eligibility. A caller
 may receive earlier generator pages before a later source check fails; the current
-pipeline waits for acquisition completion before exporting. ML-127 will enforce
-completion and hashes across all readers. Legacy snapshots are not rewritten, and
-the existing filename-based reader must not be mistaken for that future guarantee.
+pipeline waits for acquisition completion before normalization/exporting. ML-127 now
+implements [completion and hash validation across readers](publication.md).
+Legacy snapshots are not rewritten or automatically certified by those checks.
 
 ## Offline verification
 

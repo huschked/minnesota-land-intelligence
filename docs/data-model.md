@@ -57,8 +57,8 @@ artifacts with unknown code identity; never backfill an assumed revision.
 
 The proposed distinction between complete raw acquisition and complete processed
 publication, manifest version 2, row quarantine accounting, and legacy reader
-eligibility is specified in [ML-119's contract](ingestion-contracts.md). It is not
-the current manifest implementation; ML-127 owns that change. ML-125 now enforces
+eligibility is implemented by [ML-127's completion protocol](publication.md),
+separately from the version-1 provenance object. ML-125 enforces
 finite numeric values and strict input representations at ingestion boundaries;
 Python type annotations alone do not supply those checks.
 
@@ -84,3 +84,21 @@ attempt ranges, warnings, and `transactional_snapshot: false`. Retained count/ID
 responses and original-body/parsed sidecars are hashed alongside pages. These are
 acquisition observations, not a new county fact, proven atomic source version or
 ML-127 completion manifest. See [retrieval evidence](retrieval.md).
+
+## Completion manifests, schema version 2 (ML-127)
+
+`completion.json` identifies county, kind, UUID, complete status and raw/processed
+stage, timezone-aware time, complete contained relative inventory with size/hash,
+pinned source snapshot references/completion hashes and exact output row counts.
+`completion.provenance.schema_version` remains 1. A separate immutable operation
+`manifest.json` or review `summary.json` retains existing semantic fields.
+`reservation.json` records exclusive identity; `failure.json` invalidates failed
+runs where diagnostics can be written. `latest.json` atomically references a
+complete run and its completion hash. Pending records are not eligible.
+
+GIS accounting explicitly partitions OIDs into normalized/quarantined records;
+diagnostics retain raw page and feature identity. Join accounting partitions actual
+source-row ordinals into matched/unmatched/ambiguous and disjoint tax-period sets.
+Duplicate-review rows overlap, and prior/current parcel views may overlap, without
+being added to source totals. Unknown balances and source holds are unchanged.
+See [publication and validation boundaries](publication.md).

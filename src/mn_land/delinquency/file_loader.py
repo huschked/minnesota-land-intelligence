@@ -111,10 +111,14 @@ class FileDelinquencySource(DelinquencySource):
         mapping: DelinquencyMapping,
         *,
         limits: InputLimits = DEFAULT_INPUT_LIMITS,
+        retrieved_at: datetime | None = None,
     ) -> None:
         self.path = path
         self.mapping = mapping
         self.limits = limits
+        if retrieved_at is not None and retrieved_at.tzinfo is None:
+            raise DelinquencyFileError("retrieved_at requires a timezone")
+        self.retrieved_at = retrieved_at
 
     def load_records(self) -> list[DelinquencyRecord]:
         self.mapping.__post_init__()  # Recheck mutable nested mappings at the public boundary.
@@ -126,7 +130,7 @@ class FileDelinquencySource(DelinquencySource):
             raise DelinquencyFileError(
                 f"mapped source columns are absent: {', '.join(sorted(missing))}"
             )
-        retrieved_at = datetime.now(UTC)
+        retrieved_at = self.retrieved_at or datetime.now(UTC)
         records = []
         for row in rows:
             location = (

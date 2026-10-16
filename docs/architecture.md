@@ -1,6 +1,6 @@
 # Architecture
 
-The parcel pipeline is deliberately linear: official ArcGIS service → county adapter → canonical parcel → validation/filtering → exports. `ArcGISClient` owns HTTP, retries, metadata, count checks, and pagination. The Isanti county adapter package owns county GIS field names and schema declarations. Core filtering accepts `Parcel` instances and records deterministic rejection reasons.
+The parcel pipeline is deliberately linear: official ArcGIS service → complete raw acquisition → pinned source copy → county adapter/canonical parcel → validation/filtering → completed per-run exports. `ArcGISClient` owns HTTP, retries, metadata, count checks, and pagination. The Isanti county adapter package owns county GIS field names and schema declarations. Core filtering accepts `Parcel` instances and records deterministic rejection reasons.
 
 Phase 1.1 separates source responsibilities. A `DelinquencySource` produces county-independent `DelinquencyRecord` objects from an authoritative delinquency-specific publication. The parcel and delinquency snapshots are normalized independently, joined only by a county-specific deterministic parcel-ID key, and retain independent lineage.
 
@@ -12,7 +12,7 @@ Official delinquency file -> DelinquencyRecord --+
 
 Absence from a snapshot does not establish that a parcel is current. Duplicate delinquency rows and duplicate parcel join keys are ambiguous, not silently aggregated. Unmatched source rows are exported for review.
 
-New parcel acquisitions store initial/final metadata and count/ID inventories, ordered parsed pages, and bounded original HTTP bodies with per-attempt evidence/hashes under a timestamped raw directory. Capability, page, membership and detectable-change checks are described in [retrieval](retrieval.md); historical parsed-only captures are unchanged. Each delinquency import copies the original file and reviewed mapping into a new timestamped snapshot with SHA-256 hashes, currently after parsing. Processed join results are timestamped, but a failed run can leave a partial new directory; timestamping alone is not atomic publication.
+New parcel acquisitions store initial/final metadata and count/ID inventories, ordered parsed pages, and bounded original HTTP bodies with per-attempt evidence/hashes under an exclusively reserved UUID directory. Capability, page, membership and detectable-change checks are described in [retrieval](retrieval.md). New file imports capture exact bounded mapping/source/supporting bytes before normalization. Raw and processed completion are separate; failed/staging directories are not results. See [publication](publication.md). Historical captures remain unchanged.
 
 Additional counties should implement `CountyAdapter` and produce the same canonical model. Future GIS enrichment can attach derived observations after normalization; persistent spatial processing can move to PostGIS only when scale warrants it. None of that is part of Phase 1.
 
@@ -42,13 +42,13 @@ is not a recoverable release on its own; retain the corresponding source changes
 The helper performs no network requests and adds no runtime dependency.
 
 New GIS raw manifests carry request/runtime identity and raw artifact hashes.
-`find-candidates` writes `execution.json` in the raw run directory, linking those
+`find-candidates` writes `execution.json` in its immutable processed run, linking those
 inputs to the derived exports. Join manifests and review summaries carry their own
 `provenance` object. Their self-hashes are deliberately excluded. Historical
-snapshots are not rewritten, and the compatibility parcel exports can still be
-overwritten by subsequent runs; failure/atomic-publication hardening is ML-127.
+snapshots and old flat parcel exports are not rewritten. New outputs use per-run
+directories and validated completion records/pointers, not flat compatibility files.
 
-## Planned ingestion hardening
+## Implemented ingestion hardening
 
 [ML-119's contracts and fixture matrix](ingestion-contracts.md) distinguish
 observed behavior from proposed validation/retrieval/publication guarantees.
@@ -58,5 +58,7 @@ callback, and explicit normalization diagnostics. ML-126 now implements
 [respectful HTTP and source completeness](retrieval.md), using that callback before
 queries and again at the end. Policy is shared between Settings, client and transport;
 sequential pacing/retry budgets and original response capture use fake clocks in tests.
-ML-127 still owns staged publication and shared reader eligibility. Existing raw
-manifests and recorded hashes are not proof those future checks are enforced.
+ML-127 implements [staged completion publication and shared reader eligibility](publication.md).
+Producers pin validated source graphs and reconcile actual artifacts/rows before
+installing version-2 completion records and latest pointers. Legacy manifests and
+recorded hashes alone are not new-protocol eligibility. No migration is performed.

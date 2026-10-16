@@ -1,6 +1,6 @@
 # Epics and story backlog
 
-Updated: 2026-10-15. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
+Updated: 2026-10-16. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
 The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125 and ML-126 did not regenerate those results. ML-126 passed 468 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. See [validation](../validation.md), [retrieval](../retrieval.md), and [testing evidence](../testing.md). Current retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
@@ -651,7 +651,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-127"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P0
 
@@ -663,17 +663,17 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Implement contract section 4's distinct raw-complete/processed-complete stages and new versioned completion manifests; normalize exact retained input copies, use exclusive run identities, stage on the destination filesystem, and publish completion atomically only after inventory/hash/count checks.
-- [ ] Make status/latest/explicit parcel loads/imports/reviews share manifest kind/county/status/path/count/hash eligibility checks; staging, failures, tampered/missing files, and invalid newest directories cannot become usable results.
-- [ ] Preserve bounded failure diagnostics/raw evidence and exact source-row/quarantine accounting; do not double-count overlapping duplicate reviews or prior/current parcel views, aggregate unknown balances, or overwrite prior success.
-- [ ] Publish immutable per-run parcel outputs; any legacy flat compatibility files are non-authoritative. Preserve historical manifests unchanged, disclose legacy eligibility limitations, and leave portable replay/data backup to ML-123/ML-128.
-- [ ] Complete R01-R07 failure-injection, interruption, collision, legacy, reader, and successful empty-result fixtures across parcel/import/review paths, including the nine join exports and seven review CSVs.
+- [x] Implement contract section 4's distinct raw-complete/processed-complete stages and new versioned completion manifests; normalize exact retained input copies, use exclusive run identities, stage on the destination filesystem, and publish completion atomically only after inventory/hash/count checks.
+- [x] Make status/latest/explicit parcel loads/imports/reviews share manifest kind/county/status/path/count/hash eligibility checks; staging, failures, tampered/missing files, and invalid newest directories cannot become usable results.
+- [x] Preserve bounded failure diagnostics/raw evidence and exact source-row/quarantine accounting; do not double-count overlapping duplicate reviews or prior/current parcel views, aggregate unknown balances, or overwrite prior success.
+- [x] Publish immutable per-run parcel outputs; any legacy flat compatibility files are non-authoritative. Preserve historical manifests unchanged, disclose legacy eligibility limitations, and leave portable replay/data backup to ML-123/ML-128.
+- [x] Complete R01-R07 failure-injection, interruption, collision, legacy, reader, and successful empty-result fixtures across parcel/import/review paths, including the nine join exports and seven review CSVs.
 
-**Validation:** R01-R07 plus full offline CI; inject failures at every publication boundary and verify previous successful files/pointers are unchanged, no partial run is eligible, actual published hashes match, and unversioned history is neither rewritten nor silently certified.
+**Validation:** R01-R07 implemented. Local release suite: 536 passed, two Windows symlink-privilege skips, one live deselection, plus the final boolean-counter fixture passed separately. Ruff, board, documentation links and explicit live-test collection passed; no government requests. Hosted four-job CI pending. See [testing evidence](../testing.md).
 
-**Notes:** ML-125 and ML-126 are Done, so this card is Ready, not started. No new database, UI, remote backups, historical migration, arbitrary filesystem deletion, or claimed power-loss durability. A complete raw acquisition is not automatically a successful processed run.
+**Notes:** Owner: Codex. Selected 2026-10-16. ML-125 and ML-126 are Done. No new database, UI, remote backups, historical migration, arbitrary filesystem deletion, or claimed power-loss durability. A complete raw acquisition is not automatically a successful processed run.
 
-**Evidence / starting points:** [Contract section 4 and R01-R07 matrix](../ingestion-contracts.md), [parcel pipeline](../../src/mn_land/ingestion/pipeline.py), [join pipeline](../../src/mn_land/delinquency/pipeline.py), [review](../../src/mn_land/counties/isanti/review.py), [CLI status](../../src/mn_land/cli.py), [provenance](../../src/mn_land/provenance.py)
+**Evidence / starting points:** [Implemented publication protocol](../publication.md), [R01-R07 fixtures](../../tests/unit/test_run_publication.py), [shared validator/publisher](../../src/mn_land/runs.py), [content accounting](../../src/mn_land/run_checks.py), [contract section 4](../ingestion-contracts.md), [parcel pipeline](../../src/mn_land/ingestion/pipeline.py), [join pipeline](../../src/mn_land/delinquency/pipeline.py), [review](../../src/mn_land/counties/isanti/review.py), [CLI status](../../src/mn_land/cli.py)
 
 ### ML-128 - Back up and restore ignored raw data and correspondence
 

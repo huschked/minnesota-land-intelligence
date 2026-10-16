@@ -19,6 +19,7 @@ not an assertion that every row is prior-year delinquency. See
 [ingestion contracts](ingestion-contracts.md) for the observed schema evidence,
 field/type gates, service limits/retry/completeness rules, file constraints,
 and partial-run policy. ML-125's [file/schema validation](validation.md) is
-implemented, as is ML-126's [HTTP retrieval/completeness](retrieval.md). Atomic
-publication remains planned ML-127 work. An active year convention always requires retained evidence;
+implemented, as are ML-126's [HTTP retrieval/completeness](retrieval.md) and ML-127's
+[completion publication and reader validation](publication.md). Existing retained
+snapshots remain legacy/unverified, not silently migrated. An active year convention always requires retained evidence;
 strict parsing does not expand the authority or meaning of any source.

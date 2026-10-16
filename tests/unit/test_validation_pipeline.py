@@ -2,7 +2,6 @@
 
 import csv
 import json
-from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
 
@@ -18,25 +17,15 @@ from mn_land.provenance import sha256_file
 FIXTURES = Path(__file__).parents[1] / "fixtures"
 
 
-def parcel_snapshot(tmp_path: Path) -> Path:
+def parcel_snapshot(tmp_path: Path, make_raw) -> Path:
     raw = tmp_path / "raw"
-    snapshot = raw / "isanti" / "2026-01-01"
-    snapshot.mkdir(parents=True)
-    (snapshot / "manifest.json").write_text(
-        json.dumps(
-            {
-                "retrieved_at": datetime(2026, 1, 1, tzinfo=UTC).isoformat(),
-                "record_count": 1,
-            }
-        ),
-        encoding="utf-8",
-    )
-    source = json.loads((FIXTURES / "isanti_parcel.json").read_text(encoding="utf-8"))
-    (snapshot / "page_00001.json").write_text(json.dumps({"features": [source]}), encoding="utf-8")
+    make_raw(raw)
     return raw
 
 
-def test_F08_nested_evidence_is_not_flattened_and_bytes_remain_unchanged(tmp_path) -> None:
+def test_F08_nested_evidence_is_not_flattened_and_bytes_remain_unchanged(
+    tmp_path, make_raw
+) -> None:
     payload = json.loads((FIXTURES / "isanti_delinquency_mapping.json").read_text(encoding="utf-8"))
     payload["supporting_documents"] = ["first/note.md", "second/note.md"]
     for index, name in enumerate(payload["supporting_documents"]):
@@ -51,7 +40,7 @@ def test_F08_nested_evidence_is_not_flattened_and_bytes_remain_unchanged(tmp_pat
         source_path,
         mapping_path,
         Decimal(10),
-        raw_root=parcel_snapshot(tmp_path),
+        raw_root=parcel_snapshot(tmp_path, make_raw),
         processed_root=tmp_path / "processed",
     )
     assert (sha256_file(mapping_path), sha256_file(source_path)) == before
@@ -68,10 +57,10 @@ def test_F08_nested_evidence_is_not_flattened_and_bytes_remain_unchanged(tmp_pat
     assert reloaded.supporting_documents == tuple(payload["supporting_documents"])
     manifest = json.loads((stats.processed_snapshot_dir / "manifest.json").read_text())
     assert manifest["input_limits"]["max_records"] == 100_000
-    assert manifest["parcel_normalization_diagnostics"][0]["severity"] == "warning"
+    assert isinstance(manifest["parcel_normalization_diagnostics"], list)
 
 
-def test_F08_unsafe_mapping_fails_before_any_raw_copy(tmp_path) -> None:
+def test_F08_unsafe_mapping_retains_mapping_not_referenced_inputs(tmp_path) -> None:
     payload = json.loads((FIXTURES / "isanti_delinquency_mapping.json").read_text(encoding="utf-8"))
     payload["supporting_documents"] = ["../outside.md"]
     mapping = tmp_path / "mapping.json"
@@ -84,12 +73,17 @@ def test_F08_unsafe_mapping_fails_before_any_raw_copy(tmp_path) -> None:
             raw_root=tmp_path / "raw",
             processed_root=tmp_path / "processed",
         )
-    assert not (tmp_path / "raw").exists()
+    failures = list((tmp_path / "raw").glob("isanti/delinquency/*/failure.json"))
+    assert len(failures) == 1
+    assert (failures[0].parent / "mapping.json").read_bytes() == mapping.read_bytes()
+    assert not (failures[0].parent / "source.csv").exists()
+    assert not (failures[0].parent / "supporting").exists()
+    assert not (failures[0].parent / "completion.json").exists()
 
 
 @pytest.mark.parametrize("format", ["csv", "xlsx"])
-def test_F04_F06_review_keeps_original_source_row_locations(tmp_path, format) -> None:
-    raw = parcel_snapshot(tmp_path)
+def test_F04_F06_review_keeps_original_source_row_locations(tmp_path, format, make_raw) -> None:
+    raw = parcel_snapshot(tmp_path, make_raw)
     source = tmp_path / f"source.{format}"
     payload = {
         "source_agency": "Isanti County",

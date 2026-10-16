@@ -9,18 +9,9 @@ from mn_land.provenance import sha256_file
 FIXTURES = Path(__file__).parents[1] / "fixtures"
 
 
-def test_import_snapshots_joins_and_exports_without_overwrite(tmp_path: Path) -> None:
+def test_import_snapshots_joins_and_exports_without_overwrite(tmp_path: Path, make_raw) -> None:
     raw_root = tmp_path / "raw"
-    parcel_snapshot = raw_root / "isanti" / "2026-08-23T000000Z"
-    parcel_snapshot.mkdir(parents=True)
-    parcel_record = json.loads((FIXTURES / "isanti_parcel.json").read_text(encoding="utf-8"))
-    (parcel_snapshot / "page_00001.json").write_text(
-        json.dumps({"features": [parcel_record]}), encoding="utf-8"
-    )
-    (parcel_snapshot / "manifest.json").write_text(
-        json.dumps({"retrieved_at": "2026-08-23T00:00:00+00:00", "record_count": 1}),
-        encoding="utf-8",
-    )
+    make_raw(raw_root)
     stats = import_and_join_delinquency(
         FIXTURES / "isanti_delinquency.csv",
         FIXTURES / "isanti_delinquency_mapping.json",
@@ -38,7 +29,7 @@ def test_import_snapshots_joins_and_exports_without_overwrite(tmp_path: Path) ->
     manifest = json.loads((stats.processed_snapshot_dir / "manifest.json").read_text())
     provenance = manifest["provenance"]
     assert provenance["configuration"]["minimum_acres"] == "10"
-    assert str((stats.raw_snapshot_dir / "mapping.json").resolve()) in {
+    assert str((Path(manifest["delinquency_snapshot"]) / "mapping.json").resolve()) in {
         artifact["path"] for artifact in provenance["inputs"]
     }
     for artifact in provenance["inputs"] + provenance["outputs"]:

@@ -157,8 +157,11 @@ def main() -> None:
             json.dumps({"retrieved_at": "2026-10-14T00:00:00+00:00"}),
             encoding="utf-8",
         )
-        parcels, _, _ = load_latest_parcel_snapshot(IsantiAdapter(client=object()), latest.parent)
-        findings["manifest_only_snapshot_loaded_as_empty"] = len(parcels) == 0
+        findings["manifest_only_snapshot"] = observe(
+            lambda: len(
+                load_latest_parcel_snapshot(IsantiAdapter(client=object()), latest.parent)[0]
+            )
+        )
 
         for status in (404, 429):
 

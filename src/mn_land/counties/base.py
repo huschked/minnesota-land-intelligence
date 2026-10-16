@@ -13,7 +13,9 @@ class CountyAdapter(ABC):
         return None
 
     @abstractmethod
-    def fetch_parcels(self, raw_run_dir: Path, retrieved_at: datetime) -> Iterable[Mapping[str, Any]]:
+    def fetch_parcels(
+        self, raw_run_dir: Path, retrieved_at: datetime, *, directory_reserved: bool = False
+    ) -> Iterable[Mapping[str, Any]]:
         raise NotImplementedError
 
     @abstractmethod

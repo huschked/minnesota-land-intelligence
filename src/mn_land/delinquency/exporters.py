@@ -49,10 +49,10 @@ VERIFIED_FIELDS = (
 
 
 def export_join_result(
-    result: JoinResult, output_dir: Path, min_acres: Decimal
+    result: JoinResult, output_dir: Path, min_acres: Decimal, *, directory_reserved: bool = False
 ) -> tuple[tuple[Path, ...], int]:
     min_acres = minimum_acres(min_acres)
-    output_dir.mkdir(parents=True, exist_ok=False)
+    output_dir.mkdir(parents=True, exist_ok=directory_reserved)
     candidates = [
         match
         for match in result.verified_matches
@@ -68,14 +68,20 @@ def export_join_result(
         handle.write("\n")
 
     current_matches = [
-        match for match in result.exact_matches
+        match
+        for match in result.exact_matches
         if match.status != DelinquencyStatus.UNVERIFIED
-        and match.parcel.deeded_acres is not None and match.parcel.deeded_acres >= min_acres
+        and match.parcel.deeded_acres is not None
+        and match.parcel.deeded_acres >= min_acres
         and any(r.tax_period_status == TaxPeriodStatus.OVERDUE_CURRENT_YEAR for r in match.records)
     ]
     current_path = output_dir / "isanti_overdue_current_year_parcels.csv"
     current_json = output_dir / "isanti_overdue_current_year_parcels.json"
-    _write_csv(current_path, VERIFIED_FIELDS, [_verified_row(match, current=True) for match in current_matches])
+    _write_csv(
+        current_path,
+        VERIFIED_FIELDS,
+        [_verified_row(match, current=True) for match in current_matches],
+    )
     with current_json.open("x", encoding="utf-8") as handle:
         json.dump([_json_row(match, current=True) for match in current_matches], handle, indent=2)
         handle.write("\n")
@@ -162,8 +168,7 @@ def export_join_result(
                 "delinquency_source_rows": ";".join(
                     str(record.source_row_number)
                     for record in result.ambiguous_records
-                    if record.normalized_parcel_id
-                    == normalize_parcel_id(match.parcel.parcel_id)
+                    if record.normalized_parcel_id == normalize_parcel_id(match.parcel.parcel_id)
                 ),
             }
             for match in result.matches
@@ -171,8 +176,15 @@ def export_join_result(
         ],
     )
     return (
-        csv_path, json_path, review_path, unmatched_path, duplicates_path,
-        current_path, current_json, unverified_path, ambiguous_path
+        csv_path,
+        json_path,
+        review_path,
+        unmatched_path,
+        duplicates_path,
+        current_path,
+        current_json,
+        unverified_path,
+        ambiguous_path,
     ), len(candidates)
 
 
@@ -203,10 +215,10 @@ def _verified_row(match: ParcelDelinquencyMatch, *, current: bool = False) -> di
         "taxpayer_name": record.taxpayer_name if record else None,
         "owner_mailing_address": parcel.owner_mailing_address,
         "deeded_acres": value(parcel.deeded_acres),
-        "delinquent_years": (
-            ";".join(str(year) for year in years) if years else None
-        ),
-        "total_taxes_and_penalties_due": value(record.total_taxes_and_penalties_due) if record else None,
+        "delinquent_years": (";".join(str(year) for year in years) if years else None),
+        "total_taxes_and_penalties_due": value(record.total_taxes_and_penalties_due)
+        if record
+        else None,
         "delinquent_tax_amount": value(record.delinquent_tax_amount) if record else None,
         "penalty_amount": value(record.penalty_amount) if record else None,
         "current_tax_amount": value(parcel.current_tax_amount),
@@ -225,11 +237,23 @@ def _verified_row(match: ParcelDelinquencyMatch, *, current: bool = False) -> di
         "parcel_retrieved_at": parcel.source_metadata.retrieved_at.isoformat(),
         "delinquency_retrieved_at": source.retrieved_at.isoformat(),
         "delinquency_source_row": ";".join(str(r.source_row_number) for r in records),
-        "assessment_years": ";".join(str(y) for y in sorted({r.assessment_year for r in records if r.assessment_year is not None})) or None,
-        "taxes_payable_years": ";".join(str(y) for y in sorted({r.taxes_payable_year for r in records if r.taxes_payable_year is not None})) or None,
+        "assessment_years": ";".join(
+            str(y)
+            for y in sorted({r.assessment_year for r in records if r.assessment_year is not None})
+        )
+        or None,
+        "taxes_payable_years": ";".join(
+            str(y)
+            for y in sorted(
+                {r.taxes_payable_year for r in records if r.taxes_payable_year is not None}
+            )
+        )
+        or None,
         "source_record_count": len(records),
         "balance_aggregation_status": "not_aggregated" if len(records) > 1 else "single_source_row",
-        "has_overdue_current_year": any(r.tax_period_status == TaxPeriodStatus.OVERDUE_CURRENT_YEAR for r in match.records),
+        "has_overdue_current_year": any(
+            r.tax_period_status == TaxPeriodStatus.OVERDUE_CURRENT_YEAR for r in match.records
+        ),
     }
 
 
@@ -238,11 +262,20 @@ def _json_row(match: ParcelDelinquencyMatch, *, current: bool = False) -> dict[s
     row = _verified_row(match, current=current)
     return {
         **row,
-        "delinquent_years": sorted({year for r in records for year in r.delinquent_years or ()}) or None,
-        "assessment_years": sorted({r.assessment_year for r in records if r.assessment_year is not None}) or None,
-        "taxes_payable_years": sorted({r.taxes_payable_year for r in records if r.taxes_payable_year is not None}) or None,
+        "delinquent_years": sorted({year for r in records for year in r.delinquent_years or ()})
+        or None,
+        "assessment_years": sorted(
+            {r.assessment_year for r in records if r.assessment_year is not None}
+        )
+        or None,
+        "taxes_payable_years": sorted(
+            {r.taxes_payable_year for r in records if r.taxes_payable_year is not None}
+        )
+        or None,
         "delinquency_original_row": records[0].original_row if len(records) == 1 else None,
-        "delinquency_source_metadata": records[0].source_metadata.to_dict() if len(records) == 1 else None,
+        "delinquency_source_metadata": records[0].source_metadata.to_dict()
+        if len(records) == 1
+        else None,
         "delinquency_source_records": [
             {
                 "source_row_number": r.source_row_number,

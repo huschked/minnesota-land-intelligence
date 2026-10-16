@@ -2,8 +2,8 @@
 
 Status: discovery complete; ML-125 subsequently implements section 2 and F01-F09
 as described in [validation](validation.md). ML-126 implements section 3 and H01-H08
-as described in [retrieval](retrieval.md). **Section 4 remains planned ML-127 work,
-not a current guarantee.** Discovery behavior was inspected at baseline commit
+as described in [retrieval](retrieval.md). ML-127 implements section 4 and R01-R07,
+as described in [publication](publication.md). Historical discovery behavior was inspected at baseline commit
 `4374e65b5bda9d15ab2f3aaf4b4110060f85ffa0`. ML-125, ML-126, and ML-127 own
 implementation and regression fixtures. Scope is existing Isanti ingestion,
 normalization boundaries, and safe output publication, not new county semantics,
@@ -234,7 +234,7 @@ supports a delay or HTTP-date. The
 explains cached-value loading; this plan deliberately refuses formulas rather
 than treating a cache as an authoritative freshly calculated value.
 
-## 4. Target failure/publication contract — ML-127
+## 4. Failure/publication contract — implemented by ML-127
 
 Separate **complete raw acquisition** from **successful processed publication**.
 A GIS retrieval can be complete even if a later export fails. A raw file copy is
@@ -283,7 +283,8 @@ ignored/private and are never added to CI fixtures or GitHub artifacts.
 
 F01-F09 are implemented and traced in [validation](validation.md).
 H01-H08 are implemented by ML-126 in the source/HTTP fixtures linked from
-[retrieval](retrieval.md). R01-R07 remain **planned tests**, not current guarantees.
+[retrieval](retrieval.md). R01-R07 are implemented in
+[publication fixtures](../tests/unit/test_run_publication.py); see [publication](publication.md).
 Construct sanitized inputs; mock transport, clock, file failures, and inventories.
 The discovery probe confirms selected gaps but does not replace implementation
 regressions. P0 fixtures gate the owning story; P1 fixtures also belong to that
@@ -310,7 +311,7 @@ story before Done, with ordering intended to tackle highest factual risk first.
 | H08 P1 | ML-126 | Malformed JSON, non-object JSON, ArcGIS transient/permanent errors, oversized/body-truncated responses | Bounded behavior, retained original body and parsed-payload hashes; no cached substitution. |
 | R01 P0 | ML-127 | Source/mapping edited during validation; tampered raw page/input hash | Normalize from exact retained copies or fail; source bytes and provenance agree. |
 | R02 P0 | ML-127 | Inject failure at source copy, normalization, each export, hashing, manifest write, promotion/pointer update | No partial result is eligible; prior complete runs/pointer remain usable; failure diagnostics retained where possible. |
-| R03 P0 | ML-127 | Manifest-only/newest-invalid directories, absent/wrong complete marker, missing/mismatched output inventory | Shared readers/status exclude invalid latest; use valid prior run or fail when none remains. Probe D08 demonstrates current gap. |
+| R03 P0 | ML-127 | Manifest-only/newest-invalid directories, absent/wrong complete marker, missing/mismatched output inventory | Shared readers/status exclude invalid latest; use valid prior run or fail when none remains. Probe D08 now reports rejection. |
 | R04 P0 | ML-127 | GIS quarantine, unmatched/ambiguous/duplicate source rows, mixed prior/current overlap, holds | Exact disjoint source accounting, no double-counted duplicates or money, known missing-ID diagnostics retained. Existing join/period tests are starting coverage. |
 | R05 P0 | ML-127 | Concurrent/same-time IDs, preexisting output, disk-full/permission/cross-filesystem errors | Exclusive identity, no overwrite, no false success or destructive cleanup. Existing successful timestamped import is not a collision/failure test. |
 | R06 P1 | ML-127 | Interrupted/staging run, stale pointer, malicious manifest paths, legacy unversioned inputs | No automatic eligibility by filename; explicit legacy limitations; no rewrite/delete of historical evidence. |
