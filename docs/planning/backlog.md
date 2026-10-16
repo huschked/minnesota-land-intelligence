@@ -2,7 +2,7 @@
 
 Updated: 2026-10-16. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125/126/127 did not regenerate those results. ML-127 passed 539 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical runs now remain legacy/unverified and are excluded from automatic new-protocol selection, not deleted or certified. ML-123 owns explicit replay. See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; the reliability/replay stories did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -543,7 +543,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-123"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -555,21 +555,21 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] CLI accepts explicit parcel/import snapshots, validates hashes and county/source compatibility, and records date differences.
-- [ ] Replaying retained inputs yields identical normalized content and candidate IDs apart from declared run metadata.
-- [ ] Failed or partial runs cannot become the latest usable snapshot; incompatible input dates are surfaced.
+- [x] CLI accepts explicit parcel/import snapshots, validates hashes and county/source compatibility, and records date differences.
+- [x] Replaying retained inputs yields identical normalized content and candidate IDs apart from declared run metadata.
+- [x] Failed or partial runs cannot become the latest usable snapshot; incompatible input dates are surfaced.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** S01-S07 fixtures cover explicit input selection, moved folders with unavailable old roots, CSV/XLSX/captured limits, later execution dates, normalized fingerprints and all nine export byte comparisons, mixed periods/holds/unknowns, threshold overrides, source/date mismatches, failed/corrupt/legacy inputs and prior-success preservation. Local full suite: 643 passed, two Windows symlink-privilege skips, one live deselection. Hosted implementation `7a53fdbec6a902e770e926b4cbe9447533d69b38` passed 645 tests with no skips in each of four Windows/Linux x Python 3.11/3.12 jobs, plus dependency consistency, Ruff, board, live collection and CI gate. All 325 relative document targets passed. No government calls or original-data replay occurred.
 
-**Notes:** Owner: Codex. Started 2026-10-16. Implement explicit complete parcel/import selection, self-contained offline replay and dated input/reproducibility evidence. New-protocol selection deliberately excludes legacy inputs. Legacy evidence remains read-only/unverified; no completion backfill, invented county inventories or current-payment claim. Historical inputs/results will not be reimported or modified as part of implementation.
+**Notes:** Owner: Codex. Completed 2026-10-16 after local and full hosted verification. New imports can select an explicit completed parcel acquisition; replay accepts a completed join or raw parcel/import pair without acquisition/latest lookup/new raw writes. Captured dates/limits and holds remain effective; source differences are surfaced and unexpected content/export drift blocks publication. Same-platform moved-folder portability is verified; cross-OS replay is not claimed. Older complete version-2 joins can compare existing exports while missing historical normalized fingerprints remain unknown. Pre-completion legacy data remains read-only/unverified, with no completion backfill, invented inventories, migration, current-payment claim or original-data reimport. The actual retained county datasets still have no eligible new-protocol runs; a recovery/reacquisition choice remains separate work. ML-201 and ML-124 are Ready, not started.
 
-**Evidence / starting points:** [1](../../src/mn_land/delinquency/pipeline.py)
+**Evidence / starting points:** [Full hosted run 38955519528](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38955519528), [commands and limits](../replay.md), [S01-S07 fixtures](../../tests/unit/test_snapshot_replay.py), [shared join/replay pipeline](../../src/mn_land/delinquency/pipeline.py), [reproducibility/date evidence](../../src/mn_land/replay.py), [testing](../testing.md)
 
 ### ML-124 - Validate refresh, stale-data, and changed-parcel behavior
 
 <a id="ml-124"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -586,7 +586,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** No historical motivation score or unattended scheduled job is included.
+**Notes:** ML-123 is Done, so this card is Ready, not started. Choose genuinely compatible completed inputs for comparisons; the retained historical county snapshots remain pre-completion legacy and cannot be silently recertified. Any recovery/reacquisition of actual data needs an explicit reviewed path. No historical motivation score or unattended scheduled job is included; disappearance never proves payment.
 
 **Evidence / starting points:** [1](../counties/isanti.md)
 

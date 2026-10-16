@@ -51,14 +51,16 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-123: explicit selected-snapshot replay, building on implemented
-   [validation](../validation.md), [retrieval](../retrieval.md) and
-   [completion publication](../publication.md). Legacy compatibility must disclose
-   missing checks, not manufacture completion evidence.
-2. ML-201: define the basic local viewer workflow and technology choice. This
+1. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
-3. ML-124: refresh validation after replay; ML-202 onward then
+2. ML-124: refresh validation after completed replay; ML-202 onward then
    implement the viewer on that stable data boundary.
+
+ML-123 is Done: [explicit snapshot selection/replay](../replay.md) passed 645
+offline tests in all four hosted Windows/Linux jobs. Historical pre-completion
+inputs remain unverified and were not reimported. Source-date differences, holds
+and missing historical fingerprints are disclosed; no completion evidence is
+manufactured. The viewer discovery should explicitly account for that data boundary.
 
 ML-117, ML-121, and ML-122 wait for actual county information. They do not block
 basic exploration of the existing factual shortlist, but verified financial

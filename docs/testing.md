@@ -223,5 +223,16 @@ Local verification on 2026-10-16 passed 643 offline tests, skipped the two real
 symlink fixtures because this Windows account lacks privileges, and deselected
 one live test in 147.17 seconds. Ruff and the 13-epic/85-story board check passed.
 Explicit live collection selected one test and deselected 645 offline cases,
-without making requests. CLI replay help was checked. Hosted full-matrix
-verification is pending; no hosted success is claimed yet.
+without making requests. CLI replay help was checked; 325 relative document targets
+passed. The actual read-only county status check still reports only legacy data;
+it did not manufacture completed runs.
+
+[Hosted ML-123 run 38955519528](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38955519528)
+passed at implementation commit `7a53fdbec6a902e770e926b4cbe9447533d69b38` on
+2026-10-16 UTC / America/Chicago. All four Windows/Linux x Python 3.11/3.12 jobs
+passed 645 offline tests with no skips and one live deselection, plus dependency
+consistency, Ruff, board and explicit live collection (one selected, 645 deselected).
+The final CI gate passed. Hosted Linux test execution took 13.33/14.94 seconds;
+Windows took 60.60/96.99 seconds. Both real symlink fixtures executed successfully.
+Completion-documentation/board-only updates use fast Linux CI, not a repeated
+Windows run or a claim of additional Windows coverage. No live tests were executed.
