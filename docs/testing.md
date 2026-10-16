@@ -236,3 +236,24 @@ The final CI gate passed. Hosted Linux test execution took 13.33/14.94 seconds;
 Windows took 60.60/96.99 seconds. Both real symlink fixtures executed successfully.
 Completion-documentation/board-only updates use fast Linux CI, not a repeated
 Windows run or a claim of additional Windows coverage. No live tests were executed.
+
+## ML-201 discovery verification
+
+[The UI decision](ui-plan.md) was reviewed against the historical 15/49/62 view
+definitions, canonical/review fields, completion/replay source boundaries and
+official Streamlit/FastAPI/WCAG documentation on 2026-10-16. It records the chosen
+framework, local workflow/wireframe, access/unknown-data states, U01-U12 acceptance
+examples, bounded implementation cards and the actual-data gap addressed by ML-130.
+The skill's discovery script found no Streamlit in the active venv; no dependency
+was installed to perform this documentation-only spike. The read-only county
+status check still found no eligible completed new-protocol data.
+
+Validate this change with board generation/checks, relative-link/anchor review,
+diff checks and lint on the edited board renderer, not new unit tests for prose.
+Core/UI runtime tests, a live app, keyboard accessibility and framework compatibility
+were not newly exercised by this discovery and are not claimed to pass. Existing
+automatic fast CI may run the unchanged offline suite; that is regression evidence,
+not a UI test or an installed-framework check. No Windows matrix rerun is needed
+for these documentation/board-only changes under ML-129's policy.
+Local verification passed board generation/validation for 13 epics and 86 stories,
+352 relative document targets with no broken paths, renderer Ruff and diff checks.

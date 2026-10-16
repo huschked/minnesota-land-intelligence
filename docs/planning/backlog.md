@@ -729,11 +729,38 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Evidence / starting points:** [ML-129 full CI](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38952761645), [timing evidence and commands](../test-performance.md), [ML-127 CI baseline](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38943524762), [testing policy](../testing.md), [CI selection/gate fixtures](../../tests/unit/test_ci_plan.py), [bounded-reader safety fixtures](../../tests/unit/test_bounded_run_reads.py), [CI workflow](../../.github/workflows/ci.yml), [shared fixtures](../../tests/conftest.py)
 
+### ML-130 - Prepare actual eligible data for the local viewer
+
+<a id="ml-130"></a>
+
+**Status:** Ready
+
+**Priority:** P1
+
+**Kind:** Chore
+
+**Depends on:** ML-123, ML-201
+
+**User outcome:** As a researcher, I can use actual county results in the validated viewer rather than only synthetic fixtures or an empty eligibility screen.
+
+**Acceptance criteria:**
+
+- [ ] Inventory the actual retained inputs, dates, hashes and missing protocol evidence read-only; agree and record the recovery/reacquisition route before live requests or production reimports. Keep historical bytes/manifests and tax-year evidence unchanged; do not invent inventories or backfill completion records.
+- [ ] Produce genuinely eligible version-2 parcel/file/join/review inputs through the current pipeline using the reviewed county source/mapping and actual captured evidence. Use new immutable runs; government requests remain bounded/paced and require selection of this production preparation work, not a viewer click.
+- [ ] Record resulting source dates, counts, holds, unknown balances and differences from the historical examples without forcing 15/49/62 counts or inferring payment from disappearance. Confirm the full source graph validates and original retained-file hashes remain unchanged.
+- [ ] Document the real snapshot IDs/selection path and a handoff usable by ML-202/206 without committing raw data/correspondence, uploading datasets, claiming current balances or weakening legacy exclusion. Record actual failures/access blockers honestly if a usable result cannot be obtained.
+
+**Validation:** Validate the actual new source graph and lineage; compare before/after historical-input hashes, confirm ignored data stays untracked, and retain dated count/uncertainty evidence. No fabricated fixtures can satisfy the real-data handoff criterion.
+
+**Notes:** Identified by ML-201's read-only status check: the existing county files are pre-completion legacy and cannot enter the validated viewer directly. This card is Ready, not started, and adds no acquisition/reimport authorization now. ML-202 may build its loader/shell against sanitized fixtures independently; ML-206 needs this actual-data handoff before claiming real-data usability. Source preparation does not resolve blocked county accounting questions or implement refresh-difference analysis (ML-124).
+
+**Evidence / starting points:** [UI data gate](../ui-plan.md#data-readiness-is-a-separate-gate), [replay boundaries](../replay.md), [historical results](../reviews/isanti-prior-year-results-2026-10-14.md), [county year evidence](../counties/isanti-tax-year-confirmation.md), [publication](../publication.md)
+
 ## E03 - Phase 1.2 - Basic local review UI
 
 <a id="e03"></a>
 
-**Epic state:** Backlog
+**Epic state:** Active
 
 **Goal:** Make existing results usable through a small local viewer before advanced GIS features.
 
@@ -745,7 +772,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-201"></a>
 
-**Status:** Ready
+**Status:** Done
 
 **Priority:** P1
 
@@ -757,20 +784,20 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Document the primary table-to-detail workflow, users, local execution model, and accessibility needs.
-- [ ] Choose a proportionate UI technology with rationale and acceptance examples; full mapping, scoring, and public hosting stay outside this milestone.
+- [x] Document the primary table-to-detail workflow, users, local execution model, and accessibility needs.
+- [x] Choose a proportionate UI technology with rationale and acceptance examples; full mapping, scoring, and public hosting stay outside this milestone.
 
-**Validation:** Review the documented findings, source evidence, decision, and bounded follow-up tasks against the acceptance criteria.
+**Validation:** Reviewed the UI decision against current CLI/review schemas, historical view definitions, completion/replay boundaries, a fresh read-only eligibility check and official framework/accessibility documentation. The plan maps U01-U12 acceptance examples to ML-202/203/204/205/206 and new actual-data preparation ML-130. Discovery is documentation-only: no installed framework, browser runtime, keyboard conformance or UI test pass is claimed.
 
-**Notes:** Planning/discovery card; no framework has been selected or installed.
+**Notes:** Owner: Codex. Completed 2026-10-16. Selected Streamlit for a read-only, single-user loopback viewer, with a framework-independent validation/review service, explicit snapshot load, factual view filters, keyboard parcel selector, evidence details and safe contextual exports. Official references informed the decision because the skill discovery script found no installed Streamlit; version resolution and runtime/a11y validation remain implementation gates. Actual county data remains legacy, so ML-130 explicitly owns preparing usable real inputs. No framework installed, UI built, county request/reimport, data mutation, scoring or hosting occurred. ML-202 and ML-130 are Ready, not started.
 
-**Evidence / starting points:** [1](../../README.md)
+**Evidence / starting points:** [UI decision, wireframe and U01-U12 examples](../ui-plan.md), [historical views](../reviews/isanti-prior-year-results-2026-10-14.md), [replay](../replay.md), [Streamlit dataframe reference](https://docs.streamlit.io/develop/api-reference/data/st.dataframe), [AppTest](https://docs.streamlit.io/develop/api-reference/app-testing/st.testing.v1.apptest), [configuration](https://docs.streamlit.io/develop/api-reference/configuration/config.toml)
 
 ### ML-202 - Load and select verified result snapshots
 
 <a id="ml-202"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -784,12 +811,14 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Load validated outputs through an application service rather than reimplementing Isanti mappings in the UI.
 - [ ] Show listing/report/GIS dates, row counts, active holds, unknown fields, and helpful missing/corrupt-file states.
+- [ ] Add a minimal read-only Streamlit selector/error-state shell and optional tested UI dependency without making the CLI depend on it; resolve/pin a compatible version and verify loopback/telemetry/security configuration. Explicitly label synthetic fixtures and legacy/no-eligible states, never silently recertify or fall back.
+- [ ] Implement U01-U03/U08/U11 service boundaries: validate selected graphs and expose allowlisted DTOs, preserve selected identity across reruns, revalidate new disk reads/export, and prohibit acquisition/replay/network calls on UI interactions. Keep service tests independent of UI dependencies; use supported AppTest controls for the shell.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** An external county API must not be called on each UI interaction.
+**Notes:** Streamlit chosen by ML-201; no framework/app exists yet. Build only the loader/service and minimal selector shell here, not all table/detail/export features. Follow [the UI plan](../ui-plan.md). ML-130 supplies actual eligible data independently; fixture success is not proof the historical county files are usable. No external county API may be called on a UI interaction.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [UI decision and acceptance examples](../ui-plan.md), [completion reader](../../src/mn_land/runs.py), [replay evidence](../../src/mn_land/replay.py), [county review](../../src/mn_land/counties/isanti/review.py)
 
 ### ML-203 - Build searchable and filterable parcel tables
 
@@ -809,10 +838,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Support acreage, prior/current tax category, classification, improvement-known/zero, and PILT/exempt review filters.
 - [ ] Counts handle overlapping period views correctly; sorting/pagination preserves parcel IDs and nulls; filtered results are testable.
+- [ ] Provide the labelled keyboard parcel selector/detail action as well as any grid shortcut; stable snapshot/parcel identity must survive filtering, sorting and reruns (U04/U10). Compute view counts dynamically, retain unknowns/leading zeros, and prevent UI filters below the imported threshold from pretending missing records were loaded.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** No opportunity ranking or implied buildability.
+**Notes:** Follow [the UI plan](../ui-plan.md): the 15/49/62 counts are historical examples, not constants. Numeric filtering/sorting belongs in the service, not string-formatted grid values. No opportunity ranking or implied buildability.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 
@@ -834,6 +864,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Display parcel attributes, assessment versus payable years, all source rows, unknown monetary totals, and independent GIS/source owner text.
 - [ ] Link validated county references and evidence without exposing local secrets or treating field-name guesses as facts.
+- [ ] Implement U05-U07 with escaped source text and allowlisted external URL validation; no embedded/background county fetch or arbitrary local-file serving. Clearly distinguish raw unaggregated amounts, unknown resale/suitability facts, owner-text sources and parcel-specific sampled corroboration.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
@@ -859,6 +890,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] CSV/JSON exports include filters, snapshot references, source years, unknown markers, and deterministic record ordering.
 - [ ] Keep unmatched and source-accounting issues accessible; protect spreadsheet consumers from executable formula content while preserving raw inputs.
+- [ ] Implement U07/U08/U10: preview filters/counts/snapshot references and deterministic export order, revalidate before export, prevent built-in grid download/copy from bypassing safe contextual exports, and never mutate retained outputs or latest pointers. CSV neutralization must be disclosed; JSON preserves canonical values/nulls.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
@@ -876,7 +908,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Kind:** Story
 
-**Depends on:** ML-203, ML-204, ML-205
+**Depends on:** ML-203, ML-204, ML-205, ML-130
 
 **User outcome:** As a user, I can start and use the viewer reliably on this Windows workspace.
 
@@ -884,10 +916,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Document one clean startup/install path; verify keyboard operation, readable layouts, empty/error states, and representative workflows.
 - [ ] Keep unit/UI checks offline and confirm the UI reuses pipeline results; any future network exposure requires its own design and release review.
+- [ ] Verify U09/U11/U12 on the actual Windows/browser workflow with ML-130's eligible real inputs: keyboard parcel selection/focus, readable 200% zoom, no hidden row-identity changes, correct computed counts/source warnings, loopback-only startup and no automatic county requests. Distinguish AppTest coverage from browser/accessibility checks; do not claim usability from synthetic fixtures alone.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** Local viewer only; hosted web application remains E11.
+**Notes:** Local viewer only; hosted web application remains E11. Follow [the UI plan](../ui-plan.md). ML-130 is a real-data handoff gate; no new scoring, maps, source edits, owner outreach, user accounts or persistent research-notes system is included. Accessibility is a release check, not an assumed property of the selected framework.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

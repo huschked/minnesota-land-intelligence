@@ -51,10 +51,19 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-201: define the basic local viewer workflow and technology choice. This
-   discovery can be selected sooner if usability is the user's priority.
-2. ML-124: refresh validation after completed replay; ML-202 onward then
-   implement the viewer on that stable data boundary.
+1. ML-130: prepare genuinely eligible real county inputs through an agreed
+   recovery/reacquisition route; do not retrofit completion evidence into legacy
+   files. This is Ready, not started or authorized by the discovery alone.
+2. ML-202: implement the thin review service, optional Streamlit selector shell
+   and clear validated/legacy/error states. It can proceed against fixtures
+   independently of ML-130 when implementation is selected.
+3. ML-124: validate refresh/difference behavior without inferring payment from
+   disappearance. ML-203/204 then add tables/details, ML-205 exports, ML-206 packaging.
+
+ML-201 is Done: [the UI decision](../ui-plan.md) selects Streamlit and maps U01-U12
+workflow/accessibility/data-safety examples to implementation cards. No framework
+was installed or app built. ML-130 is a real-data handoff gate for ML-206; a
+fixture-only empty shell cannot count as usable actual county review.
 
 ML-123 is Done: [explicit snapshot selection/replay](../replay.md) passed 645
 offline tests in all four hosted Windows/Linux jobs. Historical pre-completion

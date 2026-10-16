@@ -5,6 +5,12 @@ Track work in the [Kanban board](docs/planning/kanban.md). Its
 dependencies, priorities, and evidence; the [workflow](docs/planning/workflow.md)
 explains status updates. The [roadmap](docs/roadmap.md) remains the phase overview.
 
+The goal is land acquisition research: identify delinquent-tax parcels worth
+further due diligence and possible offers, purchase, holding or resale—not treat
+delinquency alone as a buy signal. ML-201 selected Streamlit and defined
+[the first local viewer](docs/ui-plan.md); no framework is installed or UI built
+yet. Actual data preparation (ML-130) and UI implementation remain separate stories.
+
 **Current result: county-confirmed year conventions applied.** The export mixes
 unpaid prior-year taxes and overdue first-half current-year installments. The
 corrected import produces 62 prior-year delinquency parcels of at least 10 acres,

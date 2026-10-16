@@ -70,3 +70,15 @@ county/service/layer/query, pins exact inputs, records normalized/export fingerp
 and rejects unexpected drift before completion. Moved join graphs remain self-contained.
 Historical pre-completion runs are not migrated or certified; current code/runtime
 identity is recorded rather than pretending to restore historical software.
+
+## Planned local viewer (ML-201 decision, not implemented)
+
+[The UI plan](ui-plan.md) selects a thin read-only Streamlit interface over a
+framework-independent review service using existing completion/source validation.
+It specifies explicit loading, canonical view/filter/identity handling, separate
+source warnings, escaped details and safe contextual exports. No source normalization,
+acquisition/replay, scoring or hidden balance aggregation belongs in widgets.
+Session DTOs retain validation time; new disk reads/reload/export revalidate rather
+than caching trust by pathname. The actual county data is legacy, so ML-130 supplies
+eligible real inputs and ML-206 has a real-data/accessibility release gate. No UI
+source, optional dependency, runtime server or data migration is added by discovery.
