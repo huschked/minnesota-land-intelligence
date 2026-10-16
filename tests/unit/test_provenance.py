@@ -13,6 +13,8 @@ from mn_land.ingestion.arcgis import ArcGISClient
 from mn_land.ingestion.pipeline import run_pipeline
 from mn_land.provenance import build_provenance, sha256_file
 
+pytestmark = pytest.mark.real_git
+
 
 def test_provenance_hashes_effective_configuration_and_artifact_bytes(tmp_path: Path) -> None:
     artifact = tmp_path / "source.json"

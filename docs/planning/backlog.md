@@ -700,6 +700,35 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 
+### ML-129 - Shorten test feedback loops without weakening safety coverage
+
+<a id="ml-129"></a>
+
+**Status:** In Progress
+
+**Priority:** P1
+
+**Kind:** Chore
+
+**Depends on:** ML-118, ML-127
+
+**User outcome:** As a project owner, I get faster story delivery without silently losing data-integrity or Windows compatibility checks.
+
+**Acceptance criteria:**
+
+- [ ] Capture a dated, commit-specific timing baseline separating setup, test execution, and CI waiting; report slowest test setup/call/teardown durations on Windows and Linux. Investigate repeated filesystem validation/fixture construction before attributing the slowdown to OneDrive, antivirus, or a particular function.
+- [ ] Document targeted development commands and a final full-regression gate, avoiding redundant full-suite runs on unchanged code while rerunning affected checks after follow-up edits. Documentation/board-only verification must be proportional to the change.
+- [ ] Implement a fast Linux routine CI path and explicit Windows/full-matrix triggers for filesystem-sensitive changes, milestone completion, scheduled runs, and manual dispatch. Document the reduced routine cross-platform coverage and ensure conditional/skipped jobs cannot be reported as executed passes or bypass configured required checks.
+- [ ] Optimize measured fixture overhead and bounded file-read bottlenecks without weakening production hash, path-containment, completion, provenance, or accounting validation. Benchmark a small parallel-worker configuration if justified; retain serial execution if isolation, reliability, or timing regresses, and justify any added development dependency.
+- [ ] Compare before/after timings on equivalent inputs and environments, report actual improvement and remaining bottlenecks without promising an unmeasured speed target, and verify the full offline suite on both Windows and Linux with intentional privilege-based skips disclosed. Keep live government tests opt-in and verify their selection by collection only.
+- [ ] Update testing/workflow documentation with exact fast/full commands, CI triggers, fallback instructions, and dated evidence. Preserve all historical county data and existing regression assertions; no blanket test deletion, permanent Windows removal, government calls, or deployment.
+
+**Validation:** Record reproducible baseline/after commands, commit IDs, environments, durations, selected test counts and skips; run lint and board checks, verify fast/full trigger selection, and attach passing Windows/Linux full-suite evidence before Done.
+
+**Notes:** Owner: Codex. Started 2026-10-16 at the user's request, ahead of ML-123 as delivery-process work, not a functional prerequisite for replay. Profiling and bounded test/CI changes are in progress; no completion or speedup is claimed yet. The successful ML-127 implementation run took 13.49/16.60 seconds for Linux tests versus 339.14/358.37 seconds for Windows tests; the specific bottleneck remains to be profiled. ML-123 remains Ready and not started.
+
+**Evidence / starting points:** [ML-127 CI timing baseline](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38943524762), [testing policy](../testing.md), [CI workflow](../../.github/workflows/ci.yml), [pytest configuration](../../pyproject.toml), [shared fixtures](../../tests/conftest.py), [publication regression fixtures](../../tests/unit/test_run_publication.py)
+
 ## E03 - Phase 1.2 - Basic local review UI
 
 <a id="e03"></a>

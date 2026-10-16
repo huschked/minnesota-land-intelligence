@@ -17,6 +17,8 @@ build/
 dist/
 *.egg-info/
 *.log
+.test-ml129-*
+test-results.xml
 data/backups/
 data/raw/**
 !data/raw/.gitkeep

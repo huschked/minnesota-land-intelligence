@@ -51,13 +51,17 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-123: explicit selected-snapshot replay, building on implemented
+1. ML-129 (In Progress): measure and shorten test feedback loops; introduce
+   proportional development checks and fast documentation/board CI while retaining
+   explicit Windows/full regression gates. See [test performance](../test-performance.md)
+   for measured changes and the pending hosted-verification boundary.
+2. ML-123: explicit selected-snapshot replay, building on implemented
    [validation](../validation.md), [retrieval](../retrieval.md) and
    [completion publication](../publication.md). Legacy compatibility must disclose
    missing checks, not manufacture completion evidence.
-2. ML-201: define the basic local viewer workflow and technology choice. This
+3. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
-3. ML-124: refresh validation after replay; ML-202 onward then
+4. ML-124: refresh validation after replay; ML-202 onward then
    implement the viewer on that stable data boundary.
 
 ML-117, ML-121, and ML-122 wait for actual county information. They do not block
@@ -96,6 +100,10 @@ Every applicable item must hold:
   values remain traceable. Existing snapshots and unrelated user edits are preserved.
 - Relevant tests/checks pass, including required ingestion/normalization fixtures.
   Normal tests do not need live government APIs; live checks are explicit and dated.
+- Run affected tests during development, then a full regression at the implementation
+  boundary. Rerun affected checks for later code edits; do not repeat unchanged full
+  suites for documentation-only completion commits. Record actual revision/platform
+  coverage, not a Windows pass for Linux-only fast CI. Follow [test performance](../test-performance.md).
 - Source/algorithm changes include boundary, missing, duplicate, and malformed-data
   checks. Spatial/financial results state their units and tolerances.
 - User-visible changes have relevant workflow/accessibility checks; a discovery

@@ -81,11 +81,21 @@ def _unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
 
 
 def _read_bytes(path: Path, limit: int) -> bytes:
+    # A large read request can allocate the entire budget even for tiny JSON
+    # evidence on Windows. Read bounded chunks, still detecting growth/overflow
+    # from actual bytes rather than trusting an initial stat size.
+    chunks = []
+    remaining = limit + 1
     with path.open("rb") as handle:
-        body = handle.read(limit + 1)
-    if len(body) > limit:
+        while remaining:
+            chunk = handle.read(min(64 * 1024, remaining))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            remaining -= len(chunk)
+    if remaining == 0:
         raise RunValidationError("JSON evidence exceeds read budget")
-    return body
+    return b"".join(chunks)
 
 
 def read_json(path: Path) -> Any:

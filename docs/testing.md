@@ -35,10 +35,26 @@ For this workstation's Windows temp/cache permission workaround, see
 [recovery](reproducibility.md#clean-environment); always choose an unused temporary
 directory, because pytest may clear the selected directory.
 
+## Fast feedback (ML-129)
+
+Use affected modules while editing and one full offline regression at the
+implementation boundary; documentation-only follow-ups receive proportional board,
+link and diff checks. [Test performance](test-performance.md) gives exact commands,
+baseline/after timings, the synthetic Git fixture boundary and full-run fallback.
+Dedicated provenance tests always retain real Git identity collection; production
+hash/path/completion/accounting checks are unchanged. Live tests stay opt-in.
+
 ## GitHub Actions
 
-[CI workflow](../.github/workflows/ci.yml) runs on push, pull request, or manual
-dispatch, with four independent jobs: Ubuntu/Windows times Python 3.11/3.12.
+[CI workflow](../.github/workflows/ci.yml) runs on push, pull request, manual
+dispatch, published release, or a weekly schedule. A conservative complete-diff
+plan selects one Linux/Python 3.12 job for an explicit documentation/board-only
+allowlist, otherwise four independent jobs: Ubuntu/Windows times Python 3.11/3.12.
+Tag/milestone, manual and scheduled runs request the full matrix. Fast runs state
+that Windows was not run. The fixed `CI gate` fails on a failed, cancelled or
+skipped required plan/matrix job. See [coverage and fallback](test-performance.md#hosted-coverage-and-fallback)
+for triggers, limitations and required-check configuration; no branch protection
+settings are changed.
 The package declares >=3.11; this matrix checks its minimum and the workstation's
 Python minor version, not every later Python or operating-system release.
 

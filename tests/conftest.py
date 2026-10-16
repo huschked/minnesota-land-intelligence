@@ -8,6 +8,53 @@ from pathlib import Path
 
 import pytest
 
+_phase_maxima: dict[str, tuple[float, str]] = {}
+
+
+def pytest_sessionstart(session: pytest.Session) -> None:
+    _phase_maxima.clear()
+
+
+def pytest_runtest_logreport(report: pytest.TestReport) -> None:
+    if report.duration > _phase_maxima.get(report.when, (-1.0, ""))[0]:
+        _phase_maxima[report.when] = (report.duration, report.nodeid)
+
+
+def pytest_terminal_summary(terminalreporter) -> None:
+    if _phase_maxima:
+        terminalreporter.write_sep("-", "slowest test by phase (seconds)")
+        for phase in ("setup", "call", "teardown"):
+            if phase in _phase_maxima:
+                duration, nodeid = _phase_maxima[phase]
+                terminalreporter.write_line(f"{phase}: {duration:.4f}s {nodeid}")
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--real-test-git", action="store_true",
+        help="Benchmark with real Git identity in every fixture; dedicated provenance tests always do.",
+    )
+
+
+@pytest.fixture(autouse=True)
+def synthetic_git_identity(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Do not launch Git three times per synthetic pipeline provenance record.
+
+    Only the external Git identity is mocked. Source/artifact/configuration hashes,
+    runtime inspection and every production validator still execute normally.
+    Dedicated provenance and live tests opt out; benchmarks can opt out globally.
+    """
+    if (
+        request.config.getoption("--real-test-git")
+        or request.node.get_closest_marker("real_git") is not None
+        or request.node.get_closest_marker("integration") is not None
+    ):
+        return
+    monkeypatch.setattr(
+        "mn_land.provenance._git_identity",
+        lambda root: {"revision": None, "dirty": None, "status": "synthetic_test_fixture"},
+    )
+
 
 @pytest.fixture(autouse=True)
 def block_network_for_offline_tests(
