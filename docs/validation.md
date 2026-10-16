@@ -104,7 +104,7 @@ actual decompressed sizes/member counts are checked before workbook loading;
 nothing is extracted. Exceeding a budget fails, never truncates. Callable readers
 and importers accept positive-integer `InputLimits` overrides; new join manifests
 and provenance record effective values. CLI uses defaults. HTTP response limits
-are ML-126 work. This is not an OS sandbox or universal malware scanner.
+are implemented separately by [ML-126](retrieval.md). This is not an OS sandbox or universal malware scanner.
 
 ## Verification
 
@@ -117,8 +117,9 @@ are ML-126 work. This is not an OS sandbox or universal malware scanner.
 | F04, F06, F08 | [Import/review/copy integration](../tests/unit/test_validation_pipeline.py) |
 
 Use the [offline suite](testing.md), Ruff and board validation. The synthetic probe
-now reports D01-D05 rejection (and valid typed years), while D06-D08 still identify
-deferred transport/publication gaps. It does not assert that bugs must persist.
+reports D01-D05 rejection (and valid typed years). ML-126 subsequently fixes
+D06/D07; only D08's publication/reader gap remains deferred to ML-127.
+The probe does not assert that bugs must persist.
 Tests use sanitized fixtures and owned temporary files, not actual county rows.
 Windows strict path resolution may need unsandboxed filesystem access; do not
 weaken containment when resolution fails. The real symlink fixture is skipped

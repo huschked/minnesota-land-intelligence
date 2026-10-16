@@ -2,7 +2,7 @@
 
 Updated: 2026-10-15. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125 did not regenerate those results. ML-125 passed 283 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. See [validation](../validation.md) and [testing evidence](../testing.md). Current retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project is a working local CLI, not yet a UI or deployed service. The retained source snapshot has 62 large prior-year parcels, 49 outside PILT/exempt classifications, and a 15-parcel focused view; ML-125 and ML-126 did not regenerate those results. ML-126 passed 468 default offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. See [validation](../validation.md), [retrieval](../retrieval.md), and [testing evidence](../testing.md). Current retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -624,7 +624,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-126"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P0
 
@@ -641,9 +641,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [x] Reconcile initial/final count, OID inventories, fetched membership/order and page/transfer-limit behavior; reject detectable count/ID/schema/capability changes and disclose unknown same-ID attribute consistency when no edit token exists.
 - [x] Retain bounded original HTTP bodies and parsed JSON evidence with hashes, wire effective Settings into transport, and complete H01-H08 fixtures with fake transport/clocks and no government calls or real sleeps.
 
-**Validation:** H01-H08 implemented, including exact requests/waits/attempt/timeouts, body sizes/hashes, valid zero, short/multiple pages, drift and failure evidence. Local suite: 467 passed, one symlink-privilege skip, one live deselection; explicit collection selected one live test without execution. Ruff, board and documentation links pass. Hosted four-job CI pending; see [testing evidence](../testing.md).
+**Validation:** H01-H08 implemented, including exact requests/waits/attempt/timeouts, body sizes/hashes, valid zero, short/multiple pages, drift and failure evidence. Local suite: 467 passed, one symlink-privilege skip, one live deselection. All four hosted Windows/Linux x Python 3.11/3.12 jobs passed 468 tests with no skips and one live deselection for implementation commit `92e7c687a78ec66c199ff9b31c9e7d1951c31eb2`. Dependency checks, Ruff, board and explicit live collection passed. No government requests; see [testing evidence](../testing.md).
 
-**Notes:** Owner: Codex. Selected for implementation on 2026-10-15. ML-125's schema gate is implemented. This card adds the remaining HTTP/capability/OID/completeness policy. No automatic cache substitution, alternate source, scraping, concurrency, scheduled refresh, point-in-time source guarantee, or new county semantics. ML-127 owns completion/read eligibility.
+**Notes:** Owner: Codex. Completed 2026-10-15 after local and hosted verification. ML-125's schema gate, effective Settings, bounded HTTP evidence/retries/pacing, start/end inventories and detectable source-change checks are wired together. No automatic cache substitution, alternate source, scraping, concurrency, scheduled refresh, point-in-time source guarantee, or new county semantics. Original county inputs/results remain unchanged. ML-127 owns completion/read eligibility and is now Ready.
 
 **Evidence / starting points:** [Implemented retrieval rules and limitations](../retrieval.md), [Contract section 3 and H01-H08 matrix](../ingestion-contracts.md), [source fixtures H01-H05](../../tests/unit/test_retrieval_contract.py), [HTTP fixtures H06-H08](../../tests/unit/test_http_contract.py), [ArcGIS client](../../src/mn_land/ingestion/arcgis.py), [HTTP transport](../../src/mn_land/utils/http.py), [settings](../../src/mn_land/config/settings.py)
 
@@ -651,7 +651,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-127"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P0
 
@@ -671,7 +671,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** R01-R07 plus full offline CI; inject failures at every publication boundary and verify previous successful files/pointers are unchanged, no partial run is eligible, actual published hashes match, and unversioned history is neither rewritten nor silently certified.
 
-**Notes:** ML-125 is Done; this card remains Backlog until ML-126 is Done. No new database, UI, remote backups, historical migration, arbitrary filesystem deletion, or claimed power-loss durability. A complete raw acquisition is not automatically a successful processed run.
+**Notes:** ML-125 and ML-126 are Done, so this card is Ready, not started. No new database, UI, remote backups, historical migration, arbitrary filesystem deletion, or claimed power-loss durability. A complete raw acquisition is not automatically a successful processed run.
 
 **Evidence / starting points:** [Contract section 4 and R01-R07 matrix](../ingestion-contracts.md), [parcel pipeline](../../src/mn_land/ingestion/pipeline.py), [join pipeline](../../src/mn_land/delinquency/pipeline.py), [review](../../src/mn_land/counties/isanti/review.py), [CLI status](../../src/mn_land/cli.py), [provenance](../../src/mn_land/provenance.py)
 

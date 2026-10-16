@@ -127,5 +127,10 @@ mocked waits for three HTTP 429 attempts. D08 remains an explicitly deferred
 ML-127 reader-eligibility gap, not a desired regression assertion. Documentation
 relative links/anchors passed a read-only check before completion edits.
 
-Hosted matrix verification is pending; the card remains In Progress until the
-four existing CI jobs have run for the implementation commit.
+[Hosted ML-126 run 38834485822](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38834485822)
+passed for implementation commit `92e7c687a78ec66c199ff9b31c9e7d1951c31eb2`.
+All four Windows/Linux x Python 3.11/3.12 jobs passed 468 offline tests with no
+skips and one live deselection, plus dependency consistency, Ruff, board checks,
+and explicit live collection. Both hosted platforms exercised the real symlink
+fixture. The run completed on 2026-10-16 UTC / 2026-10-15 America/Chicago.
+No live government requests were executed by the tests.

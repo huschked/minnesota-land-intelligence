@@ -51,12 +51,11 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-126: enforce respectful retrieval and source completeness using the
-   [implemented ML-125 schema gate](../validation.md).
-2. ML-127 after ML-126: publish only complete runs and validate reader eligibility.
-3. ML-201: define the basic local viewer workflow and technology choice. This
+1. ML-127: publish only complete runs and validate reader eligibility, building on
+   [implemented validation](../validation.md) and [retrieval](../retrieval.md).
+2. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
-4. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then
+3. ML-123/ML-124: explicit replay and refresh validation; ML-202 onward then
    implement the viewer on that stable data boundary.
 
 ML-117, ML-121, and ML-122 wait for actual county information. They do not block
@@ -113,7 +112,9 @@ Git baseline. ML-118 subsequently passed 72 default offline tests locally and in
 four hosted Windows/Linux x Python 3.11/3.12 jobs, with lint and board validation.
 ML-125 then passed 283 offline tests on each of the same four hosted jobs,
 including real symlink containment checks; its local account skipped that one
-privilege-dependent case. The live government-service test was collected but not executed. See
+privilege-dependent case. ML-126 subsequently passed 468 offline tests with no
+skips in each hosted matrix job. The live government-service test was collected
+but not executed. See
 [testing evidence](../testing.md) and [reproducibility](../reproducibility.md) for
 verification and the separate backup requirements for ignored county data.
 
