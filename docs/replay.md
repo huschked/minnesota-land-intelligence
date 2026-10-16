@@ -121,6 +121,9 @@ See [testing](testing.md) for the actual local/hosted verification outcome.
 Implementation `7a53fdbec6a902e770e926b4cbe9447533d69b38` passed all 645 offline
 tests without skips on each Windows/Linux x Python 3.11/3.12 job in
 [run 38955519528](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38955519528).
-No government test executed. The real county files still have no eligible complete
-version-2 run; this feature verification used synthetic inputs and did not migrate
-or replay those original datasets.
+No government test executed during that feature verification. At its completion,
+real county files had no eligible complete version-2 run; verification used
+synthetic inputs and did not migrate or replay those original datasets.
+Subsequent [ML-130 preparation](reviews/isanti-viewer-preparation-2026-10-16.md)
+created genuine new actual runs and replayed the new join offline with identical
+exports and normalized fingerprints. Historical files remain unchanged and ineligible.

@@ -66,6 +66,14 @@ differ from historical counts and must not be forced to match. ML-202 can develo
 against sanitized fixtures independently; ML-206 cannot claim real-data usability
 until ML-130 supplies eligible actual results. See [replay boundaries](replay.md).
 
+**Subsequent ML-130 handoff on 2026-10-16:** [actual preparation evidence](reviews/isanti-viewer-preparation-2026-10-16.md)
+records a successful fresh official GIS acquisition, exact October 13 file
+recapture, join and review with valid version-2 source graphs. The actual
+62/49/15 view IDs match the historical sets, but amounts remain unknown and new
+manual report verification is pending. Use the documented explicit run IDs and
+revalidate on load. The initial discovery status above remains a dated finding;
+historical runs were not certified. This does not install or implement a UI.
+
 ## Primary workflow and layout
 
 The layout below is a planning wireframe, not a screenshot or implemented app:

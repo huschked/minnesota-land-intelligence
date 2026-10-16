@@ -9,7 +9,9 @@ The goal is land acquisition research: identify delinquent-tax parcels worth
 further due diligence and possible offers, purchase, holding or resale—not treat
 delinquency alone as a buy signal. ML-201 selected Streamlit and defined
 [the first local viewer](docs/ui-plan.md); no framework is installed or UI built
-yet. Actual data preparation (ML-130) and UI implementation remain separate stories.
+yet. [ML-130 prepared actual validated data](docs/reviews/isanti-viewer-preparation-2026-10-16.md)
+using fresh October 16 GIS and the unchanged October 13 listing. UI implementation
+is next (ML-202), a separate story.
 
 **Current result: county-confirmed year conventions applied.** The export mixes
 unpaid prior-year taxes and overdue first-half current-year installments. The
@@ -17,7 +19,8 @@ corrected import produces 62 prior-year delinquency parcels of at least 10 acres
 including 49 outside PILT/exempt classifications. The separate current-year view
 has 291 large parcels and overlaps the prior-year view by 42 parcels. Ten sampled
 prior-year parcel reports corroborate outstanding prior-year balances and acreage.
-See `docs/reviews/isanti-prior-year-results-2026-10-14.md`. Monetary components
+Those PDF checks are historical October 14 evidence, not new checks of the
+October 16 preparation. See `docs/reviews/isanti-prior-year-results-2026-10-14.md`. Monetary components
 and repeated-row balance totals remain unresolved and are not aggregated.
 
 Phase 1 is a conservative command-line pipeline for the official Isanti County parcel service. It retrieves paginated records, preserves immutable run artifacts, normalizes county fields, applies a separate candidate filter, and exports CSV/JSON.
@@ -82,7 +85,8 @@ secrets, and does not deploy the application. See [testing](docs/testing.md).
 [Strict input validation](docs/validation.md) rejects malformed mappings, unsafe
 evidence paths, non-finite values, numeric parcel-ID cells, ragged CSV rows, and
 ambiguous/formula-bearing workbooks. It preserves source row/sheet locations and
-GIS quarantine diagnostics. Existing county snapshots/results are not regenerated.
+GIS quarantine diagnostics. Validation does not rewrite historical snapshots;
+ML-130 created separate new immutable runs through the current pipeline.
 
 Raw responses are written to `data/raw/isanti/<run-id>/`; processed artifacts go to `data/processed/`. These generated files are ignored by Git.
 

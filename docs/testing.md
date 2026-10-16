@@ -257,3 +257,32 @@ not a UI test or an installed-framework check. No Windows matrix rerun is needed
 for these documentation/board-only changes under ML-129's policy.
 Local verification passed board generation/validation for 13 epics and 86 stories,
 352 relative document targets with no broken paths, renderer Ruff and diff checks.
+
+## ML-130 actual-data preparation verification
+
+[Dated preparation evidence](reviews/isanti-viewer-preparation-2026-10-16.md)
+records the user-agreed fresh official GIS plus exact October 13 CSV route.
+This was an operational run of unchanged runtime code on Windows / Python 3.12.14,
+not a new synthetic feature test. Existing paced acquisition retained 18 HTTP
+attempts, 12 pages and reconciled count/ID/schema evidence for 23,890 features;
+23,888 normalized and two missing-ID features stayed quarantined. The new raw file,
+join and review completed with their actual pinned inputs and validated inventories.
+
+The shared validator passed all five run kinds and an isolated offline replay.
+Replay matched both normalized fingerprints, candidate IDs and all nine export
+hashes. All 190 baseline historical raw/processed/evidence files retained identical
+size/SHA-256. New prior/current/land/focused/special parcel-ID sets matched the
+historical exports without imposing their counts. All 62 candidates retained null
+canonical delinquent tax, penalty and combined amounts; the new review's manual
+verification remains pending without reusing historical report comparisons.
+
+No production Python/configuration/dependency change required new fixture tests or
+an unchanged Windows regression rerun. Documentation changes receive board, links,
+diff and lint checks plus automatic fast Linux CI under ML-129's policy. This real
+county operation is separately dated live evidence, not execution of the pytest
+integration test, and does not establish any UI or accessibility test pass. Only
+the three data placeholders remain tracked; private datasets/audit files stay ignored.
+Local board generation/check passed for 13 epics and 86 stories; all 362 relative
+document targets resolved, Ruff passed and `git diff --check` found no whitespace
+errors. Read-only CLI status selected the five documented new COMPLETE runs while
+still reporting the old two parcel and five file/join snapshots as legacy.

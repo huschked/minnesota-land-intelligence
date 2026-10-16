@@ -79,6 +79,7 @@ It specifies explicit loading, canonical view/filter/identity handling, separate
 source warnings, escaped details and safe contextual exports. No source normalization,
 acquisition/replay, scoring or hidden balance aggregation belongs in widgets.
 Session DTOs retain validation time; new disk reads/reload/export revalidate rather
-than caching trust by pathname. The actual county data is legacy, so ML-130 supplies
-eligible real inputs and ML-206 has a real-data/accessibility release gate. No UI
+than caching trust by pathname. [ML-130 supplied eligible real inputs](reviews/isanti-viewer-preparation-2026-10-16.md)
+in new runs while historical files remain legacy. ML-206 still has a
+real-data/accessibility release gate. No UI
 source, optional dependency, runtime server or data migration is added by discovery.

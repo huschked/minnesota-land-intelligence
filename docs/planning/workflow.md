@@ -51,23 +51,24 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-130: prepare genuinely eligible real county inputs through an agreed
-   recovery/reacquisition route; do not retrofit completion evidence into legacy
-   files. This is Ready, not started or authorized by the discovery alone.
-2. ML-202: implement the thin review service, optional Streamlit selector shell
+1. ML-202: implement the thin review service, optional Streamlit selector shell
    and clear validated/legacy/error states. It can proceed against fixtures
    independently of ML-130 when implementation is selected.
-3. ML-124: validate refresh/difference behavior without inferring payment from
+2. ML-124: validate refresh/difference behavior without inferring payment from
    disappearance. ML-203/204 then add tables/details, ML-205 exports, ML-206 packaging.
 
 ML-201 is Done: [the UI decision](../ui-plan.md) selects Streamlit and maps U01-U12
 workflow/accessibility/data-safety examples to implementation cards. No framework
-was installed or app built. ML-130 is a real-data handoff gate for ML-206; a
-fixture-only empty shell cannot count as usable actual county review.
+was installed or app built. ML-130 is Done: [actual preparation evidence](../reviews/isanti-viewer-preparation-2026-10-16.md)
+records new eligible GIS/file/join/review inputs, an identical offline replay and
+190 unchanged historical files. The 62/49/15 views match historical parcel IDs,
+but tax amounts and new manual verification remain unresolved. ML-206 must still
+prove the actual-data workflow; a fixture-only empty shell cannot count as usability.
 
 ML-123 is Done: [explicit snapshot selection/replay](../replay.md) passed 645
 offline tests in all four hosted Windows/Linux jobs. Historical pre-completion
-inputs remain unverified and were not reimported. Source-date differences, holds
+inputs remain unverified and were not reimported by that implementation. ML-130
+subsequently recaptured exact listing bytes into separate new runs. Source-date differences, holds
 and missing historical fingerprints are disclosed; no completion evidence is
 manufactured. The viewer discovery should explicitly account for that data boundary.
 
