@@ -51,23 +51,24 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-129 (In Progress): measure and shorten test feedback loops; introduce
-   proportional development checks and fast documentation/board CI while retaining
-   explicit Windows/full regression gates. See [test performance](../test-performance.md)
-   for measured changes and the pending hosted-verification boundary.
-2. ML-123: explicit selected-snapshot replay, building on implemented
+1. ML-123: explicit selected-snapshot replay, building on implemented
    [validation](../validation.md), [retrieval](../retrieval.md) and
    [completion publication](../publication.md). Legacy compatibility must disclose
    missing checks, not manufacture completion evidence.
-3. ML-201: define the basic local viewer workflow and technology choice. This
+2. ML-201: define the basic local viewer workflow and technology choice. This
    discovery can be selected sooner if usability is the user's priority.
-4. ML-124: refresh validation after replay; ML-202 onward then
+3. ML-124: refresh validation after replay; ML-202 onward then
    implement the viewer on that stable data boundary.
 
 ML-117, ML-121, and ML-122 wait for actual county information. They do not block
 basic exploration of the existing factual shortlist, but verified financial
 comparisons remain dependent on their acceptance criteria. No unsolicited county
 messages or reminders are created by this board.
+
+ML-129 is Done: [test performance](../test-performance.md) records the measured
+speedup, targeted development commands, conservative fast/full CI selection and
+passing 616-test full Windows/Linux matrix. No repeated full Windows run is needed
+for documentation-only completion evidence; fast coverage is disclosed as Linux-only.
 
 ## Definition of Ready
 

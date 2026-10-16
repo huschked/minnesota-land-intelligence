@@ -90,7 +90,29 @@ be recovered from its summary. New full and fast jobs print the slowest 20
 setup/call/teardown durations and produce a local runner JUnit report. Reports
 contain synthetic tests, are ignored locally, and are not uploaded as artifacts.
 Setup, runner queues and the final gate still add latency beyond pytest time.
-Hosted ML-129 verification is pending; do not treat this paragraph as a pass.
+
+[Hosted ML-129 run 38952761645](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38952761645)
+passed for implementation revision `93f8dd7d0cfc3e0a2708f393954dc35228d1ad5c`.
+Each of the four jobs passed **616 offline tests with no skips**, plus lint,
+dependency consistency, board and explicit live collection (one selected, 616
+deselected; no live execution). The plan selected full coverage and the final
+`CI gate` passed. Both real symlink fixtures ran on hosted Windows/Linux. The
+complete workflow took 122 seconds including plan/setup/gate, versus 423 seconds
+in the historical ML-127 run; runner conditions and test counts differ, so the
+same-population local comparison above is the stronger controlled comparison.
+
+| Platform/Python | ML-129 tests | Entire job | Slowest setup | Slowest call | Slowest teardown |
+|---|---:|---:|---:|---:|---:|
+| Linux / 3.11 | 9.85 s | 26 s | 0.0023 s | 0.3176 s | 0.0006 s |
+| Linux / 3.12 | 12.27 s | 33 s | 0.0045 s | 0.3992 s | 0.0008 s |
+| Windows / 3.11 | 50.71 s | 100 s | 0.1136 s | 2.6723 s | 0.0006 s |
+| Windows / 3.12 | 57.83 s | 100 s | 0.1747 s | 2.8115 s | 0.0020 s |
+
+The log identifies the test for each phase maximum. Largest Linux call:
+recorded-snapshot review; Windows 3.11: ambiguous-join export failure; Windows 3.12:
+candidate-review export failure. These remain genuine pipeline/validation tests,
+not reduced assertions. Later documentation-only completion commits do not alter
+the tested runtime/test/CI code and deliberately use the Linux-only fast path.
 
 ## Exact local commands
 

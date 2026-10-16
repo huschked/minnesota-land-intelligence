@@ -185,3 +185,24 @@ skips and one live deselection, plus dependency consistency, Ruff, board checks,
 and explicit live collection. Both hosted platforms exercised the real symlink
 fixture. The run completed on 2026-10-16 UTC / 2026-10-15 America/Chicago.
 No live government requests were executed by the tests.
+
+## ML-129 test feedback verification
+
+[Performance evidence and commands](test-performance.md) record the measured
+bounded-read bottleneck, test-only synthetic Git identity, unchanged validation
+safety, and conservative fast/full CI policy. Local identical-population runs
+passed the same 537 cases with two symlink-privilege skips and one live deselection
+in 344.68 seconds before and 75.36 seconds after. The new safety/selection tests
+and dedicated provenance/test-policy cases passed 92 targeted checks after the
+phase-timing reporter was added. No development/runtime dependency was added.
+
+[Full hosted run 38952761645](https://github.com/huschked/minnesota-land-intelligence/actions/runs/38952761645)
+passed at `93f8dd7d0cfc3e0a2708f393954dc35228d1ad5c`. All four Windows/Linux x
+Python 3.11/3.12 jobs passed 616 offline tests with no skips, dependency consistency,
+Ruff, board checks and explicit live-test collection (one selected, 616 deselected).
+Linux tests took 9.85/12.27 seconds; Windows 50.71/57.83 seconds. Full workflow
+including plan and final gate completed in 122 seconds. Phase maxima are recorded
+in the performance document and logs. The plan selected full coverage for code
+changes, and the gate passed only after all four jobs succeeded. Fixture checks
+also cover fast diff classification and failure/cancellation/skip gate outcomes.
+No government API tests were executed and historical county data remains unchanged.
