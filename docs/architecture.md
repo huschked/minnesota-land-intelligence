@@ -71,15 +71,22 @@ and rejects unexpected drift before completion. Moved join graphs remain self-co
 Historical pre-completion runs are not migrated or certified; current code/runtime
 identity is recorded rather than pretending to restore historical software.
 
-## Planned local viewer (ML-201 decision, not implemented)
+## Local viewer shell and planned research workflow
 
-[The UI plan](ui-plan.md) selects a thin read-only Streamlit interface over a
-framework-independent review service using existing completion/source validation.
-It specifies explicit loading, canonical view/filter/identity handling, separate
-source warnings, escaped details and safe contextual exports. No source normalization,
-acquisition/replay, scoring or hidden balance aggregation belongs in widgets.
-Session DTOs retain validation time; new disk reads/reload/export revalidate rather
-than caching trust by pathname. [ML-130 supplied eligible real inputs](reviews/isanti-viewer-preparation-2026-10-16.md)
+[The UI plan](ui-plan.md) defines the eventual basic review workflow. ML-202's
+[implemented shell](viewer.md) uses a framework-independent `ReviewService` and
+existing graph validation, with explicit join/review loading and local catalog
+states. A frozen allowlisted overview carries IDs, hashes, dates, counts, holds,
+unknowns and validation time; raw source dictionaries/paths are not browser DTOs.
+Streamlit is an optional extra, imported only by the app/launcher invocation.
+No source normalization, acquisition/replay, scoring or balance aggregation belongs
+in widgets. Exact inventoried-byte JSON reads reject changes after validation and
+pinned-child completion identities are checked between reads. New loads/reload
+revalidate; pure reruns keep the per-session in-memory observation and its original
+timestamp, not a pathname/mtime trust cache. Later disk-backed details/exports must
+use the same revalidation gate. [ML-130 supplied eligible real inputs](reviews/isanti-viewer-preparation-2026-10-16.md)
 in new runs while historical files remain legacy. ML-206 still has a
-real-data/accessibility release gate. No UI
-source, optional dependency, runtime server or data migration is added by discovery.
+real-data/accessibility release gate. The launcher enforces loopback, telemetry off,
+CORS/XSRF on, static serving off and literal source-text rendering. Tables/filters,
+parcel evidence links and contextual/formula-safe exports remain ML-203/204/205;
+no data migration or county acquisition is performed by the shell.

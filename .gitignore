@@ -9,6 +9,7 @@ __pycache__/
 !.env.example
 .venv-*/
 .secrets/
+.streamlit/secrets.toml
 *.eml
 *.msg
 *.pem

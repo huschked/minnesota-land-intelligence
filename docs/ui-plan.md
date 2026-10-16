@@ -1,6 +1,9 @@
 # Local land-review viewer decision (ML-201)
 
-Decision date: 2026-10-16. **Discovery complete; no UI is implemented or installed.**
+Decision date: 2026-10-16. Discovery is complete. **Subsequent ML-202 implementation
+adds the initial selector shell only**, with optional pinned Streamlit and a
+framework-independent overview loader. See [current implementation/startup](viewer.md).
+The table/detail/export workflow below remains the design for later cards.
 
 ## Outcome and user
 
@@ -36,11 +39,11 @@ The custom-template alternative is technically supported by
 [FastAPI's template documentation](https://fastapi.tiangolo.com/advanced/templates/);
 the relative engineering effort above is our assessment, not a framework claim.
 Official Streamlit reference pages displayed version 1.66.0 during discovery.
-The skill discovery script found **no installed Streamlit in this project's venv**;
+During ML-201 the skill discovery script found **no installed Streamlit in this project's venv**;
 version-matched bundled guidance could not be loaded, so official web references
-were used. No package was installed. ML-202 must resolve/pin a compatible version,
-read its installed guidance, and test Python 3.11/3.12 and Windows startup. The
-currently documented APIs/configuration are not assumed available in every version.
+were used. No package was installed by discovery. ML-202 subsequently installed/pinned
+1.66.0 and read its bundled skill/reference docs; runtime and platform evidence is
+separate in [testing](testing.md). APIs are not assumed available in other versions.
 
 ## Data readiness is a separate gate
 
@@ -139,11 +142,12 @@ imported candidate threshold without separately reprocessing retained inputs.
 
 ## Thin service and execution boundary
 
-Plan a framework-independent review service and a thin Streamlit entry point
-(proposed paths: `src/mn_land/review_service.py`, `src/mn_land/ui/app.py`; not created).
+Use the framework-independent [review service](../src/mn_land/review_service.py)
+and thin [Streamlit entry point](../src/mn_land/ui/app.py), created by ML-202.
 The service validates selected join/review snapshots through `validate_run`, follows
-their pinned references, exposes allowlisted canonical display DTOs, and owns
-deterministic views/filtering/details/export context. Widgets do not normalize
+their pinned references and exposes allowlisted overview DTOs. It will own
+deterministic views/filtering/details/export context as those later cards ship.
+ML-202 currently exposes overview metadata only. Widgets do not normalize
 county fields, calculate balances, acquire data, or invoke replay. Existing CLI
 acquisition/replay remains an explicit operator workflow outside this viewer.
 

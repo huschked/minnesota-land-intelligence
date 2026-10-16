@@ -286,3 +286,51 @@ Local board generation/check passed for 13 epics and 86 stories; all 362 relativ
 document targets resolved, Ruff passed and `git diff --check` found no whitespace
 errors. Read-only CLI status selected the five documented new COMPLETE runs while
 still reporting the old two parcel and five file/join snapshots as legacy.
+
+## ML-202 selector/service verification
+
+[The implemented selector](viewer.md) adds 42 offline cases: immutable allowlisted
+metadata, explicit join/review identities, holds/nulls, valid-empty versus missing,
+legacy/failed/unsupported/corrupt states, changed artifacts/completion/pinned-child
+identity, bounded catalogs, self-contained graphs, no latest/acquisition/replay,
+and CLI/service loads with Streamlit imports blocked. Supported AppTest controls
+cover explicit load/reload/rerun and stable identity despite newer snapshots,
+changed-source invalidation, synthetic labels and literal source text. Launcher
+checks verify all installed configuration names and CLI precedence over unsafe
+environment values; its project defaults match the forced flags.
+
+Windows AppTest uses asyncio's socketpair wake-up mechanism. Its UI-only test
+fixture permits a factory-created internal loopback pair, not general localhost
+networking. DNS and direct public/arbitrary-loopback connects remain blocked and
+have regression assertions. No pytest government integration test was executed.
+
+The implementation-boundary local Windows / Python 3.12.14 run passed **685
+offline tests**, skipped the two existing symlink-privilege cases and deselected
+one live test in **425.97 seconds**. An unexplained 235.21-second delay occurred
+in one service case; the targeted 39-case run passed in 55.05 seconds. These are
+observed elapsed times, not a claimed performance improvement or reason to rerun
+the unchanged full local suite. Current suite size is 687 offline cases plus one
+live case; explicit live collection selected one and deselected 687. Sandbox-only
+collection cleanup reported a temporary-directory permission error; collection
+outside that sandbox completed cleanly. No source/test assertion was weakened.
+
+Manual actual-data checks loaded ML-130 review
+`4e2ebe46423d4f56aab999d7d9eb3a37` through both the service and AppTest: seven
+catalog entries, no UI exceptions, actual 62/49/15 prior/land/focused counts,
+291 current-year parcels, all 62 combined balances null, October 13 listing and
+October 16 GIS dates, manual report verification pending, not synthetic. The first
+restricted manual AppTest process stalled on Windows loopback setup; only its
+verified helper processes were stopped, then the permitted retry passed in 6.18
+seconds. That is an environment retry, not a claim the first attempt passed.
+
+The user approved starting the local server. Windows listener inspection showed
+only `127.0.0.1:8501`; the local health endpoint returned `ok`, and dependency
+consistency passed. All **658** baseline saved county files retained the same
+sizes/SHA-256 after the real-data UI checks; snapshots/latest pointers were not
+rewritten. New private check/log artifacts live outside completed runs and stay
+ignored. AppTest/server health are not browser keyboard/focus/200%-zoom or screen-
+reader conformance tests; those remain ML-206, along with the later full workflow.
+
+Full hosted Windows/Linux x Python 3.11/3.12 verification is pending for this
+implementation revision. CI installs `.[dev,ui]`, asserts Streamlit 1.66.0 and runs
+all offline cases, lint, dependency consistency, board and explicit live collection.

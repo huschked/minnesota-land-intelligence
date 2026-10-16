@@ -7,11 +7,12 @@ explains status updates. The [roadmap](docs/roadmap.md) remains the phase overvi
 
 The goal is land acquisition research: identify delinquent-tax parcels worth
 further due diligence and possible offers, purchase, holding or resale—not treat
-delinquency alone as a buy signal. ML-201 selected Streamlit and defined
-[the first local viewer](docs/ui-plan.md); no framework is installed or UI built
-yet. [ML-130 prepared actual validated data](docs/reviews/isanti-viewer-preparation-2026-10-16.md)
-using fresh October 16 GIS and the unchanged October 13 listing. UI implementation
-is next (ML-202), a separate story.
+delinquency alone as a buy signal. [The first local viewer shell](docs/viewer.md)
+now selects saved join/review snapshots and shows source dates, counts, holds and
+unknowns. Parcel tables/filters, details and exports remain later stories.
+[ML-130 prepared actual validated data](docs/reviews/isanti-viewer-preparation-2026-10-16.md)
+using fresh October 16 GIS and the unchanged October 13 listing. The read-only UI
+does not acquire or reimport county data.
 
 **Current result: county-confirmed year conventions applied.** The export mixes
 unpaid prior-year taxes and overdue first-half current-year installments. The
@@ -50,6 +51,19 @@ See [reproducibility and recovery](docs/reproducibility.md) for PowerShell setup
 offline verification, run identity, and the separate backup needed for ignored data.
 
 ## Commands
+
+The optional UI extra pins Streamlit 1.66.0; the base CLI does not require it:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[dev,ui]" -c constraints-dev.txt
+.\.venv\Scripts\python.exe -m mn_land.ui.launcher
+```
+
+The supported launcher binds only to `127.0.0.1:8501`, disables usage telemetry,
+retains CORS/XSRF protection and serves no static data directory. Open
+[the local viewer](http://127.0.0.1:8501), choose a saved result and explicitly Load.
+See [startup, validation states and limitations](docs/viewer.md). No map, scoring,
+owner outreach, public hosting or current-payment verification is added.
 
 ```bash
 mn-land validate-source --county isanti

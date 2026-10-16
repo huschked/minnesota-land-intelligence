@@ -55,7 +55,9 @@ jobs:
             pyproject.toml
             constraints-dev.txt
       - name: Install constrained development dependencies
-        run: python -m pip install -e ".[dev]" -c constraints-dev.txt
+        run: python -m pip install -e ".[dev,ui]" -c constraints-dev.txt
+      - name: Verify pinned optional UI dependency
+        run: python -c "import streamlit; assert streamlit.__version__ == '1.66.0'"
       - name: Check dependency consistency
         run: python -m pip check
       - name: Lint

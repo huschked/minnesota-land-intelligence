@@ -2,7 +2,7 @@
 
 Updated: 2026-10-16. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project is a working local CLI, not yet a UI or deployed service. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project has a working local CLI and initial [read-only snapshot selector shell](../viewer.md), not a complete parcel-review UI or deployed service. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -797,7 +797,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-202"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -816,7 +816,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** Streamlit chosen by ML-201; no framework/app exists yet. Build only the loader/service and minimal selector shell here, not all table/detail/export features. Follow [the UI plan](../ui-plan.md). ML-130 supplies actual eligible data independently; fixture success is not proof the historical county files are usable. No external county API may be called on a UI interaction.
+**Notes:** Owner: Codex. Selected 2026-10-16. Implemented framework-independent overview loader, explicit selector/error shell, optional pinned Streamlit 1.66.0 and constrained loopback launcher. Local regression: 685 passed, two symlink-privilege skips, one live deselection; actual ML-130 review loaded through AppTest, all 658 baseline saved county files unchanged. User approved local startup; loopback listener/health/dependency checks passed. Full hosted platform/Python verification pending before completion. See [startup and boundaries](../viewer.md). Tables/details/exports and browser accessibility remain later cards; no county calls or reimport occurred.
 
 **Evidence / starting points:** [UI decision and acceptance examples](../ui-plan.md), [completion reader](../../src/mn_land/runs.py), [replay evidence](../../src/mn_land/replay.py), [county review](../../src/mn_land/counties/isanti/review.py)
 

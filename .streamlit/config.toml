@@ -1,0 +1,22 @@
+# Safe project defaults. The supported launcher also forces these via CLI flags,
+# which outrank environment/global config; no LAN/public serving is supported.
+[server]
+address = "127.0.0.1"
+headless = true
+showEmailPrompt = false
+enableCORS = true
+enableXsrfProtection = true
+enableStaticServing = false
+fileWatcherType = "none"
+runOnSave = false
+
+[browser]
+serverAddress = "127.0.0.1"
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = "none"
+
+[runner]
+magicEnabled = false
