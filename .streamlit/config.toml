@@ -17,6 +17,7 @@ gatherUsageStats = false
 [client]
 toolbarMode = "minimal"
 showErrorDetails = "none"
+disableDataExport = true
 
 [runner]
 magicEnabled = false

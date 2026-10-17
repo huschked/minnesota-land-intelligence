@@ -45,3 +45,10 @@ operator freshness thresholds do not establish a county validity period or curre
 payment status. Disappearance is only non-observation; split/retirement links are
 not inferred. No new source request, tax definition or accounting resolution is
 introduced by the comparison report.
+
+ML-203's saved candidate table reads the selected join's prior/current exports
+through completion/inventoried-byte validation. County classification and parcel-ID
+separator rules are reused, not redefined by widgets. Filtering source observations
+does not refresh them or establish vacancy, usable/buildable acreage, tax debt or
+current payment status. GIS owner text is labelled independently; no listing/GIS
+owner merge or new contact enrichment is introduced.

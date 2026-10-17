@@ -3,7 +3,9 @@
 Decision date: 2026-10-16. Discovery is complete. **Subsequent ML-202 implementation
 adds the initial selector shell only**, with optional pinned Streamlit and a
 framework-independent overview loader. See [current implementation/startup](viewer.md).
-The table/detail/export workflow below remains the design for later cards.
+**Subsequent ML-203 implementation adds candidate tables/filters, dynamic counts,
+pagination and a keyboard parcel-summary action.** Full source-evidence details,
+exports and final browser/accessibility packaging below remain ML-204/205/206.
 
 ## Outcome and user
 
@@ -147,7 +149,8 @@ and thin [Streamlit entry point](../src/mn_land/ui/app.py), created by ML-202.
 The service validates selected join/review snapshots through `validate_run`, follows
 their pinned references and exposes allowlisted overview DTOs. It will own
 deterministic views/filtering/details/export context as those later cards ship.
-ML-202 currently exposes overview metadata only. Widgets do not normalize
+ML-202 exposes overview metadata; ML-203 adds allowlisted immutable candidate
+projections and deterministic filtering/sorting/selection. Widgets do not normalize
 county fields, calculate balances, acquire data, or invoke replay. Existing CLI
 acquisition/replay remains an explicit operator workflow outside this viewer.
 

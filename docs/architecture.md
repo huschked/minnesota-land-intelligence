@@ -95,6 +95,18 @@ timestamp, not a pathname/mtime trust cache. Later disk-backed details/exports m
 use the same revalidation gate. [ML-130 supplied eligible real inputs](reviews/isanti-viewer-preparation-2026-10-16.md)
 in new runs while historical files remain legacy. ML-206 still has a
 real-data/accessibility release gate. The launcher enforces loopback, telemetry off,
-CORS/XSRF on, static serving off and literal source-text rendering. Tables/filters,
-parcel evidence links and contextual/formula-safe exports remain ML-203/204/205;
+CORS/XSRF on, static serving off and literal source-text rendering. Tables/filters
+are added by ML-203 below; parcel evidence links and contextual/formula-safe exports remain ML-204/205;
 no data migration or county acquisition is performed by the shell.
+
+ML-203 adds a separate immutable `ParcelDataset` projection from the selected
+join's two exact inventoried candidate exports. The loader revalidates the graph
+and completion identity, applies the selected review floor and withholds browsing
+under active holds. `parcel_table` reuses county classification and ID normalization
+while owning exact Decimal filters, distinct view counts, null-last stable ordering,
+pagination and county/snapshot/hash/parcel selection identities. Cheap reruns use
+only per-session immutable observations, not shared pickle caches or new disk reads.
+The UI sends only allowlisted current-page fields, disables grid export/copy and
+client column sorting, and uses an independent labelled keyboard detail-summary
+path. Full source rows/links, contextual exports and browser release QA remain
+ML-204/205/206; no ingestion or canonical monetary meaning changes.

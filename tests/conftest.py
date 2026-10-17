@@ -164,13 +164,15 @@ def viewer_data(tmp_path, make_raw, fake_adapter):
     from mn_land.counties.isanti.review import build_review
     from mn_land.delinquency.pipeline import import_and_join_delinquency
 
-    def make(*, held=False, empty=False):
-        raw = make_raw(tmp_path / "raw", [] if empty else None)
+    def make(*, held=False, empty=False, features=None, rows=None, min_acres=10, review_min_acres=None):
+        raw = make_raw(tmp_path / "raw", [] if empty else features)
         source = tmp_path / "viewer-source.csv"
         source.write_text(
-            "PARID,OWN1,ASMTYR,TAXYR,TOTAMT\n"
-            "020010200,Synthetic owner,2024,2025,100\n"
-            "020010200,Synthetic owner,2025,2025,100\n",
+            "PARID,OWN1,ASMTYR,TAXYR,TOTAMT\n" + (
+                "020010200,Synthetic owner,2024,2025,100\n"
+                "020010200,Synthetic owner,2025,2025,100\n"
+                if rows is None else "\n".join(rows) + "\n"
+            ),
             encoding="utf-8",
         )
         note = tmp_path / "viewer-years.md"
@@ -188,11 +190,14 @@ def viewer_data(tmp_path, make_raw, fake_adapter):
             "columns": {"parcel_id": "PARID", "owner_name": "OWN1"},
         }), encoding="utf-8")
         joined = import_and_join_delinquency(
-            source, mapping, Decimal(10), adapter=fake_adapter(),
+            source, mapping, Decimal(min_acres), adapter=fake_adapter(),
             raw_root=tmp_path / "raw", processed_root=tmp_path / "processed",
             parcel_snapshot=raw,
         )
-        review = build_review(joined.processed_snapshot_dir)
+        review = build_review(
+            joined.processed_snapshot_dir,
+            Decimal(min_acres if review_min_acres is None else review_min_acres),
+        )
         return tmp_path / "processed", joined, review
 
     return make

@@ -25,6 +25,7 @@ def test_launch_cannot_bind_publicly_or_forward_arbitrary_flags():
     assert "--server.enableStaticServing=false" in args
     assert "--server.enableCORS=true" in args
     assert "--server.enableXsrfProtection=true" in args
+    assert "--client.disableDataExport=true" in args
     assert args[2].endswith("app.py")
 
 
@@ -48,6 +49,7 @@ from streamlit import config
 from mn_land.ui.launcher import LOCAL_OPTIONS
 os.environ["STREAMLIT_SERVER_ADDRESS"] = "0.0.0.0"
 os.environ["STREAMLIT_BROWSER_GATHER_USAGE_STATS"] = "true"
+os.environ["STREAMLIT_CLIENT_DISABLE_DATA_EXPORT"] = "false"
 values = {key: value if value not in ("true", "false") else value == "true"
           for key, value in LOCAL_OPTIONS.items()}
 config.get_config_options(force_reparse=True, options_from_flags=values)

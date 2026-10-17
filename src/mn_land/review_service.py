@@ -1,7 +1,7 @@
 """Read-only saved-result boundary. No Streamlit, acquisition or replay imports.
 
-Only overview DTOs are exposed in ML-202. Parcel views/details/exports are later
-stories, not raw dictionaries passed through to the browser.
+Overview and candidate-table DTOs are allowlisted. Full source-evidence details
+and exports remain separate stories, not raw dictionaries passed to the browser.
 """
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from decimal import Decimal
 from itertools import islice
 from pathlib import Path
 
+from mn_land.parcel_table import ParcelDataset, project_rows
 from mn_land.provenance import sha256_file
 from mn_land.runs import (
     RunValidationError,
@@ -283,3 +284,29 @@ class ReviewService:
     def revalidate(self, overview: SnapshotOverview) -> SnapshotOverview:
         """Required gate for any future disk-backed detail read or export."""
         return self.load(overview.key, expected_completion=overview.completion_sha256)
+
+    def load_parcels(
+        self, key: SnapshotKey, *, expected_completion: str | None = None,
+    ) -> ParcelDataset:
+        """Explicit disk-backed load; later filtering only uses its immutable DTOs."""
+        overview = self.load(key, expected_completion=expected_completion)
+        try:
+            selected = validate_run(self._path(key), key.kind)
+            if selected.completion_sha256 != overview.completion_sha256:
+                raise RunValidationError("Selected evidence changed between reads")
+            join = _source(selected, "join", "delinquency_processed") if key.kind == "review" else selected
+            prior = read_artifact_json(join, "isanti_verified_delinquent_candidates.json")
+            current = read_artifact_json(join, "isanti_overdue_current_year_parcels.json")
+            floor = overview.minimum_acres
+            if key.kind == "review":
+                summary = read_artifact_json(selected, "summary.json")
+                floor = max(floor, minimum_acres(summary["minimum_acres"]))
+            rows = project_rows(prior, current, floor) if not overview.holds else ()
+            if sha256_file(selected.path / "completion.json") != selected.completion_sha256:
+                raise RunValidationError("Selected evidence changed during table load")
+            return ParcelDataset(overview, floor, rows)
+        except (RunValidationError, OSError, ValueError, KeyError, TypeError) as exc:
+            raise RunValidationError(
+                "Parcel table evidence is missing, changed or invalid. Clear and load again; "
+                "nothing was refreshed, repaired or substituted."
+            ) from exc

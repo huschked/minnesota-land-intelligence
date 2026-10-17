@@ -824,7 +824,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-203"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -840,11 +840,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Counts handle overlapping period views correctly; sorting/pagination preserves parcel IDs and nulls; filtered results are testable.
 - [ ] Provide the labelled keyboard parcel selector/detail action as well as any grid shortcut; stable snapshot/parcel identity must survive filtering, sorting and reruns (U04/U10). Compute view counts dynamically, retain unknowns/leading zeros, and prevent UI filters below the imported threshold from pretending missing records were loaded.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** 87 targeted service/UI tests pass locally, including 45 new ML-203 cases; the affected export/panel check also passed after the last UI edit. Actual-data service and AppTest checks compute 15/49/62/13/291 views, 311 distinct union and 42 overlap without acquisition. All 856 baseline saved files remain unchanged (active server logs excluded). Full hosted regression is pending. See [viewer behavior](../viewer.md) and [testing evidence](../testing.md).
 
-**Notes:** Follow [the UI plan](../ui-plan.md): the 15/49/62 counts are historical examples, not constants. Numeric filtering/sorting belongs in the service, not string-formatted grid values. No opportunity ranking or implied buildability.
+**Notes:** Owner: Codex. Selected 2026-10-17. Saved candidate tables, deterministic service filtering/sorting/pagination, dynamic distinct view counts and a labelled keyboard parcel selection/detail-summary action are implemented, awaiting the full verification gate. Snapshot identity, source holds, unknowns and the imported/review acreage floor remain effective. Grid export/copy and client column sorting are disabled; no grid row index drives selection. Large parcel selectors are bounded without losing a still-filtered ID. Follow [the UI plan](../ui-plan.md): historical counts are not constants. Full source-evidence details/links remain ML-204 and contextual exports remain ML-205. No source acquisition, reimport, opportunity ranking or implied buildability. The user approved restarting only this project's local viewer after checks.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Viewer](../viewer.md), [Table service](../../src/mn_land/parcel_table.py), [Validated loader](../../src/mn_land/review_service.py), [UI](../../src/mn_land/ui/app.py), [Filter/identity tests](../../tests/unit/test_parcel_table.py), [Load tests](../../tests/unit/test_parcel_table_load.py), [AppTest](../../tests/unit/test_parcel_browser.py), [Verification](../testing.md)
 
 ### ML-204 - Add parcel details and source evidence links
 

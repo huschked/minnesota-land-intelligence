@@ -20,6 +20,7 @@ LOCAL_OPTIONS = {
     "server.runOnSave": "false",
     "client.toolbarMode": "minimal",
     "client.showErrorDetails": "none",
+    "client.disableDataExport": "true",
     "runner.magicEnabled": "false",
 }
 

@@ -140,3 +140,13 @@ verification dates. Per-view prior/current counts may overlap and cannot be adde
 as a unique population. Synthetic provenance/dataset labels are surfaced explicitly.
 New disk-backed operations revalidate; an in-memory observation retains the time
 it was checked and is not presented as continuously verified. See [the viewer](viewer.md).
+
+ML-203's immutable `ParcelDataset` carries that overview, effective candidate floor
+and a tuple of allowlisted `ParcelRow`s: string ID, nullable Decimal deeded acres
+and improvement value, nullable classification/GIS owner text, prior/current
+membership and existing county review bucket. Period views merge only identical
+parcel facts and reject duplicates/conflicts; they never sum tax amounts. No raw
+source dictionaries, source URLs, local paths or inferred listing owner are grid
+fields. `TableFilters` and `TablePage` describe reproducible in-memory selection,
+nonadditive counts, ordering and pagination; `ParcelIdentity` binds county,
+snapshot token, completion hash and parcel ID rather than a row offset.

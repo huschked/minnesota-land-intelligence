@@ -7,9 +7,11 @@ explains status updates. The [roadmap](docs/roadmap.md) remains the phase overvi
 
 The goal is land acquisition research: identify delinquent-tax parcels worth
 further due diligence and possible offers, purchase, holding or resale—not treat
-delinquency alone as a buy signal. [The first local viewer shell](docs/viewer.md)
-now selects saved join/review snapshots and shows source dates, counts, holds and
-unknowns. Parcel tables/filters, details and exports remain later stories.
+delinquency alone as a buy signal. [The local viewer](docs/viewer.md)
+selects saved join/review snapshots and shows source dates, counts, holds and
+unknowns. ML-203 adds searchable/filterable, paginated parcel tables and a keyboard
+parcel-summary action. Full evidence details/links and contextual exports remain
+ML-204/205; final browser/accessibility release checks remain ML-206.
 [ML-130 prepared actual validated data](docs/reviews/isanti-viewer-preparation-2026-10-16.md)
 using fresh October 16 GIS and the unchanged October 13 listing. The read-only UI
 does not acquire or reimport county data.

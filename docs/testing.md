@@ -391,3 +391,45 @@ took Linux 46.75/62.05 seconds and Windows 209.24/172.73 seconds for Python
 3.11/3.12 respectively. The real symlink cases ran in hosted jobs. No repeated full
 local Windows run was needed; completion documentation uses fast Linux-only CI
 under ML-129, not another claim of Windows coverage.
+
+## ML-203 saved parcel tables and filters
+
+[Viewer behavior](viewer.md) describes the service/UI boundary and controls.
+The 45 new cases cover dynamic nested/overlapping views, inclusive Decimal bounds,
+literal/normalized-ID search, nullable classification/improvement/owner values,
+known-zero versus unknown, special-class review, numeric null-last sorts and ID
+ties, bounded pagination/selectors, immutable allowlists, conflicts/duplicates,
+review/import floors, active source and comparison holds, completion revalidation,
+selection through sort/page/back/reset/reload/new snapshots, source markup and
+installed export/sort controls. The app overrides a deliberately disabled export
+guard; the launcher also forces it over an unsafe environment value.
+
+Local Windows Python 3.12 targeted verification passed **87 tests in 156.62s**.
+The affected UI check passed again in 7.78s after grouping metadata panels and
+adding the explicit unsafe-export-setting assertion. Pure filter/identity tests
+take under one second. An earlier sandbox run passed 32 pure cases, then Windows
+blocked AppTest's internal loopback wakeup socket (WinError 10013) and temp cleanup.
+The permitted outside-sandbox targeted retry passed; the suite's DNS/external/
+arbitrary-loopback network block was retained. No test assertion was weakened.
+Ruff and board/whitespace checks pass. The full hosted regression gate is pending;
+targeted verification is not a full-suite/all-platform pass.
+
+Actual ML-130 review `4e2ebe46423d4f56aab999d7d9eb3a37` loaded through both the
+service and AppTest. Dynamic views are **15 focused, 49 outside PILT/exempt,
+62 prior-year, 13 special-review, 291 current-year, 311 distinct union, 42 overlap**.
+The floor is ten acres; 11 union parcels have unknown improvement values. Listing
+publication remains October 13 and GIS capture October 16, not a new tax update.
+It is not synthetic and no active hold is recorded. The actual UI test exercised
+keyboard selector/summary, exact service sort, pagination, current view and stable
+snapshot/parcel identity. Acquisition/replay/reimport/latest calls were prohibited.
+It passed in **10.41s**; it is AppTest, not a browser/clipboard/zoom/screen-reader
+audit. Full evidence links/details and contextual exports remain ML-204/205;
+actual browser accessibility release checks remain ML-206.
+
+All **856** baseline saved county/audit/comparison files retained sizes/SHA-256
+after the checks. Only the existing viewer's active `server.log`/`server-error.log`
+were excluded. The new private baseline/check helper live outside completed runs
+under `data/processed/isanti/preparation/ml-203-2026-10-17/` and stay ignored. No
+county request, raw/source/result rewrite, correspondence upload, canonical tax
+meaning change or monetary resolution occurred. The user approved restarting the
+identified local viewer after verification; restart/health evidence is pending.
