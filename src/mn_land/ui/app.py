@@ -17,13 +17,14 @@ from mn_land.parcel_table import (
 )
 from mn_land.review_service import ReviewService
 from mn_land.runs import RunValidationError
+from mn_land.ui.details import render_details
 
 st.set_page_config(page_title="Minnesota land review", layout="wide")
 st.set_option("client.disableDataExport", True)
 st.title("Minnesota land review")
 st.caption("Read-only saved evidence · Parcel research")
 st.text("Choose a saved result to inspect its source dates, counts and limitations.")
-st.caption("Full source-evidence details and contextual exports are still to come.")
+st.caption("Read-only parcel evidence; contextual exports are still to come.")
 
 service = ReviewService(settings.SETTINGS.processed_dir)
 st.session_state.setdefault("catalog", None)
@@ -31,6 +32,7 @@ st.session_state.setdefault("loaded", None)
 st.session_state.setdefault("load_error", None)
 st.session_state.setdefault("parcels", None)
 st.session_state.setdefault("open_parcel", None)
+st.session_state.setdefault("parcel_details", None)
 
 
 def clear_table():
@@ -52,10 +54,12 @@ def clear_table():
     ):
         st.session_state.pop(name, None)
     st.session_state.open_parcel = None
+    st.session_state.parcel_details = None
 
 
 reload_clicked = st.button("Reload local snapshots", key="reload")
 if reload_clicked or st.session_state.catalog is None:
+    st.session_state.parcel_details = None
     with st.spinner("Checking saved local evidence…"):
         st.session_state.catalog = service.catalog()
         if st.session_state.loaded is not None:
@@ -354,9 +358,27 @@ if (
     and st.session_state.open_parcel.parcel_id != parcel_choice
 ):
     st.session_state.open_parcel = None
-if st.button("Open parcel summary", key="open_summary", disabled=parcel_choice not in ids):
+if st.button("Open parcel details", key="open_summary", disabled=parcel_choice not in ids):
+    st.session_state.parcel_details = None
     st.session_state.open_parcel = select_parcel(dataset, result, parcel_choice)
+    st.session_state.source_page = 1
+    try:
+        with st.spinner("Revalidating the selected parcel evidence…"):
+            st.session_state.parcel_details = service.load_details(
+                dataset, st.session_state.open_parcel
+            )
+    except RunValidationError as exc:
+        st.session_state.loaded = None
+        st.session_state.parcels = None
+        st.session_state.open_parcel = None
+        st.session_state.load_error = str(exc)
+        st.rerun()  # Remove already-rendered stale table content on a failed new disk read.
 identity = st.session_state.open_parcel
+if identity is None or (
+    st.session_state.parcel_details is not None
+    and st.session_state.parcel_details.identity != identity
+):
+    st.session_state.parcel_details = None
 if identity is not None:
     row = selected_row(dataset, result, identity)
     st.subheader("Selected parcel summary")
@@ -371,9 +393,12 @@ if identity is not None:
     st.text(f"GIS owner: {row.owner_name if row.owner_name is not None else 'Unknown'}")
     st.text(f"Dated listing categories: {row.periods}")
     st.text("Current payment status: unknown. Tax debt is not calculated here.")
-    st.caption(
-        "Full source rows, year evidence and official links are ML-204; this summary uses only the loaded table observation."
-    )
+    if st.session_state.parcel_details is not None:
+        render_details(st.session_state.parcel_details)
+    else:
+        st.info(
+            "Parcel details were cleared on reload. Select Open parcel details to revalidate and inspect them again."
+        )
     st.button(
         "Back to results (keep filters)",
         key="back_results",

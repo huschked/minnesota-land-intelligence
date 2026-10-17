@@ -1,7 +1,7 @@
 """Read-only saved-result boundary. No Streamlit, acquisition or replay imports.
 
-Overview and candidate-table DTOs are allowlisted. Full source-evidence details
-and exports remain separate stories, not raw dictionaries passed to the browser.
+Overview, candidate-table and source-evidence DTOs are immutable allowlists.
+Contextual exports remain a separate story, not raw dictionaries sent to the browser.
 """
 from __future__ import annotations
 
@@ -12,11 +12,15 @@ from decimal import Decimal
 from itertools import islice
 from pathlib import Path
 
-from mn_land.parcel_table import ParcelDataset, project_rows
+from mn_land.config.input_limits import InputLimits
+from mn_land.delinquency.tabular import read_table_bytes
+from mn_land.parcel_details import ParcelDetails, project_details
+from mn_land.parcel_table import ParcelDataset, ParcelIdentity, project_rows
 from mn_land.provenance import sha256_file
 from mn_land.runs import (
     RunValidationError,
     ValidatedRun,
+    read_artifact_bytes,
     read_artifact_json,
     read_json,
     safe_path,
@@ -309,4 +313,65 @@ class ReviewService:
             raise RunValidationError(
                 "Parcel table evidence is missing, changed or invalid. Clear and load again; "
                 "nothing was refreshed, repaired or substituted."
+            ) from exc
+
+    def load_details(self, dataset: ParcelDataset, identity: ParcelIdentity) -> ParcelDetails:
+        """Revalidate on an explicit detail action; never follow input paths/URLs."""
+        try:
+            if (identity.county != "Isanti" or identity.snapshot_token != dataset.overview.key.token
+                    or identity.completion_sha256 != dataset.overview.completion_sha256
+                    or not any(row.parcel_id == identity.parcel_id for row in dataset.rows)):
+                raise RunValidationError("Parcel is not in the loaded candidate observation")
+            fresh = self.load_parcels(dataset.overview.key, expected_completion=identity.completion_sha256)
+            row = next((row for row in fresh.rows if row.parcel_id == identity.parcel_id), None)
+            if row is None:
+                raise RunValidationError("Parcel is not eligible after revalidation")
+            selected = validate_run(self._path(fresh.overview.key), fresh.overview.key.kind)
+            if selected.completion_sha256 != identity.completion_sha256:
+                raise RunValidationError("Selected evidence changed")
+            join = _source(selected, "join", "delinquency_processed") if fresh.overview.key.kind == "review" else selected
+            imported = _source(join, "delinquency", "delinquency_raw")
+            gis = _source(join, "parcel", "parcel_raw")
+            file = read_artifact_json(imported, "manifest.json")
+            mapping = read_artifact_json(imported, "mapping.json")
+            limits = InputLimits(**file["input_limits"])
+            body = read_artifact_bytes(imported, file["source_file"], max_bytes=limits.max_file_bytes)
+            _, source_rows = read_table_bytes(body, Path(file["source_file"]).suffix, limits)
+            prior = read_artifact_json(join, "isanti_verified_delinquent_candidates.json")
+            current = read_artifact_json(join, "isanti_overdue_current_year_parcels.json")
+            gis_manifest = read_artifact_json(gis, "manifest.json")
+            reference = mapping.get("year_semantics_reference")
+            year_evidence = None
+            if reference is not None:
+                entry = next(item for item in imported.completion["artifacts"] if item["path"] == f"supporting/{reference}")
+                year_evidence = (Path(reference).name, entry["sha256"])
+            comparison = None
+            if any(item["path"] == "inputs/official_report_comparison.json" for item in selected.completion["artifacts"]):
+                comparison = read_artifact_json(selected, "inputs/official_report_comparison.json")
+            context = (
+                ("Selected completion SHA-256", selected.completion_sha256),
+                ("Join run", join.path.name), ("Listing import run", imported.path.name),
+                ("GIS run", gis.path.name), ("Listing agency", fresh.overview.listing_agency),
+                ("Listing dataset", fresh.overview.listing_dataset),
+                ("Listing publication date", mapping.get("publication_date")),
+                ("Listing captured", fresh.overview.listing_captured_at.isoformat()),
+                ("GIS captured", fresh.overview.gis_captured_at.isoformat()),
+                ("Listing bytes SHA-256", file["source_sha256"]),
+                ("Reviewed mapping SHA-256", file["mapping_sha256"]),
+                ("Report verification date", None),
+            )
+            detail = project_details(
+                identity, row, prior, current, source_rows, mapping, context,
+                f"{gis_manifest['service_url']}/{gis_manifest['layer_id']}",
+                checked_at=datetime.now(UTC), synthetic=fresh.overview.synthetic,
+                year_evidence=year_evidence, comparison=comparison,
+            )
+            final = validate_run(selected.path, selected.completion["kind"])
+            if final.completion_sha256 != selected.completion_sha256:
+                raise RunValidationError("Evidence changed during detail load")
+            return detail
+        except (RunValidationError, OSError, ValueError, KeyError, TypeError, StopIteration) as exc:
+            raise RunValidationError(
+                "Parcel evidence is missing, changed, held or incompatible. Reload and explicitly load a valid snapshot; "
+                "nothing was fetched, repaired or substituted."
             ) from exc

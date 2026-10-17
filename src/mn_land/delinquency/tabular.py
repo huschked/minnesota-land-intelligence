@@ -198,13 +198,7 @@ def read_table(
     limits: InputLimits = DEFAULT_INPUT_LIMITS,
 ) -> tuple[tuple[str, ...], list[SourceRow]]:
     try:
-        body = read_input(path, limits)
-        if path.suffix.lower() not in SUPPORTED_EXTENSIONS:
-            raise DelinquencyFileError("unsupported file type; supported: CSV, XLSX")
-        columns, rows = _csv(body, limits) if path.suffix.lower() == ".csv" else _xlsx(body, limits)
-        if not rows:
-            raise DelinquencyFileError("file contains no delinquency records")
-        return columns, rows
+        return read_table_bytes(read_input(path, limits), path.suffix.lower(), limits)
     except DelinquencyFileError:
         raise
     except (
@@ -221,3 +215,35 @@ def read_table(
         IndexError,
     ) as exc:
         raise DelinquencyFileError(f"cannot read {path.name}: {type(exc).__name__}: {exc}") from exc
+
+
+def read_table_bytes(
+    body: bytes,
+    suffix: str,
+    limits: InputLimits = DEFAULT_INPUT_LIMITS,
+) -> tuple[tuple[str, ...], list[SourceRow]]:
+    """Parse captured bytes using the same bounded values-only table readers."""
+    if len(body) > limits.max_file_bytes:
+        raise DelinquencyFileError("file exceeds max_file_bytes")
+    if suffix.lower() not in SUPPORTED_EXTENSIONS:
+        raise DelinquencyFileError("unsupported file type; supported: CSV, XLSX")
+    try:
+        columns, rows = _csv(body, limits) if suffix.lower() == ".csv" else _xlsx(body, limits)
+        if not rows:
+            raise DelinquencyFileError("file contains no delinquency records")
+        return columns, rows
+    except (
+        UnicodeError,
+        csv.Error,
+        BadZipFile,
+        ValueError,
+        KeyError,
+        RuntimeError,
+        SyntaxError,
+        EOFError,
+        TypeError,
+        IndexError,
+    ) as exc:
+        if isinstance(exc, DelinquencyFileError):
+            raise
+        raise DelinquencyFileError(f"cannot read table bytes: {type(exc).__name__}") from exc

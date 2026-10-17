@@ -450,3 +450,48 @@ selected, 758 deselected) and final CI gate all passed. Test execution took Linu
 respectively. Hosted symlink tests ran without local privilege skips. No unchanged
 full local Windows repeat was needed; documentation-only completion uses fast
 Linux-only CI under ML-129, not another Windows pass.
+
+## ML-204 parcel source evidence
+
+[Viewer details](viewer.md) describe the explicit revalidation action and the
+[evidence projection](../src/mn_land/parcel_details.py),
+[load tests](../tests/unit/test_parcel_detail_load.py) and
+[UI tests](../tests/unit/test_parcel_detail_ui.py) cover U05-U07. The 45 new tests
+check every contributing source row, duplicates/conflicting references, matching
+period year sets, county-confirmed assessment/payable/report years, independent
+owners, unknown/unaggregated money, raw zero, mapped single-record money, CSV
+line ranges, XLSX worksheet identity/values-only rules, byte limits, immutable
+allowlists, strict county host/path/query/PIN links, synthetic link suppression,
+parcel-specific pinned samples, read-time tamper rejection, literal malicious
+text, source pagination, cached reruns/back and detail invalidation on Reload.
+
+Local Windows Python 3.12: all **45 new cases passed in 49.36s** after the final
+year-set checks. Existing service/table-load plus the initial pure evidence cases
+passed **62 tests in 76.83s**; existing table UI/bounded byte-reader checks passed
+**22 in 36.56s**. Final affected table UI/byte-reader/tabular/file regression checks
+passed **73 tests in 30.60s**. These overlap and are not additive coverage counts. One initial
+new XLSX assertion was corrected to expect the existing formula rejection rather
+than a blank value; the values-only safeguard was preserved. A misspelled local
+test filename collected no tests; the corrected affected regression command was
+run separately. Sandbox collection had a Windows temporary-directory cleanup
+permission error; the outside-sandbox retry cleanly collected **803 offline cases
+plus one excluded live case**. No network guard or assertion was weakened.
+Ruff and board/whitespace checks pass. Full hosted verification remains the final
+gate, not implied by these targeted checks.
+
+Actual ML-130 review `4e2ebe46423d4f56aab999d7d9eb3a37` passed AppTest in **38.55s**.
+The same data produced 15 focused parcels, a 311-parcel union and 42-parcel overlap.
+A selected overlapping parcel showed both periods, all **three** contributing
+listing rows, the retained year-evidence identity, separate GIS/listing owner
+observations, unknown canonical money and two validated official links. There is
+no pinned sample comparison in that review, and no historical sample was applied.
+Cached sort, Back/reopen and Reload/clear-details paths passed. Acquisition,
+reimport, replay and latest selection were prohibited. No report was fetched;
+external links were syntax/identity validated, not live-content verified. AppTest
+does not certify browser focus/zoom/screen-reader behavior (ML-206).
+
+All **859** baseline saved county/audit/helper files retained sizes/SHA-256 after
+these checks. Only active viewer `server.log`/`server-error.log` files were excluded.
+The new ignored baseline/check/restart helpers are outside completed runs under
+`data/processed/isanti/preparation/ml-204-2026-10-17/`. No dataset, source output,
+correspondence, mapping/year meaning or canonical balance was changed/uploaded.

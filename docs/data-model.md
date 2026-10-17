@@ -150,3 +150,21 @@ source dictionaries, source URLs, local paths or inferred listing owner are grid
 fields. `TableFilters` and `TablePage` describe reproducible in-memory selection,
 nonadditive counts, ordering and pagination; `ParcelIdentity` binds county,
 snapshot token, completion hash and parcel ID rather than a row offset.
+
+ML-204's frozen `ParcelDetails` adds GIS attributes with source-field labels,
+separate prior/current `PeriodEvidence`, and every contributing `ListingRow`.
+Rows preserve record ordinal, worksheet or physical CSV lines, literal allowlisted
+raw fields (including raw zero/null), independently mapped listing owner text,
+charge assessment/payable year, report payable year and recorded category. Source
+rows must exactly match captured input bytes and candidate references. Period
+year sets must agree with those records. Canonical money remains nullable Decimal;
+known values need a reviewed mapping and one matching contributing row, never an
+inferred sum across repeated fiscal observations. GIS owner remains independent.
+
+The detail observation includes its integrity-check time, IDs/dates/source hashes,
+reviewed year-evidence filename/hash and strictly allowlisted public references.
+It is not a persisted county model or current debt/ownership verification. Optional
+sample findings are restricted to the selected parcel and pinned review input,
+with recorded-year alignment and explicit unknown source-hash/report-date binding.
+Local paths, PDFs and correspondence bodies are not DTO fields. Access, buildable
+area, zoning, resale value and profit remain not assessed, not zero/low-risk scores.

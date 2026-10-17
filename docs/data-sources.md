@@ -52,3 +52,21 @@ separator rules are reused, not redefined by widgets. Filtering source observati
 does not refresh them or establish vacancy, usable/buildable acreage, tax debt or
 current payment status. GIS owner text is labelled independently; no listing/GIS
 owner merge or new contact enrichment is introduced.
+
+ML-204 reads all contributing listing rows from exact inventoried source bytes;
+assessment/payable/report-year distinctions reuse the retained county-confirmed
+convention, not the host clock. Raw monetary abbreviations and effective/letter
+dates remain literal observations with unresolved definitions, not computed debt
+or inferred balance dates. GIS attributes retain source-field labels and listing
+owner text stays separate. Evidence names/hashes identify retained year support
+without serving correspondence or arbitrary local files.
+
+The only public links are reviewed Isanti HTTPS GIS-layer and parcel-report
+destinations (and a mapping source URL only if it meets that same strict allowlist).
+Parcel-report PIN must match the selected parcel. No source row supplies arbitrary
+clickable URLs; no report or website is fetched/embedded in the viewer. Link
+validation is not a live response/content check. Synthetic links are suppressed.
+Only an inventoried comparison pinned to the selected review can contribute a
+parcel-specific sample result, with recorded payable years and unknown source-hash/
+report-verification-date binding disclosed. The ML-130 review has no such sample;
+ten historical checks elsewhere are not applied to its parcels or current balances.

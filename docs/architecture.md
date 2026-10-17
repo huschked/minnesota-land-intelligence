@@ -91,12 +91,12 @@ No source normalization, acquisition/replay, scoring or balance aggregation belo
 in widgets. Exact inventoried-byte JSON reads reject changes after validation and
 pinned-child completion identities are checked between reads. New loads/reload
 revalidate; pure reruns keep the per-session in-memory observation and its original
-timestamp, not a pathname/mtime trust cache. Later disk-backed details/exports must
+timestamp, not a pathname/mtime trust cache. New disk-backed details/exports must
 use the same revalidation gate. [ML-130 supplied eligible real inputs](reviews/isanti-viewer-preparation-2026-10-16.md)
 in new runs while historical files remain legacy. ML-206 still has a
 real-data/accessibility release gate. The launcher enforces loopback, telemetry off,
 CORS/XSRF on, static serving off and literal source-text rendering. Tables/filters
-are added by ML-203 below; parcel evidence links and contextual/formula-safe exports remain ML-204/205;
+are added by ML-203 below; ML-204 adds parcel evidence links/details. Contextual/formula-safe exports remain ML-205;
 no data migration or county acquisition is performed by the shell.
 
 ML-203 adds a separate immutable `ParcelDataset` projection from the selected
@@ -108,5 +108,23 @@ pagination and county/snapshot/hash/parcel selection identities. Cheap reruns us
 only per-session immutable observations, not shared pickle caches or new disk reads.
 The UI sends only allowlisted current-page fields, disables grid export/copy and
 client column sorting, and uses an independent labelled keyboard detail-summary
-path. Full source rows/links, contextual exports and browser release QA remain
-ML-204/205/206; no ingestion or canonical monetary meaning changes.
+path. Contextual exports and browser release QA remain ML-205/206; no ingestion
+or canonical monetary meaning changes.
+
+ML-204 adds frozen `ParcelDetails`/`ListingRow`/`PeriodEvidence` projections and a
+literal-text renderer. Explicit Open revalidates the selected graph and identity,
+reads exact inventoried CSV/XLSX bytes through the existing bounded table parser,
+matches every contributing record/location to the candidate exports, checks year
+sets and the reviewed county convention, then revalidates before returning. Raw
+monetary observations are never summed or promoted to unmapped canonical balances.
+Ten-row source pagination and ordinary reruns reuse the immutable per-session DTO;
+Reload clears details and requires another explicit Open. A failed new disk action
+clears stale table/details rather than retaining them underneath an error.
+
+County-specific display fields and strict HTTPS host/path/query/parcel link rules
+live in the Isanti adapter. Fixed-label links open only on user clicks, never
+through embeds, automatic report requests or local file routes. Lineage contains
+run IDs, fields, dates and hashes, not operation paths or correspondence contents.
+Only the explicitly selected review's inventoried comparison can supply parcel-
+specific sampled findings; missing source-hash/date binding is disclosed and no
+historical sample discovery or general/current verification is implied.

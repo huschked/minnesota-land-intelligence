@@ -4,8 +4,9 @@ Decision date: 2026-10-16. Discovery is complete. **Subsequent ML-202 implementa
 adds the initial selector shell only**, with optional pinned Streamlit and a
 framework-independent overview loader. See [current implementation/startup](viewer.md).
 **Subsequent ML-203 implementation adds candidate tables/filters, dynamic counts,
-pagination and a keyboard parcel-summary action.** Full source-evidence details,
-exports and final browser/accessibility packaging below remain ML-204/205/206.
+pagination and a keyboard parcel selector.** ML-204 adds explicitly revalidated
+source-evidence details and safe county references; exports and final browser/
+accessibility packaging below remain ML-205/206.
 
 ## Outcome and user
 
@@ -150,7 +151,9 @@ The service validates selected join/review snapshots through `validate_run`, fol
 their pinned references and exposes allowlisted overview DTOs. It will own
 deterministic views/filtering/details/export context as those later cards ship.
 ML-202 exposes overview metadata; ML-203 adds allowlisted immutable candidate
-projections and deterministic filtering/sorting/selection. Widgets do not normalize
+projections and deterministic filtering/sorting/selection. ML-204 adds immutable
+all-source-row detail projections, exact captured-byte reads, county link validation
+and parcel-specific sample boundaries. Widgets do not normalize
 county fields, calculate balances, acquire data, or invoke replay. Existing CLI
 acquisition/replay remains an explicit operator workflow outside this viewer.
 
@@ -222,7 +225,8 @@ targeted-development/full-regression policy; no artificial unit tests for this p
 
 ML-202 creates the service boundary, optional tested UI dependency/entry shell,
 selector, validation/error states and fixture tests. ML-203 adds table/filters;
-ML-204 details/evidence; ML-205 safe contextual exports; ML-206 packages and checks
+ML-204 implements details/evidence (see current verification in [testing](testing.md));
+ML-205 safe contextual exports and ML-206 packaging/checks remain. ML-206 checks
 the actual Windows workflow. ML-130 independently prepares real eligible data;
 ML-124 checks refresh/difference semantics. None of these cards is implemented by
 this discovery, and no live acquisition/reimport is authorized merely by adding one.

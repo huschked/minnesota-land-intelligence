@@ -1,10 +1,10 @@
-# Local parcel research viewer (ML-202/203)
+# Local parcel research viewer (ML-202/203/204)
 
 The read-only UI selects a completed join or review, validates its full pinned
 graph, and shows source identities, dates, counts, holds and unknowns. ML-203 adds
-candidate tables, filters, pagination and a labelled keyboard parcel summary.
-Full source-evidence details/links (ML-204), contextual exports (ML-205) and final
-browser/accessibility release checks (ML-206) remain unfinished. This viewer is
+candidate tables, filters, pagination and a labelled keyboard parcel selector.
+ML-204 adds revalidated source-evidence details/links. Contextual exports (ML-205)
+and final browser/accessibility release checks (ML-206) remain unfinished. This viewer is
 not a land acquisition recommendation.
 
 ## Install and run locally
@@ -100,7 +100,7 @@ uses the existing county review buckets, not a vacancy/buildability model.
   client sorting is disabled via the installed column-selection API. No grid
   row position is interpreted as a parcel identity. Exact decimal strings remain
   exact and blank cells remain unknown rather than zero.
-- Use **Parcel ID to inspect**, then **Open parcel summary**. This labelled path
+- Use **Parcel ID to inspect**, then **Open parcel details**. This labelled path
   works independently of the grid and includes the whole filtered identity set,
   not just the current page. The selection records county, snapshot token,
   completion hash and parcel ID. Sorts/pages/reruns cannot silently open another
@@ -114,9 +114,48 @@ uses the existing county review buckets, not a vacancy/buildability model.
 An active source/comparison hold withholds candidate browsing rather than
 re-exposing held join candidates; source/issue counts remain visible above.
 Unmatched/ambiguous/held issue-row tables and contextual exports are not added by
-ML-203. The summary shows only loaded table facts, dated tax categories and
-unknown current payment status. Full raw source rows, year evidence and official
-links remain ML-204. No balances are summed and no live source is requested.
+ML-203/204. No balances are summed and no live source is requested.
+
+## Inspect source evidence (ML-204)
+
+**Open parcel details** explicitly revalidates the selected saved graph and the
+county/snapshot/completion-hash/parcel identity before reading contributing source
+evidence. A spinner marks this disk-backed action; it can take longer than pure
+filtering. A final integrity check rejects changes during the read. Failure clears
+the loaded table/details and requires a valid explicit load; no repair/fallback occurs.
+
+Below the selected parcel summary, inspect:
+
+- GIS mailing address, assessed values and legal description with source-field
+  labels; GIS owner and separately mapped listing owner observations are not merged.
+- Both contributing tax periods even when the table is filtered to one. Assessment
+  versus payable years, row references, canonical unknown money and aggregation
+  status remain distinct. Raw zero is not a verified canonical zero.
+- Every contributing listing row, ten per source page, with CSV physical line range
+  or XLSX sheet/record identity. Repeated fiscal rows are retained, not summed.
+  Reviewed raw fields render literally; unreviewed extra columns are withheld with
+  a count. Monetary abbreviations/effective dates are not guessed accounting facts.
+- The retained county-confirmed year-evidence document's name/hash, without a
+  local-file or correspondence download.
+- Only parcel-specific sample findings pinned to this selected review, if any.
+  Recorded-year alignment is shown separately from unknown source-hash/date binding;
+  samples do not verify every parcel/year or current payment status. The ML-130
+  review has no pinned sample; historical PDF checks elsewhere are not imported.
+- Fixed-label links to the reviewed county parcel report and GIS reference. Only
+  exact HTTPS host/path/query patterns are accepted; a report PIN must match this
+  parcel. Links open only when clicked and may show newer external information.
+  The app never embeds/fetches reports or serves local files. Synthetic links are off.
+
+Source hashes, IDs, agency and separate dates appear in **Saved evidence lineage**;
+operation paths are not exposed. Access, usable/buildable acreage, wetlands,
+floodplain, zoning, resale value and profit are explicitly not assessed. These
+details explain evidence, not whether to buy.
+
+Filter/sort/source-page reruns reuse the immutable per-session detail observation
+and retain its check timestamp. Back keeps table filters. Filtering out/changing
+the selected parcel clears details. Reload revalidates the table but clears details;
+select Open again to inspect newly revalidated evidence. There is no automatic
+continuous watch, global trusted cache, county refresh, export or owner outreach.
 
 ## Validation and error states
 
@@ -131,12 +170,12 @@ links remain ML-204. No balances are summed and no live source is requested.
 - **Evidence changed after load:** a new explicit load/reload fails visibly and
   clears the loaded view. No previous view stays underneath a failed-load message.
 
-An in-memory overview/table is an observation as of its displayed validation time, not
+An in-memory overview/table/detail is an observation as of its displayed validation time, not
 a continuously watched filesystem or live tax account. Reruns without a disk
 action reuse the immutable per-session observation and its original timestamp.
 There is no shared/persistent pickle cache or path/mtime-based trust cache. New
-disk-backed details and exports in later stories must use the service's
-`revalidate` gate before reading; those features are not implemented here.
+disk-backed details use the service's full graph/identity validation gate; future
+exports must do likewise. Contextual exports are not implemented here.
 
 The catalog is bounded to 200 filesystem entries per result-kind folder. An
 overflow/unreadable/unsafe folder produces an explicit notice rather than silently
@@ -150,9 +189,11 @@ is silently used when actual data is missing.
 [`ReviewService`](../src/mn_land/review_service.py) imports no Streamlit and invokes
 no acquisition or replay. It delegates integrity/accounting to the existing
 completion validator, follows pinned source references, rechecks their completion
-hashes, and exposes immutable allowlisted overview and parcel-table DTOs. New JSON artifact
+hashes, and exposes immutable allowlisted overview, parcel-table and evidence DTOs. New JSON/raw artifact
 reads compare the captured bytes against the validated inventory before parsing;
-absolute operation paths and raw source dictionaries are not sent to the page.
+absolute operation paths and unrestricted source dictionaries are not sent to the page.
+Details parse captured CSV/XLSX bytes under the retained input limits, match every
+source row/year to saved candidates, and allowlist display fields before rendering.
 County normalization and review classification stay in county code. The table
 projection reuses the existing county review-bucket function; no raw tax fields
 are reinterpreted in widgets. Filtering/sorting/pagination and selection checks
@@ -177,7 +218,8 @@ rendering (not Markdown/image/link columns). The app also sets the scriptable
 export-disable option before any grid renders. This prevents UX shortcuts from
 bypassing future contextual/formula-safe exports; it is **not access control**:
 displayed data remains accessible to the local user/browser. No download/upload
-widgets, arbitrary local-file routes, county links or credentials are exposed.
+widgets, arbitrary local-file routes or credentials are exposed. ML-204 exposes
+only the validated county reference links described above.
 
 Loopback is not authentication or isolation from another local account/browser.
 Do not forward the port or bind on a LAN/public interface. The app is not deployed
@@ -207,6 +249,15 @@ stable sorting/pagination/selection/back/reset, malicious literal source text,
 allowlisted grid columns and installed export/sort configuration. See
 [testing evidence](testing.md) for actual-data checks and platform results. Grid
 browser/clipboard/zoom/screen-reader behavior is not certified by AppTest.
+
+ML-204 adds [pure evidence/link tests](../tests/unit/test_parcel_evidence.py),
+[integrity/load tests](../tests/unit/test_parcel_detail_load.py), and
+[detail AppTest cases](../tests/unit/test_parcel_detail_ui.py). They cover all rows,
+year/period consistency, independent owners, repeated money/unknowns, CSV/XLSX
+identity, values-only spreadsheets, URL spoofing/mismatch, literal markup/formulas,
+sample scope, read-time changes, no acquisition/substitution and cached reruns.
+The saved ML-130 data also passed detail/back/reload checks with both periods,
+three contributing rows, two safe references and no historical sample substitution.
 
 Implementation `8e79a2eeb4492d9f7fb385a3773c1ca269124f96` passed all 758 offline
 tests without skips in each hosted Windows/Linux x Python 3.11/3.12 job in

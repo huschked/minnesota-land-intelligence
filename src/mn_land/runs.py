@@ -210,20 +210,31 @@ class ValidatedRun:
         return safe_path(self.path, reference["path"], directory=True)
 
 
-def read_artifact_json(run: ValidatedRun, name: str) -> Any:
+def read_artifact_bytes(run: ValidatedRun, name: str, *, max_bytes: int | None = None) -> bytes:
     """Read exact inventoried bytes after validation, detecting intervening changes.
 
     Not a substitute for graph validation on a new load. Consumers must not treat
     a cached ValidatedRun as fresh validation. No unlisted path may be read.
     """
     try:
+        budget = MAX_JSON_BYTES if max_bytes is None else max_bytes
+        if type(budget) is not int or budget < 0:
+            raise RunValidationError("Invalid artifact byte budget")
         entry = next(item for item in run.completion["artifacts"] if item["path"] == name)
         if sha256_file(run.path / "completion.json") != run.completion_sha256:
             raise RunValidationError("Completion changed after validation")
-        body = _read_bytes(safe_path(run.path, name), min(entry["bytes"], MAX_JSON_BYTES))
+        body = _read_bytes(safe_path(run.path, name), min(entry["bytes"], budget))
         if len(body) != entry["bytes"] or hashlib.sha256(body).hexdigest() != entry["sha256"]:
             raise RunValidationError("Artifact changed after validation")
-        value = json.loads(body, object_pairs_hook=_unique)
+        return body
+    except (OSError, StopIteration, ValueError, TypeError, RecursionError) as exc:
+        raise RunValidationError("Cannot read unchanged inventoried artifact") from exc
+
+
+def read_artifact_json(run: ValidatedRun, name: str) -> Any:
+    """Parse unchanged inventoried JSON, never an unchecked pathname reread."""
+    try:
+        value = json.loads(read_artifact_bytes(run, name), object_pairs_hook=_unique)
         json.dumps(value, allow_nan=False)
         return value
     except (OSError, StopIteration, ValueError, TypeError, RecursionError) as exc:

@@ -850,7 +850,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-204"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -868,9 +868,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** Sample report corroboration must not be presented as verification of every parcel.
+**Notes:** Owner: Codex. Selected 2026-10-17. Explicitly loaded, revalidated, immutable parcel-evidence details are implemented in the existing keyboard selection flow; full hosted verification and approved project-only viewer restart remain the completion gates. All contributing rows, period/year distinctions, independent GIS/listing owners and unknown balances are preserved. County-specific strict link rules permit explicit clicks only; no embedded/background fetch, local-file serving, new report retrieval or legacy/sample substitution. Samples disclose unknown source-hash/date binding and do not establish current payment status. Exports remain ML-205.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Viewer](../viewer.md), [evidence DTO/projection](../../src/mn_land/parcel_details.py), [validated service](../../src/mn_land/review_service.py), [county link policy](../../src/mn_land/counties/isanti/evidence.py), [literal renderer](../../src/mn_land/ui/details.py), [pure tests](../../tests/unit/test_parcel_evidence.py), [load tests](../../tests/unit/test_parcel_detail_load.py), [UI tests](../../tests/unit/test_parcel_detail_ui.py), [dated checks](../testing.md#ml-204-parcel-source-evidence). Local 45 new cases pass; actual-data detail/back/reload passed with 859 baseline files unchanged. Full hosted matrix pending.
 
 ### ML-205 - Export filtered worklists and visible validation issues
 

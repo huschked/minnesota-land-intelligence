@@ -10,8 +10,9 @@ further due diligence and possible offers, purchase, holding or resale—not tre
 delinquency alone as a buy signal. [The local viewer](docs/viewer.md)
 selects saved join/review snapshots and shows source dates, counts, holds and
 unknowns. ML-203 adds searchable/filterable, paginated parcel tables and a keyboard
-parcel-summary action. Full evidence details/links and contextual exports remain
-ML-204/205; final browser/accessibility release checks remain ML-206.
+parcel selection. ML-204 adds explicitly revalidated parcel evidence, all contributing
+listing rows, separate owner observations and validated county reference links.
+Contextual exports remain ML-205; final browser/accessibility release checks remain ML-206.
 [ML-130 prepared actual validated data](docs/reviews/isanti-viewer-preparation-2026-10-16.md)
 using fresh October 16 GIS and the unchanged October 13 listing. The read-only UI
 does not acquire or reimport county data.
