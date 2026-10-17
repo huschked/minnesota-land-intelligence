@@ -215,10 +215,10 @@ targeted-development/full-regression policy; no artificial unit tests for this p
 | U05 | Prior/current overlap, source hold or repeated fiscal rows: no additive parcel total, false verification or computed debt. | ML-203, ML-204 |
 | U06 | Unknown access/usable acres/zoning/resale value/profit: show not assessed, not a green opportunity score or zero risk. | ML-204 |
 | U07 | Malicious URL/source markup/formula-leading text: no script execution, arbitrary local serving or unsafe worklist export; raw evidence unchanged. | ML-204, ML-205 |
-| U08 | Files change after load: reload/new disk reads/export revalidate and fail visibly; no stale cache presented as newly verified. | ML-202, ML-205 |
+| U08 | Files change after load: reload/new disk reads/export revalidate and fail visibly; no stale cache presented as newly verified. | ML-202, ML-204, ML-205 |
 | U09 | Keyboard-only parcel selection, visible focus, readable 200% zoom and clear unknown/hold labels work on Windows. | ML-206 |
 | U10 | Browser grid sorting/export shortcut cannot change parcel identity or bypass declared export filters/context. | ML-203, ML-205 |
-| U11 | Local browsing/filtering makes no county requests; opening a validated external link is an explicit browser action. | ML-202, ML-206 |
+| U11 | Local browsing/filtering makes no county requests; opening a validated external link is an explicit browser action. | ML-202, ML-204, ML-206 |
 | U12 | Actual newly eligible inputs can be selected; counts are computed, not forced to the historical 15/49/62. | ML-130, ML-206 |
 
 ## Bounded handoff and remaining uncertainty
@@ -231,7 +231,9 @@ the actual Windows workflow. ML-130 independently prepares real eligible data;
 ML-124 checks refresh/difference semantics. None of these cards is implemented by
 this discovery, and no live acquisition/reimport is authorized merely by adding one.
 
-Unknown until implementation: compatible resolved dependency footprint, measured
-startup/load latency, selected-version grid export controls and browser accessibility.
+Discovery left dependency footprint, measured startup/load latency, selected-version
+grid controls and browser accessibility to implementation. [Current evidence](testing.md)
+now records dependency/platform tests, AppTest timings and installed grid guards;
+actual browser accessibility/clipboard/zoom release checks still remain ML-206.
 Revisit Streamlit if those gates fail, or when real multi-user/hosted/map requirements
 justify a different frontend. Local-first service isolation limits that later rewrite.

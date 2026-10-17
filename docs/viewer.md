@@ -266,3 +266,12 @@ Actual-data AppTest also passed with the 15/49/62 views and stable selection.
 The user-approved restarted viewer was checked healthy on 127.0.0.1:8501. Refresh
 the browser, explicitly choose Review `4e2ebe46423d4f56aab999d7d9eb3a37`, then Load;
 research filters and the table appear below the source dates/limitations panels.
+
+ML-204 implementation `80e669f66cadf31d58c5818eebc98fbfb19432c9` passed all **803**
+offline cases without skips in each hosted Windows/Linux x Python 3.11/3.12 job in
+[run 39079534737](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39079534737).
+The actual-data details/back/reload check passed again on committed code, with all
+859 baseline saved files unchanged. The approved project-only restart is healthy
+on [127.0.0.1:8501](http://127.0.0.1:8501). Refresh, explicitly load the ML-130 review,
+choose a filtered parcel ID, then select **Open parcel details**. Full contextual
+exports and final browser accessibility release checks still remain ML-205/206.

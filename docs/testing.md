@@ -476,8 +476,8 @@ test filename collected no tests; the corrected affected regression command was
 run separately. Sandbox collection had a Windows temporary-directory cleanup
 permission error; the outside-sandbox retry cleanly collected **803 offline cases
 plus one excluded live case**. No network guard or assertion was weakened.
-Ruff and board/whitespace checks pass. Full hosted verification remains the final
-gate, not implied by these targeted checks.
+Ruff and board/whitespace checks pass. Targeted checks are not a full-suite or
+all-platform pass; the completed hosted gate below supplies that coverage.
 
 Actual ML-130 review `4e2ebe46423d4f56aab999d7d9eb3a37` passed AppTest in **38.55s**.
 The same data produced 15 focused parcels, a 311-parcel union and 42-parcel overlap.
@@ -495,3 +495,23 @@ these checks. Only active viewer `server.log`/`server-error.log` files were excl
 The new ignored baseline/check/restart helpers are outside completed runs under
 `data/processed/isanti/preparation/ml-204-2026-10-17/`. No dataset, source output,
 correspondence, mapping/year meaning or canonical balance was changed/uploaded.
+
+The committed-code actual AppTest passed again in **33.31s**, followed by another
+859-file hash check. The user-approved restart checked launcher/listener PIDs
+21516/33696 against this project's executable/command/parent/loopback identities
+before stopping only those processes. Replacement PIDs are **16136/20120**; the
+only listener is **127.0.0.1:8501** and health returned `ok`. Old logs were preserved;
+new logs remain ignored in the ML-204 preparation directory. A post-restart hash
+check also preserved all 859 baseline files. This does not add browser accessibility
+or clipboard/zoom certification.
+
+[Hosted run 39079534737](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39079534737)
+passed at implementation revision `80e669f66cadf31d58c5818eebc98fbfb19432c9`:
+**803 passed, one live deselected, no skips** in every Windows/Linux x Python
+3.11/3.12 job. Dependency consistency, lint, board, explicit live collection (one
+selected, 803 deselected) and final CI gate passed. Test execution took Linux
+**65.75/86.41s** and Windows **329.74/195.99s** for Python 3.11/3.12 respectively.
+Hosted real symlink cases ran. No unchanged full local Windows repeat was needed;
+completion documentation uses fast Linux-only CI under ML-129, not another claim
+of Windows coverage. Repository privacy was checked before pushing; only the three
+data `.gitkeep` placeholders are tracked, not datasets or private evidence/helpers.

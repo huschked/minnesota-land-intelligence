@@ -2,7 +2,7 @@
 
 Updated: 2026-10-17. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project has a working local CLI and initial [read-only snapshot selector shell](../viewer.md), not a complete parcel-review UI or deployed service. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links (ML-202/203/204). Contextual exports and final browser/accessibility packaging remain ML-205/206; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -850,33 +850,33 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-204"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
 **Kind:** Story
 
-**Depends on:** ML-202
+**Depends on:** ML-202, ML-203
 
 **User outcome:** As a user, I can see why a parcel appears and inspect its official evidence.
 
 **Acceptance criteria:**
 
-- [ ] Display parcel attributes, assessment versus payable years, all source rows, unknown monetary totals, and independent GIS/source owner text.
-- [ ] Link validated county references and evidence without exposing local secrets or treating field-name guesses as facts.
-- [ ] Implement U05-U07 with escaped source text and allowlisted external URL validation; no embedded/background county fetch or arbitrary local-file serving. Clearly distinguish raw unaggregated amounts, unknown resale/suitability facts, owner-text sources and parcel-specific sampled corroboration.
+- [x] Display parcel attributes, assessment versus payable years, all source rows, unknown monetary totals, and independent GIS/source owner text.
+- [x] Link validated county references and evidence without exposing local secrets or treating field-name guesses as facts.
+- [x] Implement U05-U07 with escaped source text and allowlisted external URL validation; no embedded/background county fetch or arbitrary local-file serving. Clearly distinguish raw unaggregated amounts, unknown resale/suitability facts, owner-text sources and parcel-specific sampled corroboration.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** 45 new fixture/service/AppTest cases plus affected regressions passed locally; all 803 offline tests passed without skips in all four hosted Windows/Linux x Python 3.11/3.12 jobs at revision 80e669f66cadf31d58c5818eebc98fbfb19432c9. Lint, dependency consistency, board, explicit live collection and CI gate passed. Actual-data detail/back/reload checks passed again on committed code; all 859 baseline saved files are unchanged. Approved project-only restart is loopback-only and healthy. Browser accessibility release QA remains ML-206.
 
-**Notes:** Owner: Codex. Selected 2026-10-17. Explicitly loaded, revalidated, immutable parcel-evidence details are implemented in the existing keyboard selection flow; full hosted verification and approved project-only viewer restart remain the completion gates. All contributing rows, period/year distinctions, independent GIS/listing owners and unknown balances are preserved. County-specific strict link rules permit explicit clicks only; no embedded/background fetch, local-file serving, new report retrieval or legacy/sample substitution. Samples disclose unknown source-hash/date binding and do not establish current payment status. Exports remain ML-205.
+**Notes:** Owner: Codex. Completed 2026-10-17. Explicitly loaded, revalidated, immutable parcel-evidence details are implemented in the keyboard selection flow. All contributing rows, period/year distinctions, independent GIS/listing owners and unknown balances are preserved. County-specific strict link rules permit explicit clicks only; no embedded/background fetch, local-file serving, new report retrieval or legacy/sample substitution. Samples disclose unknown source-hash/date binding and do not establish current payment status. Suitability/economics remain not assessed. ML-203 is recorded as a prerequisite because the shipped details use its table identity flow. Only the verified project viewer was restarted after approval; old logs/data are preserved. ML-205 is next recommended, not automatically started; accounting blockers remain unresolved.
 
-**Evidence / starting points:** [Viewer](../viewer.md), [evidence DTO/projection](../../src/mn_land/parcel_details.py), [validated service](../../src/mn_land/review_service.py), [county link policy](../../src/mn_land/counties/isanti/evidence.py), [literal renderer](../../src/mn_land/ui/details.py), [pure tests](../../tests/unit/test_parcel_evidence.py), [load tests](../../tests/unit/test_parcel_detail_load.py), [UI tests](../../tests/unit/test_parcel_detail_ui.py), [dated checks](../testing.md#ml-204-parcel-source-evidence). Local 45 new cases pass; actual-data detail/back/reload passed with 859 baseline files unchanged. Full hosted matrix pending.
+**Evidence / starting points:** [Viewer](../viewer.md), [evidence DTO/projection](../../src/mn_land/parcel_details.py), [validated service](../../src/mn_land/review_service.py), [county link policy](../../src/mn_land/counties/isanti/evidence.py), [literal renderer](../../src/mn_land/ui/details.py), [pure tests](../../tests/unit/test_parcel_evidence.py), [load tests](../../tests/unit/test_parcel_detail_load.py), [UI tests](../../tests/unit/test_parcel_detail_ui.py), [dated checks](../testing.md#ml-204-parcel-source-evidence), [full CI run 39079534737](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39079534737), implementation revision `80e669f66cadf31d58c5818eebc98fbfb19432c9`.
 
 ### ML-205 - Export filtered worklists and visible validation issues
 
 <a id="ml-205"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P2
 
@@ -892,11 +892,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Keep unmatched and source-accounting issues accessible; protect spreadsheet consumers from executable formula content while preserving raw inputs.
 - [ ] Implement U07/U08/U10: preview filters/counts/snapshot references and deterministic export order, revalidate before export, prevent built-in grid download/copy from bypassing safe contextual exports, and never mutate retained outputs or latest pointers. CSV neutralization must be disclosed; JSON preserves canonical values/nulls.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Planned: fixture/service/AppTest checks for exact filtered distinct IDs, deterministic Decimal/null ordering, source/year/snapshot/filter context, explicit preview counts, empty/held/issue-only outputs, unknown versus zero, CSV formula neutralization (including whitespace/control-leading payloads), JSON preservation, changed evidence rejection, and no source/latest mutation or built-in export bypass. Run affected checks and the full implementation-boundary matrix; actual-data export checks must not claim browser clipboard/accessibility conformance.
 
-**Notes:** Does not add source editing, scraping, or owner outreach.
+**Notes:** Ready 2026-10-17 after ML-203/204 completion and bounded U07/U08/U10 refinement; owner remains unassigned until selected. Export only existing saved candidate/issue observations with explicit context, integrity revalidation and disclosed CSV neutralization. Reuse service identity/filters and county source semantics; no new financial totals, source acquisition, editing, scraping, contact enrichment, owner outreach or automatic story start. County accounting blockers do not prevent an honest unknown-valued worklist.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [UI plan U07/U08/U10](../ui-plan.md), [viewer/service boundaries](../viewer.md), [filter/identity service](../../src/mn_land/parcel_table.py), [validated reads](../../src/mn_land/review_service.py), [saved output schemas](../data-model.md), [existing CLI export layer](../../src/mn_land/export/exporters.py). Formula-safe contextual viewer exports still require implementation and dedicated tests; no export implementation or test pass is claimed by readiness.
 
 ### ML-206 - Package and validate the local UI
 

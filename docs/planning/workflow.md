@@ -51,9 +51,18 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-204: add full source-linked parcel details to the existing table/summary flow.
-2. ML-205 exports and ML-206 packaging follow their recorded dependencies. No later
-   card starts automatically.
+1. ML-205: safe contextual filtered worklists and visible source-accounting issues.
+2. ML-206: package and validate the actual Windows/browser workflow after exports.
+   No later card starts automatically.
+
+ML-204 is Done: [parcel source evidence](../viewer.md#inspect-source-evidence-ml-204)
+adds revalidated immutable details, every contributing listing row, confirmed year
+distinctions, separate owners, unknown balances and strictly validated county links.
+All 803 offline cases passed in each hosted Windows/Linux x Python 3.11/3.12 job.
+Actual-data detail/back/reload passed; 859 baseline saved files remain unchanged.
+Only the verified project viewer was restarted after approval and is loopback-only
+and healthy. No county/report request, debt calculation, suitability score, source
+edit or historical sample substitution occurred. ML-205 is refined/Ready, not started.
 
 ML-203 is Done: [the viewer](../viewer.md) now has saved candidate tables, exact
 service filters/sorts, dynamic distinct counts, pagination and a labelled keyboard
