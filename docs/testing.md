@@ -411,8 +411,8 @@ take under one second. An earlier sandbox run passed 32 pure cases, then Windows
 blocked AppTest's internal loopback wakeup socket (WinError 10013) and temp cleanup.
 The permitted outside-sandbox targeted retry passed; the suite's DNS/external/
 arbitrary-loopback network block was retained. No test assertion was weakened.
-Ruff and board/whitespace checks pass. The full hosted regression gate is pending;
-targeted verification is not a full-suite/all-platform pass.
+Ruff and board/whitespace checks pass. Targeted verification is not itself a
+full-suite/all-platform pass; the completed hosted gate below supplies that coverage.
 
 Actual ML-130 review `4e2ebe46423d4f56aab999d7d9eb3a37` loaded through both the
 service and AppTest. Dynamic views are **15 focused, 49 outside PILT/exempt,
@@ -431,5 +431,22 @@ after the checks. Only the existing viewer's active `server.log`/`server-error.l
 were excluded. The new private baseline/check helper live outside completed runs
 under `data/processed/isanti/preparation/ml-203-2026-10-17/` and stay ignored. No
 county request, raw/source/result rewrite, correspondence upload, canonical tax
-meaning change or monetary resolution occurred. The user approved restarting the
-identified local viewer after verification; restart/health evidence is pending.
+meaning change or monetary resolution occurred.
+
+The committed-code actual AppTest passed again in **12.03s**, and all 856 baseline
+hashes were rechecked unchanged. The user-approved restart verified launcher PID
+13800 (this repo's venv) and its listener child 32764 before stopping only those
+processes. The replacement launcher/listener PIDs are 21516/33696, with the only
+listener on **127.0.0.1:8501** and health response `ok`. Old logs were preserved;
+new ignored logs live in the ML-203 preparation directory. This is a healthy
+server plus AppTest check, not a browser accessibility or clipboard-control audit.
+
+[Hosted run 39044032811](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39044032811)
+passed at implementation revision `8e79a2eeb4492d9f7fb385a3773c1ca269124f96`:
+**758 passed, one live deselected, no skips** in every Windows/Linux x Python
+3.11/3.12 job. Dependency consistency, lint, board, explicit live collection (one
+selected, 758 deselected) and final CI gate all passed. Test execution took Linux
+55.95/60.50 seconds and Windows 233.76/252.00 seconds for Python 3.11/3.12
+respectively. Hosted symlink tests ran without local privilege skips. No unchanged
+full local Windows repeat was needed; documentation-only completion uses fast
+Linux-only CI under ML-129, not another Windows pass.

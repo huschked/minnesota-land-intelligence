@@ -207,3 +207,11 @@ stable sorting/pagination/selection/back/reset, malicious literal source text,
 allowlisted grid columns and installed export/sort configuration. See
 [testing evidence](testing.md) for actual-data checks and platform results. Grid
 browser/clipboard/zoom/screen-reader behavior is not certified by AppTest.
+
+Implementation `8e79a2eeb4492d9f7fb385a3773c1ca269124f96` passed all 758 offline
+tests without skips in each hosted Windows/Linux x Python 3.11/3.12 job in
+[run 39044032811](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39044032811).
+Actual-data AppTest also passed with the 15/49/62 views and stable selection.
+The user-approved restarted viewer was checked healthy on 127.0.0.1:8501. Refresh
+the browser, explicitly choose Review `4e2ebe46423d4f56aab999d7d9eb3a37`, then Load;
+research filters and the table appear below the source dates/limitations panels.

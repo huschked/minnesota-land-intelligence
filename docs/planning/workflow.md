@@ -51,10 +51,18 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-203: add searchable/filterable parcel tables to the existing selector shell.
-2. ML-204: add source-linked parcel details. Both are Ready after ML-202; ML-205
-   exports and ML-206 packaging follow their recorded dependencies. No later card
-   starts automatically.
+1. ML-204: add full source-linked parcel details to the existing table/summary flow.
+2. ML-205 exports and ML-206 packaging follow their recorded dependencies. No later
+   card starts automatically.
+
+ML-203 is Done: [the viewer](../viewer.md) now has saved candidate tables, exact
+service filters/sorts, dynamic distinct counts, pagination and a labelled keyboard
+parcel-summary path. All 758 offline tests passed in each of four hosted platform/
+Python jobs. Actual-data AppTest computed the existing 15/49/62 views and the
+311-parcel distinct prior/current union, preserving all 856 baseline saved files
+checked. The user-approved viewer restart is loopback-only and healthy. Full
+source-evidence details, contextual exports and browser/a11y release QA remain
+ML-204/205/206, not completed by this card.
 
 ML-124 is Done: [saved snapshot comparisons](../snapshot-comparison.md) preserve
 added/changed/missing observations, source dates, holds and explicit freshness
