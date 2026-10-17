@@ -343,3 +343,37 @@ jobs. These version/platform passes establish the optional framework compatibili
 for this shell, not browser accessibility or a transitive dependency lock.
 Completion documentation/board-only changes use fast Linux CI under ML-129;
 no repeated unchanged local or hosted Windows suite is required.
+
+## ML-124 saved snapshot differences
+
+[Comparison commands and boundaries](snapshot-comparison.md) describe the new
+offline report; [fixtures](../tests/unit/test_snapshot_diff.py) cover its acceptance
+cases and failure/integrity boundaries. Local Windows Python 3.12 verification:
+25 comparison cases passed in 120.66 seconds, followed by the newly added older-
+fingerprint rejection case (1 passed in 2.10 seconds). The affected replay,
+publication and bounded-reader suites passed 115 tests with one privilege-dependent
+symlink skip in 134.72 seconds. Ruff, board consistency and `git diff --check`
+passed. Default collection found 713 offline tests plus one excluded live case.
+Sandbox collection emitted a temporary-directory cleanup permission error; the
+permitted outside-sandbox retry collected cleanly. No test assertion was weakened.
+The final full hosted regression gate is pending; these local targeted runs are
+not a full-suite or all-platform pass.
+
+Actual-data control report `54ae3d5c6fd144959b599bab1b2d20b5` compares ML-130 join
+`ce541e7ad88e4a52826a90c9ff5a2139` with its exact offline replay
+`f04a7c3e60014ab784cf7f46b64b7a65`. It completed with **871 unchanged listing IDs,
+zero added/changed/missing**, from 1,783 source rows. Both sides retain October 13
+publication and October 16 capture dates, 23,888 normalized GIS records, two GIS
+quarantines, 62 prior-year and 291 current-year large-parcel view IDs. At explicit
+as-of October 17 and 30-day policy, publication age is four days and capture ages
+one day. These are policy ages, not payment verification. The same-listing-bytes
+warning is present; all current payment statuses remain unknown and no identity
+replacement links are inferred. This is a reproducibility control, **not two
+independent tax observations or a fresh balance update**.
+
+All **660** pre-control files in the private baseline retained their sizes/SHA-256.
+Only the active viewer's two server logs were excluded (they remain live/locked);
+no server restart or UI change occurred. The ignored baseline is under
+`data/processed/isanti/preparation/ml-124-2026-10-17/before.json`, outside completed
+runs. New report inputs/results remain ignored and are not uploaded. No live
+county test, acquisition, reimport, county message or monetary resolution occurred.

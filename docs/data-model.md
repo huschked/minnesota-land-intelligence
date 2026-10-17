@@ -116,6 +116,13 @@ not gain completion status. See [replay evidence and commands](replay.md).
 
 ## Read-only viewer overview (ML-202)
 
+ML-124's [comparison schema](snapshot-comparison.md) is a separate `comparison`
+run, not a mutation of canonical tax status. Its manifest stores explicit as-of
+date/age policy and two source contexts; `changes.json` stores the union of listed
+IDs, before/after rows/GIS/status/view observations and added/changed/missing/
+unchanged categories. Current payment remains unknown and identity relationships
+are not inferred. Both complete join graphs are pinned under `before`/`after`.
+
 `SnapshotKey` identifies a supported join/review kind and run ID within configured
 Isanti result folders. Immutable `SnapshotOverview` is an application projection,
 not another parcel/tax source or persisted county model. It carries the selected

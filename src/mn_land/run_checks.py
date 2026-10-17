@@ -113,6 +113,11 @@ def _set(values: Any) -> set[int]:
 def validate_content(path: Path, completion: dict, manifest: dict) -> None:
     kind = completion["kind"]
     files = {entry["path"] for entry in completion["artifacts"]}
+    if kind == "comparison":
+        from mn_land.snapshot_diff import validate_comparison_content
+
+        validate_comparison_content(path, completion, manifest)
+        return
     if kind == "parcel_raw":
         _require(
             {

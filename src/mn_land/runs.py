@@ -51,6 +51,7 @@ DEPENDENCIES = {
     "parcel_processed": {"parcel": "parcel_raw"},
     "delinquency_processed": {"parcel": "parcel_raw", "delinquency": "delinquency_raw"},
     "review": {"join": "delinquency_processed"},
+    "comparison": {"before": "delinquency_processed", "after": "delinquency_processed"},
 }
 CONTROL_FILES = {"completion.json", "completion.pending.json", "failure.json"}
 MAX_MANIFEST_BYTES = 8 * 1024 * 1024

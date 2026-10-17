@@ -1,6 +1,6 @@
 # Epics and story backlog
 
-Updated: 2026-10-16. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
+Updated: 2026-10-17. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
 The project has a working local CLI and initial [read-only snapshot selector shell](../viewer.md), not a complete parcel-review UI or deployed service. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
@@ -569,7 +569,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-124"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -584,11 +584,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Tests cover report-year rollover, parcel splits/retired IDs, source holds, mixed prior/current rows, and stale evidence.
 - [ ] Refresh reports added/changed/missing records with source dates and preserves earlier results and unresolved statuses.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** The 26 new offline comparison cases and 115 affected replay/publication/reader checks passed locally (one existing privilege-dependent symlink skip). Actual-data control reports 871 unchanged IDs and preserves all 660 baseline files, excluding only active viewer logs. Full hosted regression is pending. See [comparison behavior](../snapshot-comparison.md) and [testing evidence](../testing.md).
 
-**Notes:** ML-123 is Done, so this card is Ready, not started. Choose genuinely compatible completed inputs for comparisons; the retained historical county snapshots remain pre-completion legacy and cannot be silently recertified. Any recovery/reacquisition of actual data needs an explicit reviewed path. No historical motivation score or unattended scheduled job is included; disappearance never proves payment.
+**Notes:** Owner: Codex. Selected 2026-10-17. Explicit offline comparison of compatible completed join graphs retains both evidence sets in a new immutable report. Listing/GIS/view changes stay separate; missing IDs do not imply payment, split/retirement relationships or availability. Freshness is a disclosed operator policy applied to source dates, not recapture time. No live acquisition, reimport, UI refresh button, historical certification, motivation score or scheduled job is included. Implementation is awaiting the full hosted verification gate, not marked Done.
 
-**Evidence / starting points:** [1](../counties/isanti.md)
+**Evidence / starting points:** [1](../counties/isanti.md), [Comparison](../snapshot-comparison.md), [Fixtures](../../tests/unit/test_snapshot_diff.py), [Verification](../testing.md)
 
 ### ML-125 - Implement strict file and schema validation
 

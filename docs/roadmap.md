@@ -39,3 +39,6 @@ ML-126 ([retrieval/completeness, implemented](retrieval.md)), and ML-127
 scope or tax meanings. ML-123 adds [explicit selected-snapshot/portable replay](replay.md)
 for completed version-2 inputs; historical pre-completion runs are not retroactively
 certified, converted or reimported by these reliability changes.
+ML-124's [saved snapshot comparison](snapshot-comparison.md) adds dated
+added/changed/missing reports and explicit stale-data policy without treating
+disappearance as payment, inferring parcel replacement links or retrieving data.

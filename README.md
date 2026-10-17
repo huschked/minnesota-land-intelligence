@@ -35,6 +35,8 @@ validation](docs/publication.md), with immutable per-run outputs and pinned inpu
 Historical snapshots remain legacy/unverified and are not automatically selected;
 they are not deleted or backfilled. ML-123 adds [explicit snapshot selection and
 offline replay](docs/replay.md) for completed version-2 inputs, not legacy migration.
+ML-124 adds [saved snapshot comparisons](docs/snapshot-comparison.md), retaining
+source dates and added/changed/missing observations without inferring payment.
 
 The county service describes `TOTPRVTXTOD` only as **Total Previous Taxes Owed**. That does not by itself prove delinquent/past-due status, so strict candidate classification is intentionally disabled until an authoritative definition is documented. The pipeline still preserves that source value as `previous_taxes_owed` and reports the semantic gate clearly.
 
@@ -73,6 +75,7 @@ python -m mn_land.cli find-candidates --county isanti --min-acres 10
 python -m mn_land.cli inspect-delinquency-file --county isanti --file data/import/county-file.xlsx
 python -m mn_land.cli import-delinquency --county isanti --file data/import/county-file.xlsx --mapping reviewed-mapping.json --min-acres 10
 python -m mn_land.cli replay-delinquency --county isanti --snapshot data/processed/isanti/delinquency/COMPLETE_RUN_ID
+python -m mn_land.cli compare-snapshots --county isanti --before data/processed/isanti/delinquency/BEFORE_RUN_ID --after data/processed/isanti/delinquency/AFTER_RUN_ID --as-of 2026-10-17
 python -m mn_land.cli review-delinquency --county isanti --snapshot data/processed/isanti/delinquency/COMPLETE_RUN_ID --min-acres 10
 pytest
 pytest -m integration

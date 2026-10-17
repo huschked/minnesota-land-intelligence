@@ -38,3 +38,10 @@ reads those saved graphs without a source request, replay or reimport; a new UI
 load/validation date is not a fresh tax statement or payment-status check. No new
 county source, monetary definition, report verification or source-year meaning is
 introduced by the UI.
+
+[ML-124 comparisons](snapshot-comparison.md) preserve two saved observations,
+including separate listing publication/capture and GIS capture dates. Explicit
+operator freshness thresholds do not establish a county validity period or current
+payment status. Disappearance is only non-observation; split/retirement links are
+not inferred. No new source request, tax definition or accounting resolution is
+introduced by the comparison report.

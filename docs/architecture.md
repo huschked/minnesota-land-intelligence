@@ -73,6 +73,12 @@ identity is recorded rather than pretending to restore historical software.
 
 ## Local viewer shell and planned research workflow
 
+ML-124 adds [offline saved-join comparison](snapshot-comparison.md) through
+`snapshot_diff`, using existing county normalization/join semantics and recorded
+fingerprints. A new immutable `comparison` run pins two join graphs; its content
+validator recomputes the report from contained evidence and explicit date policy.
+No acquisition, reimport, latest-input selection or UI refresh is involved.
+
 [The UI plan](ui-plan.md) defines the eventual basic review workflow. ML-202's
 [implemented shell](viewer.md) uses a framework-independent `ReviewService` and
 existing graph validation, with explicit join/review loading and local catalog

@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
@@ -34,6 +35,13 @@ def build_parser() -> argparse.ArgumentParser:
         prog="mn-land", description="Minnesota Land Intelligence Platform"
     )
     sub = parser.add_subparsers(dest="command", required=True)
+    compare_command = sub.add_parser("compare-snapshots", help="Compare saved completed joins offline")
+    compare_command.add_argument("--county", choices=("isanti",), required=True)
+    compare_command.add_argument("--before", type=Path, required=True)
+    compare_command.add_argument("--after", type=Path, required=True)
+    compare_command.add_argument("--as-of", type=date.fromisoformat, required=True, help="UTC calendar date")
+    compare_command.add_argument("--stale-after-days", type=int, default=30)
+    compare_command.add_argument("--output-root", type=Path, help="Processed data root")
     for name in ("validate-source", "find-candidates", "status"):
         command = sub.add_parser(name)
         command.add_argument("--county", choices=("isanti",), required=True)
@@ -82,6 +90,25 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args(argv)
+    if args.command == "compare-snapshots":
+        from mn_land.runs import read_json
+        from mn_land.snapshot_diff import compare_snapshots
+
+        try:
+            output = compare_snapshots(
+                args.before, args.after, as_of=args.as_of,
+                stale_after_days=args.stale_after_days, processed_root=args.output_root,
+            )
+        except (RunValidationError, OSError, ValueError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
+        manifest = read_json(output / "manifest.json")
+        print(f"Offline snapshot comparison: {output}")
+        print(json.dumps(manifest["summary"], sort_keys=True))
+        for warning in manifest["warnings"]:
+            print(f"WARNING: {warning}")
+        print("Missing is not paid. Current payment statuses and identity relationships remain unknown.")
+        return 0
     if args.command == "review-delinquency":
         from mn_land.counties.isanti.review import build_review
 
@@ -112,6 +139,7 @@ def main(argv: list[str] | None = None) -> int:
                 "delinquency_processed",
             ),
             ("Review results", SETTINGS.processed_dir / "isanti" / "review", "review"),
+            ("Snapshot comparisons", SETTINGS.processed_dir / "isanti" / "comparisons", "comparison"),
         ):
             diagnostics = []
             try:
