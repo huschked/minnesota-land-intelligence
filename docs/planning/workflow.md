@@ -51,11 +51,16 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-124: validate refresh/difference behavior without inferring payment from
-   disappearance.
-2. ML-203/204: add parcel tables/filters and source-linked details to the existing
-   selector shell. Both are Ready after ML-202; ML-205 exports and ML-206 packaging
-   follow their recorded dependencies. No later card starts automatically.
+1. ML-203: add searchable/filterable parcel tables to the existing selector shell.
+2. ML-204: add source-linked parcel details. Both are Ready after ML-202; ML-205
+   exports and ML-206 packaging follow their recorded dependencies. No later card
+   starts automatically.
+
+ML-124 is Done: [saved snapshot comparisons](../snapshot-comparison.md) preserve
+added/changed/missing observations, source dates, holds and explicit freshness
+policy without payment or split/retirement inference. All 713 offline tests passed
+on four hosted platform/Python combinations. The actual-data identical-replay
+control reports 871 unchanged IDs; no fresh tax balance or county request occurred.
 
 ML-201 is Done: [the UI decision](../ui-plan.md) selects Streamlit and maps U01-U12
 workflow/accessibility/data-safety examples to implementation cards. No framework

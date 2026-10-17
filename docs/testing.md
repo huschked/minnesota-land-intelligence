@@ -356,8 +356,8 @@ symlink skip in 134.72 seconds. Ruff, board consistency and `git diff --check`
 passed. Default collection found 713 offline tests plus one excluded live case.
 Sandbox collection emitted a temporary-directory cleanup permission error; the
 permitted outside-sandbox retry collected cleanly. No test assertion was weakened.
-The final full hosted regression gate is pending; these local targeted runs are
-not a full-suite or all-platform pass.
+These local targeted runs are not themselves a full-suite or all-platform pass;
+the final hosted gate below supplies that coverage.
 
 Actual-data control report `54ae3d5c6fd144959b599bab1b2d20b5` compares ML-130 join
 `ce541e7ad88e4a52826a90c9ff5a2139` with its exact offline replay
@@ -377,3 +377,17 @@ no server restart or UI change occurred. The ignored baseline is under
 `data/processed/isanti/preparation/ml-124-2026-10-17/before.json`, outside completed
 runs. New report inputs/results remain ignored and are not uploaded. No live
 county test, acquisition, reimport, county message or monetary resolution occurred.
+
+Committed-code validation of the actual report passed in 21.62 seconds and a
+second baseline hash check again found all 660 files unchanged. Comparison document
+targets exist, the regenerated board passes, and whitespace/lint checks pass.
+
+[Hosted run 39041344103](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39041344103)
+passed at implementation revision `1fe57b9ff3c549471dd6c664beaafe273358b971`:
+**713 passed, one live deselected, no skips** in each Windows/Linux x Python
+3.11/3.12 job. All jobs passed dependency consistency, lint, board and explicit live
+collection (one selected, 713 deselected); the final CI gate passed. Test execution
+took Linux 46.75/62.05 seconds and Windows 209.24/172.73 seconds for Python
+3.11/3.12 respectively. The real symlink cases ran in hosted jobs. No repeated full
+local Windows run was needed; completion documentation uses fast Linux-only CI
+under ML-129, not another claim of Windows coverage.

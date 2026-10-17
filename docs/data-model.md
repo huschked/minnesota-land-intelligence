@@ -114,7 +114,7 @@ No canonical parcel/tax field or monetary/year meaning changes. Older complete r
 without fingerprints retain unknown historical normalized hashes; legacy inputs do
 not gain completion status. See [replay evidence and commands](replay.md).
 
-## Read-only viewer overview (ML-202)
+## Saved snapshot comparison (ML-124)
 
 ML-124's [comparison schema](snapshot-comparison.md) is a separate `comparison`
 run, not a mutation of canonical tax status. Its manifest stores explicit as-of
@@ -122,6 +122,8 @@ date/age policy and two source contexts; `changes.json` stores the union of list
 IDs, before/after rows/GIS/status/view observations and added/changed/missing/
 unchanged categories. Current payment remains unknown and identity relationships
 are not inferred. Both complete join graphs are pinned under `before`/`after`.
+
+## Read-only viewer overview (ML-202)
 
 `SnapshotKey` identifies a supported join/review kind and run ID within configured
 Isanti result folders. Immutable `SnapshotOverview` is an application projection,

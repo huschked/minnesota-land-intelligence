@@ -87,3 +87,10 @@ moved-folder validation, resealed payment claims and CLI behavior. Network,
 latest selection, replay and reimport are explicitly prohibited in report tests.
 See [testing evidence](testing.md) for measured verification and the actual-data
 control; the control is not a second independent tax observation.
+
+Implementation `1fe57b9ff3c549471dd6c664beaafe273358b971` passed 713 offline
+tests without skips on each hosted Windows/Linux x Python 3.11/3.12 job in
+[run 39041344103](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39041344103).
+No government test executed. The saved-data control reports 871 unchanged listing
+IDs and preserves all 660 baseline files checked, with only active viewer logs
+excluded. It does not establish updated tax status.

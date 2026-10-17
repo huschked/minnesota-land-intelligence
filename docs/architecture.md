@@ -71,13 +71,15 @@ and rejects unexpected drift before completion. Moved join graphs remain self-co
 Historical pre-completion runs are not migrated or certified; current code/runtime
 identity is recorded rather than pretending to restore historical software.
 
-## Local viewer shell and planned research workflow
+## Saved snapshot differences
 
 ML-124 adds [offline saved-join comparison](snapshot-comparison.md) through
 `snapshot_diff`, using existing county normalization/join semantics and recorded
 fingerprints. A new immutable `comparison` run pins two join graphs; its content
 validator recomputes the report from contained evidence and explicit date policy.
 No acquisition, reimport, latest-input selection or UI refresh is involved.
+
+## Local viewer shell and planned research workflow
 
 [The UI plan](ui-plan.md) defines the eventual basic review workflow. ML-202's
 [implemented shell](viewer.md) uses a framework-independent `ReviewService` and

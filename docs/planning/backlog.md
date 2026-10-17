@@ -569,7 +569,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-124"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -581,12 +581,12 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Tests cover report-year rollover, parcel splits/retired IDs, source holds, mixed prior/current rows, and stale evidence.
-- [ ] Refresh reports added/changed/missing records with source dates and preserves earlier results and unresolved statuses.
+- [x] Tests cover report-year rollover, parcel splits/retired IDs, source holds, mixed prior/current rows, and stale evidence.
+- [x] Refresh reports added/changed/missing records with source dates and preserves earlier results and unresolved statuses.
 
-**Validation:** The 26 new offline comparison cases and 115 affected replay/publication/reader checks passed locally (one existing privilege-dependent symlink skip). Actual-data control reports 871 unchanged IDs and preserves all 660 baseline files, excluding only active viewer logs. Full hosted regression is pending. See [comparison behavior](../snapshot-comparison.md) and [testing evidence](../testing.md).
+**Validation:** All 713 offline tests passed with no skips in every hosted Windows/Linux x Python 3.11/3.12 job at `1fe57b9ff3c549471dd6c664beaafe273358b971`; the live case was collected, not executed. The 26 new comparison cases and affected replay/publication/reader checks also passed locally. Actual-data control reports 871 unchanged IDs, validates under committed code, and preserves all 660 baseline files, excluding only active viewer logs. See [comparison behavior](../snapshot-comparison.md), [testing evidence](../testing.md) and [full CI](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39041344103).
 
-**Notes:** Owner: Codex. Selected 2026-10-17. Explicit offline comparison of compatible completed join graphs retains both evidence sets in a new immutable report. Listing/GIS/view changes stay separate; missing IDs do not imply payment, split/retirement relationships or availability. Freshness is a disclosed operator policy applied to source dates, not recapture time. No live acquisition, reimport, UI refresh button, historical certification, motivation score or scheduled job is included. Implementation is awaiting the full hosted verification gate, not marked Done.
+**Notes:** Owner: Codex. Completed 2026-10-17. Explicit offline comparison of compatible completed join graphs retains both evidence sets in a new immutable report. Listing/GIS/view changes stay separate; missing IDs do not imply payment, split/retirement relationships or availability. Freshness is a disclosed operator policy applied to source dates, not recapture time. No live acquisition, reimport, UI refresh button, historical certification, motivation score or scheduled job is included. The actual-data comparison is an identical-replay control, not independent tax observations. ML-203 is next recommended; later-phase cards do not start automatically and county accounting blockers remain unresolved.
 
 **Evidence / starting points:** [1](../counties/isanti.md), [Comparison](../snapshot-comparison.md), [Fixtures](../../tests/unit/test_snapshot_diff.py), [Verification](../testing.md)
 
