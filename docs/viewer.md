@@ -288,3 +288,13 @@ on [127.0.0.1:8501](http://127.0.0.1:8501). Refresh, explicitly load the ML-130 
 choose a filtered parcel ID, then select **Open parcel details**. Full contextual
 exports were subsequently added by ML-205. Final browser accessibility release
 checks still remain ML-206.
+
+ML-205's final revision `17f33cb0c8f69aeb6b2fddc84277a5a2db584280` passed **840**
+offline tests without skips in all four hosted Windows/Linux x Python 3.11/3.12
+jobs in [run 39082776024](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39082776024).
+Actual saved-data focused CSV/JSON, 311-parcel union and selected scope passed with
+1,764 separate snapshot-wide issue/accounting entries and all 862 baseline files
+unchanged. The approved restart is healthy at [127.0.0.1:8501](http://127.0.0.1:8501).
+Refresh, explicitly load the ML-130 review, then select **Preview contextual export**
+below the table/details and choose CSV or JSON. Final Windows/browser release QA
+remains ML-206; no new source or tax-balance update occurred.

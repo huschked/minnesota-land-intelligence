@@ -2,7 +2,7 @@
 
 Updated: 2026-10-17. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links (ML-202/203/204). Contextual exports and final browser/accessibility packaging remain ML-205/206; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links and contextual CSV/JSON worklists (ML-202/203/204/205). Final browser/accessibility packaging remains ML-206; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -876,7 +876,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-205"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P2
 
@@ -888,21 +888,21 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] CSV/JSON exports include filters, snapshot references, source years, unknown markers, and deterministic record ordering.
-- [ ] Keep unmatched and source-accounting issues accessible; protect spreadsheet consumers from executable formula content while preserving raw inputs.
-- [ ] Implement U07/U08/U10: preview filters/counts/snapshot references and deterministic export order, revalidate before export, prevent built-in grid download/copy from bypassing safe contextual exports, and never mutate retained outputs or latest pointers. CSV neutralization must be disclosed; JSON preserves canonical values/nulls.
+- [x] CSV/JSON exports include filters, snapshot references, source years, unknown markers, and deterministic record ordering.
+- [x] Keep unmatched and source-accounting issues accessible; protect spreadsheet consumers from executable formula content while preserving raw inputs.
+- [x] Implement U07/U08/U10: preview filters/counts/snapshot references and deterministic export order, revalidate before export, prevent built-in grid download/copy from bypassing safe contextual exports, and never mutate retained outputs or latest pointers. CSV neutralization must be disclosed; JSON preserves canonical values/nulls.
 
-**Validation:** Planned: fixture/service/AppTest checks for exact filtered distinct IDs, deterministic Decimal/null ordering, source/year/snapshot/filter context, explicit preview counts, empty/held/issue-only outputs, unknown versus zero, CSV formula neutralization (including whitespace/control-leading payloads), JSON preservation, changed evidence rejection, and no source/latest mutation or built-in export bypass. Run affected checks and the full implementation-boundary matrix; actual-data export checks must not claim browser clipboard/accessibility conformance.
+**Validation:** 37 new fixture/service/AppTest cases and affected regressions pass. Full hosted run 39082776024 at 17f33cb0c8f69aeb6b2fddc84277a5a2db584280 passed all 840 offline tests without skips in four Windows/Linux x Python 3.11/3.12 jobs, plus dependency consistency, lint, board, explicit live collection and CI gate. The initial CI run found a pre-existing date-dependent ML-124 fixture; its synthetic import clock was fixed without changing production rules/assertions. Actual-data focused CSV/JSON, all-page union, selected scope, separate issues, source dates/nulls and revocation passed again on committed runtime. All 862 baseline files remain unchanged. Approved project-only restart is loopback-only and healthy; browser/spreadsheet re-save conformance is not claimed.
 
-**Notes:** Owner: Codex. Selected 2026-10-17. Implement explicit preview and filtered/selected exports with source/year/filter context, click-time evidence revalidation, disclosed CSV text protection and canonical JSON fidelity. Snapshot-wide issues remain separate from filtered candidates. No source acquisition, financial totals, editing, contact enrichment or owner outreach; county accounting blockers remain unresolved.
+**Notes:** Owner: Codex. Completed 2026-10-17. Explicit filtered/selected preview and native deferred CSV/JSON downloads preserve source/year/filter context, distinct all-page ordering, unknowns and separate snapshot-wide issues/accounting entries. Every actual download revalidates pinned evidence and preview identity; changed/revoked/oversized output supplies no stale/partial file. CSV text protection and its spreadsheet/re-save limitations are disclosed; JSON preserves canonical text/nulls. No source acquisition, inferred financial totals, editing, contact enrichment, hosting or owner outreach occurred. Original logs/data are preserved; only this project's verified viewer was restarted after approval. ML-206 is next recommended, not automatically started; county accounting blockers remain unresolved.
 
-**Evidence / starting points:** [Export guide](../worklist-exports.md), [pure projection/serialization](../../src/mn_land/worklists.py), [county issue allowlists](../../src/mn_land/counties/isanti/worklists.py), [validated service](../../src/mn_land/review_service.py), [deferred-download UI](../../src/mn_land/ui/worklists.py), [pure tests](../../tests/unit/test_worklists.py), [service tests](../../tests/unit/test_worklist_service.py), [UI tests](../../tests/unit/test_worklist_ui.py), [dated checks](../testing.md#ml-205-contextual-worklists). Local affected checks and actual saved-data previews/downloads pass; final hosted matrix and approved project-only viewer restart remain completion gates.
+**Evidence / starting points:** [Export guide](../worklist-exports.md), [pure projection/serialization](../../src/mn_land/worklists.py), [county issue allowlists](../../src/mn_land/counties/isanti/worklists.py), [validated service](../../src/mn_land/review_service.py), [deferred-download UI](../../src/mn_land/ui/worklists.py), [pure tests](../../tests/unit/test_worklists.py), [service tests](../../tests/unit/test_worklist_service.py), [UI tests](../../tests/unit/test_worklist_ui.py), [dated checks](../testing.md#ml-205-contextual-worklists), [full CI run 39082776024](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39082776024). Runtime `da74026fd4f2341f228217f99e8ea20d8e23f60a`; final test-fixture repair/full-matrix revision `17f33cb0c8f69aeb6b2fddc84277a5a2db584280`.
 
 ### ML-206 - Package and validate the local UI
 
 <a id="ml-206"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -918,11 +918,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Keep unit/UI checks offline and confirm the UI reuses pipeline results; any future network exposure requires its own design and release review.
 - [ ] Verify U09/U11/U12 on the actual Windows/browser workflow with ML-130's eligible real inputs: keyboard parcel selection/focus, readable 200% zoom, no hidden row-identity changes, correct computed counts/source warnings, loopback-only startup and no automatic county requests. Distinguish AppTest coverage from browser/accessibility checks; do not claim usability from synthetic fixtures alone.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Planned: verify documented install/startup path, offline tests, actual ML-130 counts/source/unknown/hold displays and export context; use an available Windows browser for keyboard selection/focus, 200% zoom, grid identity/export guard behavior and real deferred downloads/refusal. Inspect loopback-only bind and no automatic county requests. Record actual browser/version and any screen-reader/tool limitations; AppTest and health checks alone do not certify accessibility. No new county data or public deployment is required.
 
-**Notes:** Local viewer only; hosted web application remains E11. Follow [the UI plan](../ui-plan.md). ML-130 is a real-data handoff gate; no new scoring, maps, source edits, owner outreach, user accounts or persistent research-notes system is included. Accessibility is a release check, not an assumed property of the selected framework.
+**Notes:** Ready 2026-10-17 after ML-205 completion; owner remains unassigned until selected. Local viewer only; hosted web application remains E11. Follow [the UI plan](../ui-plan.md), [viewer guide](../viewer.md) and [export guide](../worklist-exports.md). ML-130 supplies eligible real inputs; no new scoring, maps, source edits, owner outreach, user accounts or persistent notes system is included. Accessibility is a release check, not an assumed property of the framework. Readiness does not start this story automatically.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Viewer](../viewer.md), [exports](../worklist-exports.md), [U09/U11/U12](../ui-plan.md), [actual ML-130 handoff](../reviews/isanti-viewer-preparation-2026-10-16.md), [prior implementation checks](../testing.md). No browser/accessibility release pass is claimed by readiness.
 
 ## E04 - Phase 2 - GIS land suitability
 

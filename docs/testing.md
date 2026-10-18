@@ -537,7 +537,7 @@ money validation for exports, the affected pure/export/service/detail-UI suite
 passed **65 in 101.68s**. The final queue-isolation/in-flight-revocation change
 passed all **5 export UI cases in 24.15s**. These overlapping targeted checks are
 not additive coverage or a full platform pass. Ruff, board and whitespace checks
-pass; full hosted implementation-boundary verification remains pending. No new
+pass; the completed hosted gate below supplies full implementation-boundary coverage. No new
 dependency or weakened assertion/network guard was introduced.
 
 Actual ML-130 review `4e2ebe46423d4f56aab999d7d9eb3a37` passed AppTest plus direct
@@ -570,3 +570,27 @@ of the execution date/timezone. Production freshness rules, explicit future-date
 coverage and all assertions remain unchanged. This is a test-data repair, not a
 tax-source date change or an export runtime change. The repaired revision receives
 the full implementation-boundary matrix; the initial run is not a passing gate.
+
+The repaired snapshot-difference suite passed all **26 cases in 66.31s** locally,
+with all freshness assertions retained. The final pure serialization suite passed
+all **28 in 0.29s**, including an explicit known monetary zero versus null check.
+
+[Hosted run 39082776024](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39082776024)
+passed at final revision `17f33cb0c8f69aeb6b2fddc84277a5a2db584280` (runtime unchanged
+from `da74026fd4f2341f228217f99e8ea20d8e23f60a`): **840 passed, one live deselected,
+no skips** in each Windows/Linux x Python 3.11/3.12 job. Dependency consistency,
+lint, board, explicit live collection (one selected, 840 deselected) and final CI
+gate passed. Test execution took Linux **74.54/60.63s** and Windows **450.04/382.74s**
+for Python 3.11/3.12 respectively. Hosted real-symlink checks ran. The Windows
+runtime is recorded honestly, not claimed as a speedup. No repeated unchanged
+local full suite was required; documentation-only completion uses fast Linux CI,
+not another claim of Windows coverage.
+
+The approved restart rechecked this repo's launcher/listener **16136/20120** and
+stopped only those processes. Replacement PIDs are **20800/18608**, with the only
+listener at **127.0.0.1:8501** and health response `ok`. Old logs were preserved and
+new ignored logs are under the ML-205 preparation directory. All **862** baseline
+files were rehashed unchanged after committed-code checks and again after restart.
+Repository privacy was checked before the implementation push; only the three
+data `.gitkeep` placeholders are tracked, not sources, exports or private helpers.
+Healthy startup/AppTest are not actual browser-download or accessibility certification.

@@ -80,6 +80,8 @@ There is no universal CSV/re-save guarantee: do not strip protection or rely on 
 re-saved CSV retaining it; use JSON for programmatic fidelity. The presentation
 policy follows the quoted/text-prefix approach and limitations documented by
 [OWASP CSV Injection](https://owasp.org/www-community/attacks/CSV_Injection).
+This policy applies only to these new worklist downloads; original inputs and
+historical CLI exports are unchanged and must not be assumed to have this protection.
 
 Limits are engineering safeguards: at most 20,000 candidate plus issue entries,
 32 MiB per generated format and per saved issue-table read, and the retained input

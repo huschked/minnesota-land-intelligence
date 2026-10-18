@@ -51,9 +51,18 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-205: safe contextual filtered worklists and visible source-accounting issues.
-2. ML-206: package and validate the actual Windows/browser workflow after exports.
-   No later card starts automatically.
+1. ML-206: package and validate the actual Windows/browser workflow, including exports.
+   No later card starts automatically; county accounting blockers remain separate.
+
+ML-205 is Done: [contextual CSV/JSON worklists](../worklist-exports.md) include explicit
+filtered/selected previews, all-page distinct ordering, source/year/filter context,
+unknown balances and separate snapshot-wide issues. Downloads revalidate on click
+and reject changed/revoked/oversized evidence. CSV text protection and its re-save
+limitations are disclosed; JSON keeps canonical values/nulls. All 840 offline tests
+passed in each hosted Windows/Linux x Python 3.11/3.12 job after fixing an existing
+date-dependent fixture clock (production rules unchanged). Actual-data exports and
+862-file preservation passed; the approved project-only viewer restart is healthy
+and loopback-only. Browser/accessibility release checks remain ML-206, now Ready.
 
 ML-204 is Done: [parcel source evidence](../viewer.md#inspect-source-evidence-ml-204)
 adds revalidated immutable details, every contributing listing row, confirmed year
