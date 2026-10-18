@@ -876,7 +876,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-205"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P2
 
@@ -894,9 +894,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Planned: fixture/service/AppTest checks for exact filtered distinct IDs, deterministic Decimal/null ordering, source/year/snapshot/filter context, explicit preview counts, empty/held/issue-only outputs, unknown versus zero, CSV formula neutralization (including whitespace/control-leading payloads), JSON preservation, changed evidence rejection, and no source/latest mutation or built-in export bypass. Run affected checks and the full implementation-boundary matrix; actual-data export checks must not claim browser clipboard/accessibility conformance.
 
-**Notes:** Ready 2026-10-17 after ML-203/204 completion and bounded U07/U08/U10 refinement; owner remains unassigned until selected. Export only existing saved candidate/issue observations with explicit context, integrity revalidation and disclosed CSV neutralization. Reuse service identity/filters and county source semantics; no new financial totals, source acquisition, editing, scraping, contact enrichment, owner outreach or automatic story start. County accounting blockers do not prevent an honest unknown-valued worklist.
+**Notes:** Owner: Codex. Selected 2026-10-17. Implement explicit preview and filtered/selected exports with source/year/filter context, click-time evidence revalidation, disclosed CSV text protection and canonical JSON fidelity. Snapshot-wide issues remain separate from filtered candidates. No source acquisition, financial totals, editing, contact enrichment or owner outreach; county accounting blockers remain unresolved.
 
-**Evidence / starting points:** [UI plan U07/U08/U10](../ui-plan.md), [viewer/service boundaries](../viewer.md), [filter/identity service](../../src/mn_land/parcel_table.py), [validated reads](../../src/mn_land/review_service.py), [saved output schemas](../data-model.md), [existing CLI export layer](../../src/mn_land/export/exporters.py). Formula-safe contextual viewer exports still require implementation and dedicated tests; no export implementation or test pass is claimed by readiness.
+**Evidence / starting points:** [Export guide](../worklist-exports.md), [pure projection/serialization](../../src/mn_land/worklists.py), [county issue allowlists](../../src/mn_land/counties/isanti/worklists.py), [validated service](../../src/mn_land/review_service.py), [deferred-download UI](../../src/mn_land/ui/worklists.py), [pure tests](../../tests/unit/test_worklists.py), [service tests](../../tests/unit/test_worklist_service.py), [UI tests](../../tests/unit/test_worklist_ui.py), [dated checks](../testing.md#ml-205-contextual-worklists). Local affected checks and actual saved-data previews/downloads pass; final hosted matrix and approved project-only viewer restart remain completion gates.
 
 ### ML-206 - Package and validate the local UI
 

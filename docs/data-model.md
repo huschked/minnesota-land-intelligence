@@ -168,3 +168,14 @@ sample findings are restricted to the selected parcel and pinned review input,
 with recorded-year alignment and explicit unknown source-hash/report-date binding.
 Local paths, PDFs and correspondence bodies are not DTO fields. Access, buildable
 area, zoning, resale value and profit remain not assessed, not zero/low-risk scores.
+
+ML-205's frozen `Worklist` holds the loaded dataset identity, immutable filters,
+filtered/selected scope, optional parcel identity, check time and canonical JSON
+document. Its semantic SHA-256 excludes changing integrity-check times; download
+revalidation must reproduce it. [Schema version 1](worklist-exports.md) separates
+context, ordered distinct candidate projections and overlapping snapshot-wide issue
+entries. Source years/row references and nullable canonical money remain grouped
+by tax period. JSON exact decimals are strings; source text/null is preserved.
+Saved issue CSV blanks become null and remaining issue values stay strings; diagnostic
+metadata is allowlisted. CSV is a disclosed protected-text presentation, with explicit
+null markers and per-row context, not a canonical source rewrite or numeric workbook.

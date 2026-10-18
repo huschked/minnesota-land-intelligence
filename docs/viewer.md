@@ -1,10 +1,11 @@
-# Local parcel research viewer (ML-202/203/204)
+# Local parcel research viewer (ML-202/203/204/205)
 
 The read-only UI selects a completed join or review, validates its full pinned
 graph, and shows source identities, dates, counts, holds and unknowns. ML-203 adds
 candidate tables, filters, pagination and a labelled keyboard parcel selector.
-ML-204 adds revalidated source-evidence details/links. Contextual exports (ML-205)
-and final browser/accessibility release checks (ML-206) remain unfinished. This viewer is
+ML-204 adds revalidated source-evidence details/links; ML-205 adds contextual
+CSV/JSON worklists with explicit preview and click-time validation. Final browser/
+accessibility release checks (ML-206) remain unfinished. This viewer is
 not a land acquisition recommendation.
 
 ## Install and run locally
@@ -155,9 +156,19 @@ Filter/sort/source-page reruns reuse the immutable per-session detail observatio
 and retain its check timestamp. Back keeps table filters. Filtering out/changing
 the selected parcel clears details. Reload revalidates the table but clears details;
 select Open again to inspect newly revalidated evidence. There is no automatic
-continuous watch, global trusted cache, county refresh, export or owner outreach.
+continuous watch, global trusted cache, county refresh or owner outreach. Exports
+are a separate explicit ML-205 action described below.
 
 ## Validation and error states
+
+For exports, see [the contextual worklist guide](worklist-exports.md): select all
+filtered pages or the selected parcel, preview source/filter/order/count context,
+inspect separate snapshot-wide issues, then use the explicit CSV/JSON buttons.
+CSV text protection is disclosed; JSON preserves canonical values/nulls. Downloads
+revalidate again on click, never use a stale prepared byte blob, and do not modify
+retained sources/latest pointers. Changed evidence refuses the download; Check
+export status displays deferred errors and clears stale views. Filter/scope/selection/
+reload changes revoke the prior preview; pure paging does not change the export set.
 
 - **Complete:** eligible at catalog scan; explicit Load revalidates. Valid empty
   candidates receive their own message and preserve unmatched/other counts.
@@ -174,8 +185,8 @@ An in-memory overview/table/detail is an observation as of its displayed validat
 a continuously watched filesystem or live tax account. Reruns without a disk
 action reuse the immutable per-session observation and its original timestamp.
 There is no shared/persistent pickle cache or path/mtime-based trust cache. New
-disk-backed details use the service's full graph/identity validation gate; future
-exports must do likewise. Contextual exports are not implemented here.
+disk-backed details and exports use the service's full graph/identity validation
+gate, including click-time export revalidation.
 
 The catalog is bounded to 200 filesystem entries per result-kind folder. An
 overflow/unreadable/unsafe folder produces an explicit notice rather than silently
@@ -216,9 +227,10 @@ in this shell. Source strings render with literal `st.text`, not Markdown/HTML.
 Only allowlisted current-page columns reach the grid, with native plain-text
 rendering (not Markdown/image/link columns). The app also sets the scriptable
 export-disable option before any grid renders. This prevents UX shortcuts from
-bypassing future contextual/formula-safe exports; it is **not access control**:
-displayed data remains accessible to the local user/browser. No download/upload
-widgets, arbitrary local-file routes or credentials are exposed. ML-204 exposes
+bypassing contextual/formula-protected exports; it is **not access control**:
+displayed data remains accessible to the local user/browser. Only explicit ML-205
+contextual download widgets are exposed, with no upload widgets, arbitrary local-file
+routes or credentials. ML-204 exposes
 only the validated county reference links described above.
 
 Loopback is not authentication or isolation from another local account/browser.
@@ -274,4 +286,5 @@ The actual-data details/back/reload check passed again on committed code, with a
 859 baseline saved files unchanged. The approved project-only restart is healthy
 on [127.0.0.1:8501](http://127.0.0.1:8501). Refresh, explicitly load the ML-130 review,
 choose a filtered parcel ID, then select **Open parcel details**. Full contextual
-exports and final browser accessibility release checks still remain ML-205/206.
+exports were subsequently added by ML-205. Final browser accessibility release
+checks still remain ML-206.

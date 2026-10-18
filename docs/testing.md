@@ -515,3 +515,48 @@ Hosted real symlink cases ran. No unchanged full local Windows repeat was needed
 completion documentation uses fast Linux-only CI under ML-129, not another claim
 of Windows coverage. Repository privacy was checked before pushing; only the three
 data `.gitkeep` placeholders are tracked, not datasets or private evidence/helpers.
+
+## ML-205 contextual worklists
+
+[Export behavior and format](worklist-exports.md) describe the immutable preview,
+separate candidate/issue scopes, CSV presentation protection and JSON fidelity.
+The 37 new pure/service/AppTest cases cover exact Decimal strings/null/zero,
+both tax-period year sets, distinct all-page IDs and service ordering, filtered/
+selected/empty/held results, snapshot-wide overlapping issues, fixed allowlists,
+CSV quoting/text-prefix protection for formula/whitespace/control/full-width/
+separator payloads, canonical JSON preservation, output budgets, invalid issue
+counts/headers/rows, source hash/selection revalidation, changes during reads,
+deferred download refusal, cached reruns and revocation. Generation-scoped error
+queues do not clear a replacement preview with the same semantic fingerprint.
+In-flight revocation supplies no bytes. Existing grid download/copy guards remain
+enabled and are not replaced by an unconstrained grid export.
+
+Local Windows Python 3.12: initial core checks passed **31 in 32.15s**, and initial
+export/table UI checks passed **10 in 54.20s**. After adding exact source-row/year/
+money validation for exports, the affected pure/export/service/detail-UI suite
+passed **65 in 101.68s**. The final queue-isolation/in-flight-revocation change
+passed all **5 export UI cases in 24.15s**. These overlapping targeted checks are
+not additive coverage or a full platform pass. Ruff, board and whitespace checks
+pass; full hosted implementation-boundary verification remains pending. No new
+dependency or weakened assertion/network guard was introduced.
+
+Actual ML-130 review `4e2ebe46423d4f56aab999d7d9eb3a37` passed AppTest plus direct
+invocation of captured native deferred-download jobs in **72.53s**. Both focused
+formats contain **15** distinct candidates; the union preview has **311**, with
+**42** overlapping prior/current IDs; selected scope has **one**. Every scope keeps
+the same **1,764 snapshot-wide issue/accounting entries**, not extra candidates or
+unique parcels. The focused CSV is **7,662,733 bytes**, round-trips its protected
+text and deterministic order, and retains per-row context. Publication remains
+October 13 and GIS capture October 16; report verification date and canonical
+balances stay unknown. Filter/scope changes revoke the prior preview, paging does
+not reduce exported IDs, and Reload clears it. Acquisition/reimport/replay/latest
+calls were prohibited. CSV/JSON bytes were generated only in memory, not saved
+into completed runs or published externally.
+
+All **862** baseline saved county/audit/helper files retained sizes/SHA-256 after
+the checks. Only viewer `server.log`/`server-error.log` files were excluded. New
+ignored baseline/check/restart helpers live outside completed runs under
+`data/processed/isanti/preparation/ml-205-2026-10-17/`. No source, mapping, year meaning,
+accounting definition, original output or latest pointer changed. AppTest/captured
+jobs do not certify actual browser-download, clipboard, focus, 200%-zoom, screen-
+reader or spreadsheet re-save behavior; these are not claimed as release checks.

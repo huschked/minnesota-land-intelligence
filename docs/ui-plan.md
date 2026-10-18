@@ -5,8 +5,9 @@ adds the initial selector shell only**, with optional pinned Streamlit and a
 framework-independent overview loader. See [current implementation/startup](viewer.md).
 **Subsequent ML-203 implementation adds candidate tables/filters, dynamic counts,
 pagination and a keyboard parcel selector.** ML-204 adds explicitly revalidated
-source-evidence details and safe county references; exports and final browser/
-accessibility packaging below remain ML-205/206.
+source-evidence details and safe county references. ML-205 adds [contextual exports](worklist-exports.md)
+with separate issues and click-time revalidation; final browser/accessibility
+packaging remains ML-206.
 
 ## Outcome and user
 
@@ -226,7 +227,8 @@ targeted-development/full-regression policy; no artificial unit tests for this p
 ML-202 creates the service boundary, optional tested UI dependency/entry shell,
 selector, validation/error states and fixture tests. ML-203 adds table/filters;
 ML-204 implements details/evidence (see current verification in [testing](testing.md));
-ML-205 safe contextual exports and ML-206 packaging/checks remain. ML-206 checks
+ML-205 implements protected contextual exports and snapshot-wide issues;
+ML-206 packaging/checks remain. ML-206 checks
 the actual Windows workflow. ML-130 independently prepares real eligible data;
 ML-124 checks refresh/difference semantics. None of these cards is implemented by
 this discovery, and no live acquisition/reimport is authorized merely by adding one.

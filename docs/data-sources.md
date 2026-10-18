@@ -70,3 +70,11 @@ Only an inventoried comparison pinned to the selected review can contribute a
 parcel-specific sample result, with recorded payable years and unknown source-hash/
 report-verification-date binding disclosed. The ML-130 review has no such sample;
 ten historical checks elsewhere are not applied to its parcels or current balances.
+
+ML-205 [contextual exports](worklist-exports.md) consume the same selected pinned
+graph. Preview and click-time generation validate exact saved evidence, not a live
+county account. Candidate fields reuse reviewed year/money/source-row checks;
+unmatched/duplicate/ambiguous/unverified/fiscal-group and redacted diagnostic entries
+remain snapshot-wide issues. CSV text protection never changes retained source
+bytes; JSON preserves canonical text/nulls. No source refresh, inferred balance,
+owner merge, evidence publication or new contact enrichment occurs.

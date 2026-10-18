@@ -1,4 +1,6 @@
-"""Read-only snapshot selector and ML-203 parcel tables."""
+"""Read-only snapshot selection, parcel evidence and contextual research exports."""
+
+from queue import SimpleQueue
 
 import streamlit as st
 
@@ -18,13 +20,14 @@ from mn_land.parcel_table import (
 from mn_land.review_service import ReviewService
 from mn_land.runs import RunValidationError
 from mn_land.ui.details import render_details
+from mn_land.ui.worklists import check_export_errors, clear_export, render_worklists
 
 st.set_page_config(page_title="Minnesota land review", layout="wide")
 st.set_option("client.disableDataExport", True)
 st.title("Minnesota land review")
 st.caption("Read-only saved evidence · Parcel research")
 st.text("Choose a saved result to inspect its source dates, counts and limitations.")
-st.caption("Read-only parcel evidence; contextual exports are still to come.")
+st.caption("Read-only parcel evidence and contextual research exports.")
 
 service = ReviewService(settings.SETTINGS.processed_dir)
 st.session_state.setdefault("catalog", None)
@@ -33,9 +36,21 @@ st.session_state.setdefault("load_error", None)
 st.session_state.setdefault("parcels", None)
 st.session_state.setdefault("open_parcel", None)
 st.session_state.setdefault("parcel_details", None)
+st.session_state.setdefault("export_preview", None)
+st.session_state.setdefault("export_revoked", None)
+st.session_state.setdefault("export_errors", SimpleQueue())
+
+if error := check_export_errors():
+    clear_export()
+    st.session_state.loaded = None
+    st.session_state.parcels = None
+    st.session_state.open_parcel = None
+    st.session_state.parcel_details = None
+    st.session_state.load_error = error
 
 
 def clear_table():
+    clear_export()
     for name in (
         "table_view",
         "table_search",
@@ -59,6 +74,7 @@ def clear_table():
 
 reload_clicked = st.button("Reload local snapshots", key="reload")
 if reload_clicked or st.session_state.catalog is None:
+    clear_export()
     st.session_state.parcel_details = None
     with st.spinner("Checking saved local evidence…"):
         st.session_state.catalog = service.catalog()
@@ -277,6 +293,7 @@ try:
         st.session_state.table_signature = (filters, size)
     result = query(dataset, filters, page=st.session_state.get("table_page", 1), page_size=size)
 except (ValueError, TypeError) as exc:
+    clear_export()
     st.session_state.open_parcel = None
     st.session_state.parcel_choice = None
     st.error(str(exc))
@@ -304,7 +321,7 @@ else:
     # selection disables client sorting; service controls define the full order.
     # No grid row index is ever interpreted as a parcel identity.
     st.caption(
-        "Use Sort by for numeric order across all pages; unknowns sort last. Header clicks select columns only. Grid download/copy is disabled; contextual exports are not available yet."
+        "Use Sort by for numeric order across all pages; unknowns sort last. Header clicks select columns only. Built-in grid download/copy is disabled; use the contextual export preview below."
     )
     st.dataframe(
         [
@@ -404,3 +421,5 @@ if identity is not None:
         key="back_results",
         on_click=lambda: st.session_state.update(open_parcel=None),
     )
+
+render_worklists(service, dataset, filters)
