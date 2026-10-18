@@ -616,3 +616,31 @@ No tracked runtime/test/configuration/dependency changes were needed. The ML-205
 840-case four-platform/Python full gate above still applies to unchanged code;
 this documentation-only handoff uses configured Linux-only fast CI, not another
 claim of Windows regression coverage. No live county test/request was run.
+
+## ML-301 suitability source discovery
+
+On 2026-10-17 America/Chicago, the [source/terms comparison and retrieval contract](suitability-sources.md)
+was reviewed against both spike acceptance criteria. Discovery used bounded,
+paced official public metadata/query requests, not normal-test government traffic.
+Retained records: 28 successes, seven initial sandbox network failures, one
+optional FEMA summary timeout and one county item lookup 400. Selected source
+requests succeeded after approved network access; failed requests were recorded,
+not interpreted as absent coverage. The sources' raw bytes, hashes, exact request
+parameters and UTC observation window are indexed in the private preparation folder.
+
+An offline audit verified every retained body hash, the 718-feature FEMA category
+sum, 28 returned panels with no transfer-limit flag, seven revision geometries/two
+case numbers, one exact sample parcel identity/ring and an incomplete wetland-sample
+flag. It is **not** an overlay/CRS/area accuracy test or full county acquisition.
+Panel effective/imagery/catalog/capture dates remain distinct; a raw study date
+decoding to 8888-08-08 is invalid and never used as a current date. Coverage and
+license/redistribution uncertainties remain explicit. All 871 files in the retained
+county/audit baseline still match sizes/SHA-256. Original sources/results/latest
+pointers and the running viewer were not changed.
+
+No production/test/dependency/CI code changed and no new unit test is invented for
+the discovery document. Board, whitespace and lint checks apply; documentation-only
+CI uses the configured Linux-only path. The existing 840-case full Windows/Linux
+runtime gate remains the ML-205 revision recorded above, not a new Windows pass
+for this spike. Normal tests remain offline; ML-302–306 need their own actual
+implementation, compact geometry fixtures and scientific validation.

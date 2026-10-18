@@ -143,6 +143,27 @@ an ingestion-format issue documented in the [contract and fixture matrix](../ing
 
 That document preserves the mixed prior/current convention, unknown balances,
 and unresolved identities while specifying bounded ML-125/126/127 hardening.
+
+## Suitability source discovery — 2026-10-17 (ML-301)
+
+The [reviewed source/retrieval contract](../suitability-sources.md) selects DNR NWI
+and its project-date footprints for preliminary wetland/deepwater screening, FEMA
+effective NFHL for categorized flood screening, and this county's existing parcel
+service for a future separate geometry path. The county
+[`Zoning/FloodZones_Public/MapServer/0`](https://gis.co.isanti.mn.us/arcgis/rest/services/Zoning/FloodZones_Public/MapServer/0)
+is comparison-only: its thinner zone schema/date evidence must not silently replace
+FEMA. A sample county X polygon has unknown panel/BFE/dates; X alone does not
+establish a particular FEMA subtype or a lack of flood risk.
+
+New bounded probes confirmed parcel layer WKID 103736 and polygon capability;
+`01.013.1402` returned one polygon with five ring coordinates and recorded deeded
+acres 20.0. No area was computed. The existing attribute pipeline intentionally
+rejects `return_geometry=True`; it was not changed or used to publish a new run.
+This sample is a separately dated observation, not a retroactive geometry/source
+update to ML-130. Raw responses are retained separately as private discovery
+evidence. Existing county data/year meanings and current-payment uncertainty remain
+unchanged. No countywide polygon acquisition, overlays, legal boundary conclusion
+or staff outreach occurred.
 ML-125 now implements [strict input/schema checks](../validation.md), including
 typed years, text-only parcel IDs, retained supporting evidence, and GIS row
 quarantines. Historical import notes/results remain historical and unchanged;

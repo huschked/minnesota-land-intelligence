@@ -51,10 +51,20 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-301: refine/select authoritative suitability-source discovery when the user
-   chooses Phase 2. It remains Backlog, not automatically started by E03 completion.
+1. ML-302: separate parcel polygon acquisition/pinning and CRS/topology/area
+   validation. Refined/Ready after ML-301, unassigned and not automatically started.
+   Thematic overlays remain ML-303/304, and remaining-area estimates ML-305/306.
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
-   financial ranking or owner outreach is authorized by this recommendation.
+   financial ranking, legal buildability or owner outreach is authorized here.
+
+ML-301 is Done: [the source comparison/contract](../suitability-sources.md) selects
+DNR NWI/project footprints and FEMA effective NFHL with coverage/panel/revision
+context. Bounded live metadata/samples and an offline raw-hash audit establish a
+retrieval contract, not actual parcel enrichment. County flood polygons are
+comparison-only; dates, classifications, coverage and use/redistribution uncertainties
+remain explicit. A year-8888 FEMA date is retained as invalid, not repaired to today.
+All 871 retained baseline files are unchanged. No dependencies, runtime/tests,
+viewer, overlays or tax-data updates were introduced. E04 is Active, not complete.
 
 ML-206 is Done and E03 is Complete as a bounded local release. The
 [dated browser checklist](../reviews/local-viewer-release-2026-10-17.md) records

@@ -78,3 +78,22 @@ unmatched/duplicate/ambiguous/unverified/fiscal-group and redacted diagnostic en
 remain snapshot-wide issues. CSV text protection never changes retained source
 bytes; JSON preserves canonical text/nulls. No source refresh, inferred balance,
 owner merge, evidence publication or new contact enrichment occurs.
+
+## Suitability source discovery (ML-301; no enrichment implemented)
+
+The [dated Isanti suitability contract](suitability-sources.md) compares county,
+state and federal coverage, dates, resolution, interfaces and use notices. Selected
+thematic providers are DNR statewide NWI plus project footprints and FEMA effective
+NFHL plus availability/panel/revision context. The county flood layer is a separate
+comparison, not an automatic substitute. For these themes the primary publishing
+agency's lineage/category detail takes precedence over a thinner county derivative;
+county-first discovery does not imply county data is always the best thematic source.
+
+Bounded live metadata/query samples confirmed both services and a single Isanti
+parcel polygon. They are new discovery observations, not geometry attached to old
+tax snapshots or a refreshed delinquency account. Catalog update, imagery, panel
+effective, revision and capture dates remain separate; a raw FEMA study date in
+year 8888 is invalid, not a current effective date. Missing/partial coverage must
+hold derived metrics as unknown, not zero. Use/attribution notices and unresolved
+redistribution scope are preserved; public access is not blanket data-resale rights.
+ML-302/303/304 own actual acquisition/geometry/overlay implementation and fixtures.

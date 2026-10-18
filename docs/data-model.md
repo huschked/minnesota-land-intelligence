@@ -179,3 +179,24 @@ by tax period. JSON exact decimals are strings; source text/null is preserved.
 Saved issue CSV blanks become null and remaining issue values stay strings; diagnostic
 metadata is allowlisted. CSV is a disclosed protected-text presentation, with explicit
 null markers and per-row context, not a canonical source rewrite or numeric workbook.
+
+## Proposed suitability observations (ML-301; not implemented)
+
+[Source discovery](suitability-sources.md) defines requirements for separate dated
+geometry/enrichment observations; it does not add fields to `Parcel`, DTOs or saved
+schema versions. Each future observation must pin selected parcel/source identities,
+untouched native geometry/CRS, request/AOI parameters, raw body hashes, source dates
+and class/category values, validated analysis geometry, transform/algorithm versions
+and topology/coverage diagnostics. IDs are snapshot-local unless equivalence is
+actually established across versions. New geometry capture dates cannot inherit
+ML-130's older attribute acquisition date.
+
+Keep deeded acreage, measured polygon area, wetland/deepwater classes and overlaps,
+each flood category, constraint union and estimated remaining area distinct. Source
+publication, imagery/project dates, effective panels, revisions, catalog modification
+and retrieval time are separate nullable observations. Unknown, partial, unmapped,
+unavailable and invalid coverage/date/geometry states are not numeric zero. A
+computed zero requires valid geometry and independently established complete AOI
+coverage. Preserve raw invalid future dates and reasons rather than substituting
+today or discarding the anomaly. These remain design gates for ML-302–306, not
+working enrichment, legal buildability or financial suitability fields.

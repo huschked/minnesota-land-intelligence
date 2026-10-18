@@ -928,7 +928,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="e04"></a>
 
-**Epic state:** Backlog
+**Epic state:** Active
 
 **Goal:** Estimate spatial constraints and usable upland acreage from authoritative layers.
 
@@ -940,7 +940,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-301"></a>
 
-**Status:** Backlog
+**Status:** Done
 
 **Priority:** P1
 
@@ -952,20 +952,20 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Compare official county/state/federal layers for coverage, dates, licensing/access terms, resolution, and limitations.
-- [ ] Record selected sources and a sample retrieval contract; missing coverage is unknown, not zero constraint.
+- [x] Compare official county/state/federal layers for coverage, dates, licensing/access terms, resolution, and limitations.
+- [x] Record selected sources and a sample retrieval contract; missing coverage is unknown, not zero constraint.
 
-**Validation:** Review the documented findings, source evidence, decision, and bounded follow-up tasks against the acceptance criteria.
+**Validation:** Reviewed official county/state/federal source pages, retained public API metadata and bounded samples against both acceptance criteria. Selected DNR NWI/project footprints and FEMA effective NFHL/availability/panel/revision context; county flood layer is comparison-only. Private audit verified response hashes, 718 categorized FEMA features, 28 returned panel records, seven revision geometries/two case numbers, one parcel polygon and incomplete sample flags. Preserved separate 2003 panel dates, project imagery dates and an invalid year-8888 study date. Coverage/terms/accuracy uncertainties are explicit; none became zero constraint or blanket redistribution rights. All 871 retained baseline files remain unchanged. No production/test/dependency/viewer changes; board/docs checks and configured documentation-only CI apply, not new artificial unit tests or a repeated Windows matrix.
 
-**Notes:** Discovery first; do not assume statewide layers have equal accuracy.
+**Notes:** Owner: Codex. Completed 2026-10-17. Engineering source selection and sample retrieval/lineage/coverage contract only; no overlays, usable-acre estimates, new dependencies, tax refresh, source-result edits, viewer changes, public distribution or government-staff outreach. Metadata access failures/timeouts and source-date/license anomalies are recorded, not silently bypassed or repaired. ML-302 is refined/Ready, unassigned and not started; ML-303–306 remain future. Discovery completion does not certify legal buildability, comprehensive AOI coverage or commercial data-redistribution permission.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Dated source comparison, decision and retrieval contract](../suitability-sources.md), [source register](../data-sources.md#suitability-source-discovery-ml-301-no-enrichment-implemented), [Isanti notes](../counties/isanti.md#suitability-source-discovery--2026-10-17-ml-301), [proposed model boundary](../data-model.md#proposed-suitability-observations-ml-301-not-implemented), [dated validation](../testing.md#ml-301-suitability-source-discovery). Raw private discovery bytes/index remain ignored under the dated preparation folder, outside completed county runs.
 
 ### ML-302 - Implement geometry retrieval, CRS handling, and validation
 
 <a id="ml-302"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P0
 
@@ -979,12 +979,16 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Preserve original geometry/CRS and record the analysis CRS, units, precision, multipart handling, and topology checks.
 - [ ] Test invalid/empty polygons, holes, duplicate geometry, geometry-versus-deeded area discrepancies, and supported repair with audit logs.
+- [ ] Add a separate bounded parcel-geometry acquisition path from an explicitly selected completed candidate result; pin selected IDs/source hashes and new geometry capture dates. Do not change the attribute-only client contract, rewrite old runs, auto-select latest or attach fresh geometry as if it were captured with the older GIS snapshot.
+- [ ] Validate metadata and exact unique parcel/OID membership, pagination/transfer limits, source drift and budgets before publishing complete geometry evidence. Explicitly request native true curves when supported, preserve or hold unsupported curve/Z/M data and reject silent densification/dimension loss. Missing/duplicate/conflicting identities and nonfinite/unsupported geometry fail closed; no first-row selection or silent partial success.
+- [ ] Resolve full native CRS/unit/datum definitions, justify the analysis CRS and tolerance, record the actual transform/library/grid versions and reject unapproved ballpark/substitution. Deeded and measured area remain independent; no area from geographic degrees/Web Mercator or a copied source area field.
+- [ ] Keep default checks offline with compact sanitized polygon/membership/CRS fixtures, deterministic tolerances and explicit rejection/repair evidence. No thematic overlay, suitability score, usable-acre estimate, county tax refresh or UI feature in this story.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Planned: offline fixtures for exact/ambiguous identity, incomplete/drifting membership, missing/invalid/nonfinite/empty/curved or unsupported geometry, holes/multipart/duplicates, CRS/units/axis order/transform failure, known area/round-trip controls, precision and deeded-area discrepancy. Preserve before/after geometry and algorithm evidence for any deliberately supported repair; otherwise hold invalid geometry. Check immutable complete publication and unchanged attribute/replay/UI contracts. Any live verification must be explicit/bounded/dated; no routine test requires a government API. Follow the shared targeted/full-regression policy for implementation code.
 
-**Notes:** Deeded acreage remains distinct from computed geometry acreage.
+**Notes:** Refined/Ready 2026-10-17 from ML-301; owner unassigned until selected, not started. Scope is parcel geometry/pinning and shared CRS/topology/area foundation, not implementing all thematic providers or overlays. Follow the [reviewed source contract](../suitability-sources.md). A single live sample established polygon capability, not complete candidate geometry or scientific accuracy. Dependency choice/installation and analysis tolerances must be justified during implementation; none is installed by discovery. Invalid geometry is held by default, not automatically repaired. Data redistribution/hosting remains a separate review.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [ML-301 contract and sample](../suitability-sources.md#sample-requests--specification-not-a-new-command), [current attribute-only guard](../../src/mn_land/ingestion/arcgis.py), [run protocol](../publication.md), [retrieval principles](../retrieval.md), [proposed observation boundary](../data-model.md#proposed-suitability-observations-ml-301-not-implemented). Implementation evidence to be attached before Done.
 
 ### ML-303 - Calculate wetland overlap
 
@@ -1004,10 +1008,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Clip/dissolve appropriate wetland features and prevent duplicate/overlapping feature area from being counted twice.
 - [ ] Test no overlap, full overlap, boundaries, multipart parcels, and missing source coverage; retain source/algorithm versions.
+- [ ] Acquire/reconcile dated DNR NWI and project footprints for exact parcel AOIs under ML-301's contract; distinguish wetland/deepwater/open-water/unknown classes and explicitly version inclusion policy. Bind imagery/project dates spatially, verify coverage independently and never silently union/substitute federal/state versions or report failed/partial coverage as zero.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** undefined
+**Notes:** Future implementation under [ML-301](../suitability-sources.md), not started. Reassess Isanti-specific federal/state versions if newer regional evidence is available; national/catalog modification dates alone do not establish fresher imagery. No regulatory wetland delineation or legal buildability conclusion.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 
@@ -1029,10 +1034,11 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 - [ ] Retain official flood categories, effective map dates, and coverage status.
 - [ ] Test category overlap, revised/unmapped areas, geometry boundaries, and null coverage; avoid regulatory determinations.
+- [ ] Acquire/reconcile effective FEMA NFHL zones with independent coverage/panel/revision evidence; retain X subtypes, floodway and SFHA flags, raw invalid dates and nulls. Cross-county/study AOI features must not be missed. No preliminary/effective mixing, county-layer substitution, automatic LOMA conclusions or addition of revision footprints as hazard area.
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** undefined
+**Notes:** Future implementation under [ML-301](../suitability-sources.md), not started. Observed year-8888 study date is invalid evidence, not a current map date; panel dates and revision dates stay independent. Missing coverage is unknown and mapped minimal hazard is not no flood risk. The county layer lacks the selected FEMA subtype schema and is comparison-only.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

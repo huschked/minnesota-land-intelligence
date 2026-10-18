@@ -145,3 +145,19 @@ including native downloads/refusal, clipboard and keyboard checks, separately
 from AppTest and user-performed 200% zoom acceptance. It adds no runtime component,
 network exposure or data mutation; screen-reader/conformance certification remains
 outside these recorded checks.
+
+## Phase 2 source decision (ML-301; implementation remains future)
+
+The [suitability contract](suitability-sources.md) selects DNR NWI/project footprints
+and FEMA effective NFHL/coverage/panel/revision evidence after bounded official
+metadata/query checks. A separate polygon acquisition path must preserve the
+existing attribute-only `ArcGISClient` contract and pinned tax results. Geometry
+and future enrichment are new dated immutable observations, not edits to old
+source graphs or hidden viewer requests. County-specific IDs/provider fields stay
+in adapters; reproducible geometry/coverage/area logic stays outside widgets/LLMs.
+
+ML-302 must define acquisition/CRS/topology/area validation; ML-303/304 will acquire
+and overlay selected thematic data; ML-305/306 will combine/validate/publish it.
+No geometry library, projection, persistent GIS store, overlay, endpoint or new
+UI feature is introduced by this discovery. Missing source coverage or invalid
+geometry/date evidence cannot produce a trusted zero constraint or buildable acres.

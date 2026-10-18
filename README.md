@@ -20,6 +20,12 @@ user-confirmed 200% zoom; this is not accessibility certification.
 using fresh October 16 GIS and the unchanged October 13 listing. The read-only UI
 does not acquire or reimport county data.
 
+Phase 2 begins with [ML-301's suitability source contract](docs/suitability-sources.md):
+DNR NWI/project footprints and FEMA effective flood categories were reviewed with
+bounded live samples. Geometry acquisition/CRS validation is next; wetland/floodplain
+overlays, usable-acre estimates and new UI features are **not implemented** by that
+discovery. Existing tax/parcel results remain unchanged.
+
 **Current result: county-confirmed year conventions applied.** The export mixes
 unpaid prior-year taxes and overdue first-half current-year installments. The
 corrected import produces 62 prior-year delinquency parcels of at least 10 acres,
