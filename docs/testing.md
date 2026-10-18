@@ -58,6 +58,14 @@ the established extended-path helper rehashed **all 871 baseline files unchanged
 Both audit outputs are retained in ignored `ml-302-2026-10-18` preparation evidence.
 No source bytes, older pointers, tax results or viewer processes were changed.
 
+Completion also removes the board renderer's stale hardcoded early-story list
+and UI-discovery scope sentence. Ready cards now come from actual statuses in
+priority order; when none are Ready the board links to workflow refinement,
+rather than implying that the completed UI/GIS foundation is still future work.
+Manual synthetic Ready-card/no-Ready controls, renderer check and lint passed;
+this documentation-generator correction follows the existing Linux-only fast-CI
+classification, without launching additional Windows jobs.
+
 ## Local commands
 
 With the development dependencies installed in the active environment:

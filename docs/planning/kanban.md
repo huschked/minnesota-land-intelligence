@@ -14,8 +14,9 @@ Done means implemented with recorded evidence, not necessarily a deployed releas
 
 ## Recommended next pulls
 
+No cards are currently Ready. See the [workflow](workflow.md) for the next recommendation and required refinement.
 
-The UI discovery card can be selected independently of county accounting replies. UI implementation depends on the snapshot/reliability stories identified in its epic. GIS, scoring, hosted deployment, and AI implementation remain future scope.
+Only the selected story's scope is authorized. Unfinished capabilities remain future work; completed foundations do not start their dependent cards automatically. County accounting/identity blockers remain separately tracked.
 
 ## Epics with story cards
 

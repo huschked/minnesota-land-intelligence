@@ -151,16 +151,18 @@ def render(epics: list[Epic], date: str) -> str:
         "## Recommended next pulls",
         "",
     ]
-    by_id = {story.identity: story for story in stories}
-    for identity in ("ML-120", "ML-118", "ML-119", "ML-125", "ML-126", "ML-127", "ML-129", "ML-123", "ML-201", "ML-130", "ML-202", "ML-124"):
-        story = by_id.get(identity)
-        if story and story.status == "Ready":
-            lines.append(f"- {link(story)} ({story.priority}).")
+    ready = sorted((story for story in stories if story.status == "Ready"),
+                   key=lambda story: story.priority)
+    for story in ready:
+        lines.append(f"- {link(story)} ({story.priority}).")
+    if not ready:
+        lines.append("No cards are currently Ready. See the [workflow](workflow.md) "
+                     "for the next recommendation and required refinement.")
     lines.extend([
         "",
-        ("The UI discovery card can be selected independently of county accounting replies. "
-         "UI implementation depends on the snapshot/reliability stories identified in its epic. "
-         "GIS, scoring, hosted deployment, and AI implementation remain future scope."),
+        ("Only the selected story's scope is authorized. Unfinished capabilities remain "
+         "future work; completed foundations do not start their dependent cards automatically. "
+         "County accounting/identity blockers remain separately tracked."),
         "",
         "## Epics with story cards",
         "",
