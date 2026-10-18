@@ -1,5 +1,19 @@
 # Data sources
 
+## Parcel geometry acquisition (ML-302)
+
+The [separate geometry path](geometry.md) uses the existing official Isanti
+TaxParcels_Public FeatureServer/0, requesting only identity/deeded fields and
+native polygons for a selected completed review. Exact start/end counts/OIDs,
+schema/edit tokens and per-batch parcel identity reconcile before completion.
+Native ESRI:103736 uses the adjusted Isanti ellipsoid and US survey feet; full
+definitions are resolved/retained, not silently replaced by ordinary NAD83.
+New geometry capture time is separate from the October listing and older GIS
+capture. True curves are requested explicitly and held if returned; unsupported
+Z/M, missing/invalid geometry and incomplete responses never become zero area.
+This adds neither a county tax refresh nor thematic-source acquisition. Existing
+source accuracy/use/distribution limitations still apply.
+
 Source priority is: official county ArcGIS REST API, official GIS download, official structured tabular data, then official pages. Unofficial substitutes and browser scraping are not used when an authoritative structured source exists.
 
 Every source must be inspected for layer purpose, aliases/types, geometry, spatial reference, record limits, query and pagination capabilities, and semantic definitions. Field names are not definitions. Ambiguous values are retained with cautious names and cannot drive stricter candidate claims.

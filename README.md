@@ -1,5 +1,10 @@
 # Minnesota Land Intelligence Platform
 
+ML-302 adds a separate [parcel-polygon CLI foundation](docs/geometry.md): explicit
+completed-review selection, new dated native capture, topology/CRS checks and
+GIS-measured acreage separate from deeded acreage. Install the optional `gis`
+extra for these commands. No wetlands/floodplain overlays or viewer changes yet.
+
 Track work in the [Kanban board](docs/planning/kanban.md). Its
 [epic/story backlog](docs/planning/backlog.md) contains acceptance criteria,
 dependencies, priorities, and evidence; the [workflow](docs/planning/workflow.md)

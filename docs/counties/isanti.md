@@ -1,5 +1,18 @@
 # Isanti County
 
+## Native parcel polygon capture — 2026-10-18 (ML-302)
+
+[Geometry CLI/contract](../geometry.md) adds a separate bounded capture from an
+explicit completed review, requiring exact `PARCELID`/`UNFORMATTEDPIN`/`OBJECTID`
+agreement. Native ESRI:103736 is `NAD_1983_HARN_Adj_MN_Isanti_Feet`, an adjusted
+county ellipsoid with US survey feet, not ordinary NAD83/UTM. Same-native-datum
+local equal-area screening avoids an unapproved datum shift; thematic alignment
+must be separately resolved before ML-303/304 overlays. Deeded acres, measured
+GIS acres and saved snapshot dates remain distinct. Unsupported curves/Z/M,
+ambiguous identity and invalid shapes hold without repair or partial completion.
+The user-approved live scope is only the existing 15-parcel focused review;
+no new tax information, UI changes or county staff request is part of this card.
+
 **Current status: year semantics resolved by county correspondence.** `TAXYR`
 is report assessment year; `ASMTYR` identifies the individual charge assessment
 year. Taxes payable follow assessment by one year. The export includes unpaid

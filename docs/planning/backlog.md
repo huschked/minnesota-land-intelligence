@@ -1,6 +1,6 @@
 # Epics and story backlog
 
-Updated: 2026-10-17. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
+Updated: 2026-10-18. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
 The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links and contextual CSV/JSON worklists (ML-202–206). [ML-206 release evidence](../reviews/local-viewer-release-2026-10-17.md) records fresh installation, actual-data keyboard/download/refusal checks and user-confirmed 200% zoom, not accessibility certification; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
@@ -965,7 +965,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-302"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P0
 
@@ -986,7 +986,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Planned: offline fixtures for exact/ambiguous identity, incomplete/drifting membership, missing/invalid/nonfinite/empty/curved or unsupported geometry, holes/multipart/duplicates, CRS/units/axis order/transform failure, known area/round-trip controls, precision and deeded-area discrepancy. Preserve before/after geometry and algorithm evidence for any deliberately supported repair; otherwise hold invalid geometry. Check immutable complete publication and unchanged attribute/replay/UI contracts. Any live verification must be explicit/bounded/dated; no routine test requires a government API. Follow the shared targeted/full-regression policy for implementation code.
 
-**Notes:** Refined/Ready 2026-10-17 from ML-301; owner unassigned until selected, not started. Scope is parcel geometry/pinning and shared CRS/topology/area foundation, not implementing all thematic providers or overlays. Follow the [reviewed source contract](../suitability-sources.md). A single live sample established polygon capability, not complete candidate geometry or scientific accuracy. Dependency choice/installation and analysis tolerances must be justified during implementation; none is installed by discovery. Invalid geometry is held by default, not automatically repaired. Data redistribution/hosting remains a separate review.
+**Notes:** Owner: Codex. Started 2026-10-18 at the user's selection. Scope is parcel geometry/pinning and shared CRS/topology/area foundation, not implementing all thematic providers or overlays. Follow the [reviewed source contract](../suitability-sources.md). A single live sample established polygon capability, not complete candidate geometry or scientific accuracy. Dependency choice/installation and analysis tolerances must be justified during implementation; none was installed by discovery. Invalid geometry is held by default, not automatically repaired. Data redistribution/hosting remains a separate review.
 
 **Evidence / starting points:** [ML-301 contract and sample](../suitability-sources.md#sample-requests--specification-not-a-new-command), [current attribute-only guard](../../src/mn_land/ingestion/arcgis.py), [run protocol](../publication.md), [retrieval principles](../retrieval.md), [proposed observation boundary](../data-model.md#proposed-suitability-observations-ml-301-not-implemented). Implementation evidence to be attached before Done.
 

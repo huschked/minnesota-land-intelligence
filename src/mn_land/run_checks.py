@@ -113,6 +113,11 @@ def _set(values: Any) -> set[int]:
 def validate_content(path: Path, completion: dict, manifest: dict) -> None:
     kind = completion["kind"]
     files = {entry["path"] for entry in completion["artifacts"]}
+    if kind == "parcel_geometry":
+        from mn_land.geometry_runs import validate_geometry_content
+
+        validate_geometry_content(path, completion, manifest)
+        return
     if kind == "comparison":
         from mn_land.snapshot_diff import validate_comparison_content
 

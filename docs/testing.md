@@ -1,5 +1,39 @@
 # Offline tests and CI (ML-118)
 
+## ML-302 parcel polygon foundation
+
+2026-10-18: [implementation/commands/limitations](geometry.md). Optional `gis`
+pins Shapely 2.1.2 + pyproj 3.7.2; full CI installs `.[dev,ui,gis]` so GIS tests
+must actually execute there. Synthetic fixture tests cover polygon topology,
+numerical area/roundtrip controls, datum/unit/axis/operation refusal, exact
+membership/source drift/limits, pinning, holds, wire evidence and semantic
+tampering. The latest complete targeted run passed 102 cases on local Windows
+3.12.14 in 87.12 seconds; subsequent affected checks and full hosted matrix are
+pending before story completion. No repeated full local Windows suite is claimed.
+
+Approved actual-data capture: review `4e2ebe46423d4f56aab999d7d9eb3a37`, focused
+15-parcel view. New completed geometry run `3804ff3662ac4e63939defa218c09df3`
+captured 2026-10-18 22:52:15–22:52:21 UTC, seven official requests, all 15 exact
+unique IDs/OIDs reconciled. One multipart polygon, no holes, nine deeded-area
+review flags; these are not source corrections or an accuracy certification.
+Maximum inverse roundtrip error ~0.0005023 m, convergence ~0.0000012 m². Offline
+validation reproduced the completed run. Completion hash
+`d5877fb743a4962c66c22ca8d42819313013da9740efe0b2e0129a43ae391d6a`;
+pinned review hash `eff2a5e9f9e0eb1b436de2c006a3bfe71c886af92537d01e2e191adb6ba4c5b3`.
+Native-datum pipeline uses no grids/ballpark; actual Shapely/GEOS 2.1.2/3.13.1,
+pyproj/PROJ 3.7.2/9.5.1. Private raw/derived runs remain ignored.
+
+Initial live run `b9ed754a85d54d65bc7dd195284b2299` retrieved all polygons but
+publication refused an internal retry-number interpretation error: transport
+filenames are global, evidence retry ordinals are per request. It remains failed,
+never promoted/edited; corrected wire-transport regression passes. An initial
+pytest invocation could not access the pre-existing Windows temp folder even
+after approved escalation; a fresh dedicated ignored test directory passed.
+The preservation audit initially reported four inaccessible long paths; using
+the established extended-path helper rehashed **all 871 baseline files unchanged**.
+Both audit outputs are retained in ignored `ml-302-2026-10-18` preparation evidence.
+No source bytes, older pointers, tax results or viewer processes were changed.
+
 ## Local commands
 
 With the development dependencies installed in the active environment:

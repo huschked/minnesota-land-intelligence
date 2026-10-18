@@ -1,5 +1,21 @@
 # Data model
 
+## Separate polygon observations (ML-302)
+
+Implemented [geometry evidence](geometry.md) lives in a new `parcel_geometry`
+run, not in rewritten `Parcel` exports. `selection.json` pins exact selected
+IDs plus saved deeded acres; the completion graph pins the original review and
+source hashes. `capture/` retains native geometry/CRS/fields/wire bytes and exact
+dated requests. `polygons.json` contains per-parcel/OID native hash, analysis
+WKB/hash, multipart/hole/vertex counts, validity, measured m²/international acres,
+new GIS deeded acres, difference/review flag and numerical controls. The manifest
+records new capture dates, full CRS/units/datum/pipeline/library/database/grid
+evidence, budgets and non-atomic/source-accuracy warnings. Original capture dates
+and saved deeded values remain independent. Null deeded acreage produces null
+comparison, never zero; unsupported/invalid geometry produces a failed run with
+retained originals, not a complete zero-area parcel. Repairs are unsupported.
+No wetland/flood/usable-acre/scoring observations are implemented by this model.
+
 `Parcel` is the county-independent record. Money uses `Decimal`; acreage also uses `Decimal`. Missing values remain `None`, never zero. Geometry is optional because Phase 1 does not perform spatial analysis and avoids transferring large polygons by default.
 
 `previous_taxes_owed` is a cautious source-aligned concept. `past_due_tax_amount` is populated only when authoritative documentation proves the source field represents past-due or delinquent tax. `tax_semantics_verified` records that gate. The Isanti Phase 1 mapping currently leaves `past_due_tax_amount` null.

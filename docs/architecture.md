@@ -1,5 +1,19 @@
 # Architecture
 
+## Separate polygon foundation (ML-302)
+
+`geometry_runs.py` pins one explicit completed review into a new `parcel_geometry`
+run. `counties/isanti/geometry.py` owns the fixed official URL, county identity
+fields, native CRS and bounded exact-OID capture contract; it does not change
+`ArcGISClient`'s attribute-only behavior. `geometry.py` validates Esri linear
+polygon topology and calculates same-native-datum local equal-area observations
+with optional Shapely/pyproj dependencies. Captures and analysis share one
+all-selected-or-failed completion. `run_checks.py` routes offline integrity and
+reproduction checks lazily; existing result kinds retain their contracts.
+No viewer, thematic service, score or tax pipeline imports this acquisition path.
+See [CRS/tolerance/completion decisions](geometry.md), including the unresolved
+future cross-datum thematic-alignment gate and default no-repair policy.
+
 The parcel pipeline is deliberately linear: official ArcGIS service → complete raw acquisition → pinned source copy → county adapter/canonical parcel → validation/filtering → completed per-run exports. `ArcGISClient` owns HTTP, retries, metadata, count checks, and pagination. The Isanti county adapter package owns county GIS field names and schema declarations. Core filtering accepts `Parcel` instances and records deterministic rejection reasons.
 
 Phase 1.1 separates source responsibilities. A `DelinquencySource` produces county-independent `DelinquencyRecord` objects from an authoritative delinquency-specific publication. The parcel and delinquency snapshots are normalized independently, joined only by a county-specific deterministic parcel-ID key, and retain independent lineage.

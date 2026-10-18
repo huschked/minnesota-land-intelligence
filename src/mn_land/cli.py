@@ -35,6 +35,18 @@ def build_parser() -> argparse.ArgumentParser:
         prog="mn-land", description="Minnesota Land Intelligence Platform"
     )
     sub = parser.add_subparsers(dest="command", required=True)
+    geometry_command = sub.add_parser(
+        "acquire-geometry", help="New dated polygon capture from an explicit completed review",
+    )
+    geometry_command.add_argument("--county", choices=("isanti",), required=True)
+    geometry_command.add_argument("--snapshot", type=Path, required=True, help="Completed review")
+    geometry_command.add_argument("--view", required=True, choices=(
+        "focused", "outside_special", "prior", "special", "current", "either", "both",
+    ))
+    geometry_command.add_argument("--output-root", type=Path, help="Dedicated geometry run root")
+    geometry_command.add_argument("--batch-size", type=int, default=50)
+    geometry_check = sub.add_parser("validate-geometry", help="Validate a saved polygon run offline")
+    geometry_check.add_argument("--snapshot", type=Path, required=True)
     compare_command = sub.add_parser("compare-snapshots", help="Compare saved completed joins offline")
     compare_command.add_argument("--county", choices=("isanti",), required=True)
     compare_command.add_argument("--before", type=Path, required=True)
@@ -90,6 +102,29 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args(argv)
+    if args.command in {"acquire-geometry", "validate-geometry"}:
+        try:
+            from mn_land.geometry_runs import acquire_geometry
+            from mn_land.runs import validate_run
+
+            if args.command == "validate-geometry":
+                result = validate_run(args.snapshot, "parcel_geometry")
+                print(f"Validated offline polygon run: {result.path}")
+            else:
+                output = acquire_geometry(
+                    args.snapshot, view=args.view,
+                    output_root=args.output_root or SETTINGS.processed_dir / "isanti" / "geometry",
+                    batch_size=args.batch_size,
+                )
+                print(f"New dated polygon run: {output}")
+            print("GIS screening only; deeded acreage and tax snapshots unchanged. No overlays.")
+        except ImportError:
+            LOGGER.error('Geometry requires the optional GIS extra: pip install -e ".[gis]"')
+            return 2
+        except (RunValidationError, ArcGISError, OSError, ValueError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
+        return 0
     if args.command == "compare-snapshots":
         from mn_land.runs import read_json
         from mn_land.snapshot_diff import compare_snapshots
