@@ -51,11 +51,29 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-302: separate parcel polygon acquisition/pinning and CRS/topology/area
-   validation. Refined/Ready after ML-301, unassigned and not automatically started.
-   Thematic overlays remain ML-303/304, and remaining-area estimates ML-305/306.
+1. ML-303 wetland overlap is the next recommendation, beginning with explicit
+   cross-datum alignment/coverage gates; not automatically started.
+   Flood overlays remain ML-304, and remaining-area estimates ML-305/306.
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
    financial ranking, legal buildability or owner outreach is authorized here.
+
+ML-302's geometry operation is isolated from saved tax/attribute runs and viewer
+processes. It preserves native true-curve responses, holds unsupported/invalid
+geometry without repairs, checks exact parcel/OID membership and produces
+same-adjusted-datum local equal-area observations separately from deeded acres.
+No ordinary NAD83/UTM relabeling or ballpark datum substitution is approved.
+The actual service lacks an edit token: matched inventories are not an atomic
+snapshot guarantee. All 871 retained baseline files are unchanged. ML-303/304
+must resolve their actual datum operations and data coverage before any overlay
+result; inability to do so is a hold, never zero overlap.
+
+ML-302 is Done, owner Codex, 2026-10-18. All 943 offline tests passed on Linux
+3.11/3.12 and Windows 3.11; Windows 3.12 reached the existing ten-minute job
+limit after 911 passes, leaving 32 cases uncompleted and the CI gate red. The
+user explicitly accepted this disclosed coverage limitation and asked to skip
+more Windows runs. New geometry cases passed locally on Windows 3.12. This is
+an explicit verification exception, not a fourth full-matrix pass or weakened gate.
+See [dated evidence](../testing.md#ml-302-parcel-polygon-foundation).
 
 ML-301 is Done: [the source comparison/contract](../suitability-sources.md) selects
 DNR NWI/project footprints and FEMA effective NFHL with coverage/panel/revision

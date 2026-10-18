@@ -122,7 +122,7 @@ No auto-closing, orientation fix, `make_valid`, `buffer(0)`, dissolve or other
 repair is supported. Failed shapes retain their originals and diagnostic hold
 with null area; no fabricated before/after repair record is generated.
 
-Each published observation includes parcel/OID, raw geometry hash, normalized
+Each published observation includes parcel/OID, canonical native-JSON geometry hash, normalized
 analysis WKB/hash, part/hole/vertex counts, topology results, measured m²/acres,
 new GIS deeded acreage and difference/flag, numerical control errors, source-field
 names, and saved candidate deeded acreage separately. New geometry capture dates

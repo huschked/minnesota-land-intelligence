@@ -8,8 +8,26 @@ must actually execute there. Synthetic fixture tests cover polygon topology,
 numerical area/roundtrip controls, datum/unit/axis/operation refusal, exact
 membership/source drift/limits, pinning, holds, wire evidence and semantic
 tampering. The latest complete targeted run passed 102 cases on local Windows
-3.12.14 in 87.12 seconds; subsequent affected checks and full hosted matrix are
-pending before story completion. No repeated full local Windows suite is claimed.
+3.12.14 in 87.12 seconds. Three later affected cases passed in 19.42 seconds
+(wire replay, malformed metadata and output/source isolation). The implementation
+adds 103 offline cases total. No repeated full local Windows suite is claimed.
+Full hosted matrix [39174405653](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39174405653)
+tests commit `f3fd0f80282229522e179c3b07dbd6b8a802ffa0`: Linux 3.11/3.12 each passed
+943 cases with one live deselected and no skips (85.49/112.48 seconds); Windows
+3.11 also passed all 943 (403.16 seconds, no skips). Windows 3.12 reached the
+existing ten-minute **job** limit after 911 passed/one live deselected in 535.11
+test seconds, with no reported test failure; 32 cases were not completed and
+live-test collection was skipped. It is partial coverage, not a fourth pass.
+The run's conclusion is cancelled and the fail-closed CI gate is red, not waived
+or changed by implementation. On 2026-10-18 the user explicitly chose **"Record
+the limitation; skip more Windows runs"**. ML-302 closes with that disclosed
+verification exception; there is no further Windows rerun or timeout/assertion/
+gate relaxation. The completion documentation uses normal Linux-only fast CI,
+not a retroactive fourth-platform pass. Dependency checks,
+lint and board passed in all four jobs; live-test collection passed in the three
+completed jobs. Local approved collection also
+selected exactly one live test without executing it; sandbox cleanup denial on
+the first collection attempt did not occur in that repeat.
 
 Approved actual-data capture: review `4e2ebe46423d4f56aab999d7d9eb3a37`, focused
 15-parcel view. New completed geometry run `3804ff3662ac4e63939defa218c09df3`
@@ -20,6 +38,12 @@ Maximum inverse roundtrip error ~0.0005023 m, convergence ~0.0000012 m². Offlin
 validation reproduced the completed run. Completion hash
 `d5877fb743a4962c66c22ca8d42819313013da9740efe0b2e0129a43ae391d6a`;
 pinned review hash `eff2a5e9f9e0eb1b436de2c006a3bfe71c886af92537d01e2e191adb6ba4c5b3`.
+The capture records its actual pre-commit working-tree code identity/source hashes,
+not a retroactive claim that it ran at the final clean commit. It has 2,693
+analysis vertices; native feature-page body SHA-256 is
+`9c26fec56679fc26205381a1795d46bba1a2e7e91297ccbc4daf2b42c53541db`.
+No edit token is advertised, so same-ID edit consistency remains explicitly
+unknown despite exact selected membership and stable metadata/inventories.
 Native-datum pipeline uses no grids/ballpark; actual Shapely/GEOS 2.1.2/3.13.1,
 pyproj/PROJ 3.7.2/9.5.1. Private raw/derived runs remain ignored.
 
