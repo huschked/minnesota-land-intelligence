@@ -560,3 +560,13 @@ ignored baseline/check/restart helpers live outside completed runs under
 accounting definition, original output or latest pointer changed. AppTest/captured
 jobs do not certify actual browser-download, clipboard, focus, 200%-zoom, screen-
 reader or spreadsheet re-save behavior; these are not claimed as release checks.
+
+The committed implementation's actual-data check passed again in **59.92s**.
+Initial hosted run `39082319036` exposed an existing ML-124 fixture clock bug:
+both Linux jobs passed 839 cases but failed the fixed-as-of freshness test after
+UTC midnight made its real import capture future-dated. The snapshot-difference
+fixture now fixes its synthetic pipeline import time to October 16, independently
+of the execution date/timezone. Production freshness rules, explicit future-date
+coverage and all assertions remain unchanged. This is a test-data repair, not a
+tax-source date change or an export runtime change. The repaired revision receives
+the full implementation-boundary matrix; the initial run is not a passing gate.

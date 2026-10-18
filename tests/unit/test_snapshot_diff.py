@@ -19,7 +19,18 @@ AS_OF = date(2026, 10, 17)
 
 
 @pytest.fixture
-def saved(tmp_path, fake_adapter):
+def saved(tmp_path, fake_adapter, monkeypatch):
+    # These reports deliberately use the fixed AS_OF date below. A real import
+    # clock would turn their captures future-dated after UTC midnight, making the
+    # same evidence/assertions depend on when/where CI happens to execute.
+    class ImportClock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            captured = datetime(2026, 10, 16, 12, tzinfo=UTC)
+            return captured.astimezone(tz) if tz is not None else captured.replace(tzinfo=None)
+
+    monkeypatch.setattr("mn_land.delinquency.pipeline.datetime", ImportClock)
+
     def make(
         rows=None, *, features=None, held=False, published="2026-10-13", min_acres=10,
         dataset="Synthetic dated listing", assertion=None, gis_date=datetime(2026, 10, 16, tzinfo=UTC),
