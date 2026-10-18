@@ -51,8 +51,19 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-206: package and validate the actual Windows/browser workflow, including exports.
-   No later card starts automatically; county accounting blockers remain separate.
+1. ML-301: refine/select authoritative suitability-source discovery when the user
+   chooses Phase 2. It remains Backlog, not automatically started by E03 completion.
+   County accounting/identity blockers ML-117/121/122 remain separate; no verified
+   financial ranking or owner outreach is authorized by this recommendation.
+
+ML-206 is Done and E03 is Complete as a bounded local release. The
+[dated browser checklist](../reviews/local-viewer-release-2026-10-17.md) records
+fresh short-path installation, actual-data counts/keyboard/native downloads,
+clipboard guard, isolated held/empty/refusal states and user-confirmed 200% zoom.
+It distinguishes browser evidence from AppTest, records untested screen-reader/
+conformance behavior and tool/session limitations, and preserves all 871 baseline
+saved files. Runtime/tests/pins are unchanged; documentation-only fast CI is not
+a new Windows full-matrix claim. The main approved viewer remains loopback-only.
 
 ML-205 is Done: [contextual CSV/JSON worklists](../worklist-exports.md) include explicit
 filtered/selected previews, all-page distinct ordering, source/year/filter context,
@@ -62,7 +73,8 @@ limitations are disclosed; JSON keeps canonical values/nulls. All 840 offline te
 passed in each hosted Windows/Linux x Python 3.11/3.12 job after fixing an existing
 date-dependent fixture clock (production rules unchanged). Actual-data exports and
 862-file preservation passed; the approved project-only viewer restart is healthy
-and loopback-only. Browser/accessibility release checks remain ML-206, now Ready.
+and loopback-only. ML-206 subsequently completed the bounded browser release
+checks described above, with user-confirmed zoom and explicit accessibility limits.
 
 ML-204 is Done: [parcel source evidence](../viewer.md#inspect-source-evidence-ml-204)
 adds revalidated immutable details, every contributing listing row, confirmed year
@@ -71,7 +83,8 @@ All 803 offline cases passed in each hosted Windows/Linux x Python 3.11/3.12 job
 Actual-data detail/back/reload passed; 859 baseline saved files remain unchanged.
 Only the verified project viewer was restarted after approval and is loopback-only
 and healthy. No county/report request, debt calculation, suitability score, source
-edit or historical sample substitution occurred. ML-205 is refined/Ready, not started.
+edit or historical sample substitution occurred. ML-205 was subsequently completed,
+as recorded above.
 
 ML-203 is Done: [the viewer](../viewer.md) now has saved candidate tables, exact
 service filters/sorts, dynamic distinct counts, pagination and a labelled keyboard
@@ -98,8 +111,8 @@ ML-130 inputs also loaded through AppTest without modifying saved data. This is
 not yet the table/detail/export or browser accessibility release. ML-130 is Done: [actual preparation evidence](../reviews/isanti-viewer-preparation-2026-10-16.md)
 records new eligible GIS/file/join/review inputs, an identical offline replay and
 190 unchanged historical files. The 62/49/15 views match historical parcel IDs,
-but tax amounts and new manual verification remain unresolved. ML-206 must still
-prove the actual-data workflow; a fixture-only empty shell cannot count as usability.
+but tax amounts and new manual verification remain unresolved. ML-206 subsequently
+checked that actual-data workflow; a fixture-only empty shell did not count as usability.
 
 ML-123 is Done: [explicit snapshot selection/replay](../replay.md) passed 645
 offline tests in all four hosted Windows/Linux jobs. Historical pre-completion

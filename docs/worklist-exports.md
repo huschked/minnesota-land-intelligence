@@ -92,7 +92,10 @@ try JSON or narrower candidate filters. Issues remain snapshot-wide.
 Access, usable/buildable acres, zoning, resale value and profit remain not assessed.
 Current paid status is unknown; source dates, integrity checks and historical sample
 findings do not establish current debt. County accounting/identity blockers remain
-unchanged. Browser/clipboard/focus/zoom/accessibility release QA remains ML-206.
+unchanged. [ML-206 release evidence](reviews/local-viewer-release-2026-10-17.md)
+subsequently verifies actual browser downloads/refusal and the canvas clipboard
+guard, with keyboard checks and user-confirmed 200% zoom. Screen-reader and
+spreadsheet re-save certification are not claimed.
 
 ## Implementation and verification
 

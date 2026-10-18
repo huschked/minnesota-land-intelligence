@@ -2,7 +2,7 @@
 
 Updated: 2026-10-17. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
-The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links and contextual CSV/JSON worklists (ML-202/203/204/205). Final browser/accessibility packaging remains ML-206; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
+The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links and contextual CSV/JSON worklists (ML-202–206). [ML-206 release evidence](../reviews/local-viewer-release-2026-10-17.md) records fresh installation, actual-data keyboard/download/refusal checks and user-confirmed 200% zoom, not accessibility certification; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
 Completed cards describe implemented workspace behavior. ML-120 establishes the first local Git baseline; a separately authorized follow-up connects the private GitHub code repository described in [reproducibility](../reproducibility.md). Ignored county data is not backed up there, and no deployment is configured. Unknown owners, estimates, and due dates are deliberately unassigned.
 
@@ -760,7 +760,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="e03"></a>
 
-**Epic state:** Active
+**Epic state:** Complete
 
 **Goal:** Make existing results usable through a small local viewer before advanced GIS features.
 
@@ -902,7 +902,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-206"></a>
 
-**Status:** Ready
+**Status:** Done
 
 **Priority:** P1
 
@@ -914,15 +914,15 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Document one clean startup/install path; verify keyboard operation, readable layouts, empty/error states, and representative workflows.
-- [ ] Keep unit/UI checks offline and confirm the UI reuses pipeline results; any future network exposure requires its own design and release review.
-- [ ] Verify U09/U11/U12 on the actual Windows/browser workflow with ML-130's eligible real inputs: keyboard parcel selection/focus, readable 200% zoom, no hidden row-identity changes, correct computed counts/source warnings, loopback-only startup and no automatic county requests. Distinguish AppTest coverage from browser/accessibility checks; do not claim usability from synthetic fixtures alone.
+- [x] Document one clean startup/install path; verify keyboard operation, readable layouts, empty/error states, and representative workflows.
+- [x] Keep unit/UI checks offline and confirm the UI reuses pipeline results; any future network exposure requires its own design and release review.
+- [x] Verify U09/U11/U12 on the actual Windows/browser workflow with ML-130's eligible real inputs: keyboard parcel selection/focus, readable 200% zoom, no hidden row-identity changes, correct computed counts/source warnings, loopback-only startup and no automatic county requests. Distinguish AppTest coverage from browser/accessibility checks; do not claim usability from synthetic fixtures alone.
 
-**Validation:** Planned: verify documented install/startup path, offline tests, actual ML-130 counts/source/unknown/hold displays and export context; use an available Windows browser for keyboard selection/focus, 200% zoom, grid identity/export guard behavior and real deferred downloads/refusal. Inspect loopback-only bind and no automatic county requests. Record actual browser/version and any screen-reader/tool limitations; AppTest and health checks alone do not certify accessibility. No new county data or public deployment is required.
+**Validation:** Fresh short-path Windows Python 3.12 environment installed the pinned UI extra, passed dependency consistency and started through the supported loopback launcher. Actual ML-130 browser checks computed 15/49/62/13/291/311/42 views, opened the correct keyboard-selected parcel before/after service sorting, preserved unknown/source-year distinctions and downloaded matching protected CSV/JSON with 15 candidates plus 1,764 separate issue entries. Grid canvas copy guard passed. Synthetic valid-empty/hold and actual deferred changed-evidence refusal were checked separately; no stale file/view remained. User confirmed readable/usable 200% browser zoom; agent controls did not verify native zoom and no screen-reader/WCAG certification is claimed. Local targeted suites: 22 passed in 62.12s and overlapping 36 passed in 3.48s in the fresh environment. All 871 baseline files retained sizes/hashes. No production/test/config/pin change; existing 840-case four-job full gate remains applicable, with documentation-only fast CI for this handoff. See the dated checklist for exact boundaries, tooling/session limitations and installation findings.
 
-**Notes:** Ready 2026-10-17 after ML-205 completion; owner remains unassigned until selected. Local viewer only; hosted web application remains E11. Follow [the UI plan](../ui-plan.md), [viewer guide](../viewer.md) and [export guide](../worklist-exports.md). ML-130 supplies eligible real inputs; no new scoring, maps, source edits, owner outreach, user accounts or persistent notes system is included. Accessibility is a release check, not an assumed property of the framework. Readiness does not start this story automatically.
+**Notes:** Owner: Codex. Completed 2026-10-17. E03 is complete as a bounded local release, not a hosted or accessibility-certified application. User approved project-only restart and isolated QA viewers; old logs/evidence were preserved and only temporary QA servers were stopped afterward. The main viewer remains on 127.0.0.1:8501. No new county acquisition, source edits, scores/maps, outreach, accounts or persistent notes. Deeply nested test installation hit Windows path limits; short-path setup succeeded and recovery is documented. The next recommended phase is ML-301 suitability-source discovery, to be refined/selected separately; no future story starts automatically. County accounting blockers remain unresolved.
 
-**Evidence / starting points:** [Viewer](../viewer.md), [exports](../worklist-exports.md), [U09/U11/U12](../ui-plan.md), [actual ML-130 handoff](../reviews/isanti-viewer-preparation-2026-10-16.md), [prior implementation checks](../testing.md). No browser/accessibility release pass is claimed by readiness.
+**Evidence / starting points:** [Dated release checklist](../reviews/local-viewer-release-2026-10-17.md), [startup/troubleshooting](../viewer.md), [exports](../worklist-exports.md), [U09/U11/U12](../ui-plan.md), [actual ML-130 handoff](../reviews/isanti-viewer-preparation-2026-10-16.md), [testing](../testing.md#ml-206-local-viewer-release). Full runtime gate: [39082776024](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39082776024), revision `17f33cb0c8f69aeb6b2fddc84277a5a2db584280` (runtime unchanged).
 
 ## E04 - Phase 2 - GIS land suitability
 

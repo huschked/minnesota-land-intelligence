@@ -139,5 +139,9 @@ thread errors use a queue and clear stale views on the next interaction. Downloa
 threads do not touch session state. Candidate rows are distinct filtered/selected
 IDs across pages; snapshot-wide issue/accounting entries remain separate. CSV text
 protection is disclosed; JSON retains canonical exact-decimal strings/nulls. Saved
-outputs, raw inputs and latest pointers are never modified. ML-206 still owns
-browser/clipboard/accessibility release checks, not claimed by AppTest.
+outputs, raw inputs and latest pointers are never modified. ML-206 subsequently
+records [bounded Windows/browser release evidence](reviews/local-viewer-release-2026-10-17.md)
+including native downloads/refusal, clipboard and keyboard checks, separately
+from AppTest and user-performed 200% zoom acceptance. It adds no runtime component,
+network exposure or data mutation; screen-reader/conformance certification remains
+outside these recorded checks.

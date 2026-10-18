@@ -6,8 +6,10 @@ framework-independent overview loader. See [current implementation/startup](view
 **Subsequent ML-203 implementation adds candidate tables/filters, dynamic counts,
 pagination and a keyboard parcel selector.** ML-204 adds explicitly revalidated
 source-evidence details and safe county references. ML-205 adds [contextual exports](worklist-exports.md)
-with separate issues and click-time revalidation; final browser/accessibility
-packaging remains ML-206.
+with separate issues and click-time revalidation. ML-206 subsequently records
+[the bounded local release checks](reviews/local-viewer-release-2026-10-17.md):
+fresh installation, actual-data keyboard/download/refusal workflows, clipboard
+guard and user-performed 200% zoom acceptance. No accessibility certification.
 
 ## Outcome and user
 
@@ -236,6 +238,8 @@ this discovery, and no live acquisition/reimport is authorized merely by adding 
 Discovery left dependency footprint, measured startup/load latency, selected-version
 grid controls and browser accessibility to implementation. [Current evidence](testing.md)
 now records dependency/platform tests, AppTest timings and installed grid guards;
-actual browser accessibility/clipboard/zoom release checks still remain ML-206.
-Revisit Streamlit if those gates fail, or when real multi-user/hosted/map requirements
+ML-206's subsequent browser/clipboard/keyboard checks and user-confirmed zoom are
+recorded separately in [the release evidence](reviews/local-viewer-release-2026-10-17.md),
+including tool limitations and no screen-reader/conformance claim.
+Revisit Streamlit if essential workflows fail, or when real multi-user/hosted/map requirements
 justify a different frontend. Local-first service isolation limits that later rewrite.

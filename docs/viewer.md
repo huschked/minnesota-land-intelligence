@@ -1,16 +1,25 @@
-# Local parcel research viewer (ML-202/203/204/205)
+# Local parcel research viewer (ML-202–206)
 
 The read-only UI selects a completed join or review, validates its full pinned
 graph, and shows source identities, dates, counts, holds and unknowns. ML-203 adds
 candidate tables, filters, pagination and a labelled keyboard parcel selector.
 ML-204 adds revalidated source-evidence details/links; ML-205 adds contextual
-CSV/JSON worklists with explicit preview and click-time validation. Final browser/
-accessibility release checks (ML-206) remain unfinished. This viewer is
+CSV/JSON worklists with explicit preview and click-time validation. ML-206 records
+[the bounded Windows/browser release checks](reviews/local-viewer-release-2026-10-17.md),
+including user-performed 200% zoom acceptance, not accessibility certification. This viewer is
 not a land acquisition recommendation.
 
 ## Install and run locally
 
-From the repository root, in a project virtual environment with pip:
+Prerequisite: installed Python 3.11 or 3.12 available as `python`. Open PowerShell
+in the repository root. For a **new checkout**, create a short-path environment
+(do not recreate an existing `.venv`):
+
+```powershell
+python -m venv .venv
+```
+
+Then install and start; activation is not required:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -e ".[dev,ui]" -c constraints-dev.txt
@@ -22,6 +31,15 @@ Or use the installed `mn-land-viewer` console command. The only launcher option 
 `127.0.0.1` and does not forward arbitrary Streamlit flags. Open
 [the local viewer](http://127.0.0.1:8501) explicitly. Stop a foreground launch with
 Ctrl+C. If the port is occupied, choose another port; do not kill another app.
+
+If an existing project environment reports `No module named pip`, bootstrap pip
+in that environment with `.\.venv\Scripts\python.exe -m ensurepip --upgrade`,
+then repeat the install. Permission failures need a writable environment/temp
+directory; do not disable Windows protections. Avoid deeply nested environment
+paths: ML-206's nested test install hit a Windows path limit, while a fresh
+short-path `.venv-ml206` installed and started successfully. Do not move an existing
+venv or delete county data to repair installation. Dependency installation can
+use the package index; browsing already-saved evidence does not request county data.
 
 On this workspace the venv originally had no pip module; installation used the
 bundled pip's `--python .venv/Scripts/python.exe` option to target this venv, not
@@ -297,4 +315,23 @@ Actual saved-data focused CSV/JSON, 311-parcel union and selected scope passed w
 unchanged. The approved restart is healthy at [127.0.0.1:8501](http://127.0.0.1:8501).
 Refresh, explicitly load the ML-130 review, then select **Preview contextual export**
 below the table/details and choose CSV or JSON. Final Windows/browser release QA
-remains ML-206; no new source or tax-balance update occurred.
+was subsequently checked by ML-206; no new source or tax-balance update occurred.
+
+## Windows/browser release handoff (ML-206)
+
+See the [dated release checklist](reviews/local-viewer-release-2026-10-17.md) for
+actual-data counts, keyboard/focus, native CSV/JSON downloads, clipboard guard,
+isolated held/empty/refusal cases, clean installation and preserved-file checks.
+The user confirmed usable 200% zoom; automated controls did not certify native
+zoom or screen-reader behavior. No WCAG, all-browser or Excel re-save certification
+is implied. Earlier sections' ML-202/203/204/205 test notes are historical evidence,
+not substitutes for that browser check.
+
+Expect disk validation and large contextual exports to take time. Browser-mediated
+CSV download took over two minutes in this QA run; this includes tool overhead,
+not a controlled performance measurement. Do not repeatedly click while pending.
+If a download fails, use **Check export status**, then Reload and explicitly load/
+preview again. If the browser reconnects into a new session, in-memory selections
+can be lost: choose/load explicitly rather than assuming the prior view persisted.
+The viewer remains loopback-only; no new framework, server exposure or county
+refresh is introduced by packaging it.

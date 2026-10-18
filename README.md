@@ -13,8 +13,9 @@ unknowns. ML-203 adds searchable/filterable, paginated parcel tables and a keybo
 parcel selection. ML-204 adds explicitly revalidated parcel evidence, all contributing
 listing rows, separate owner observations and validated county reference links.
 [ML-205 contextual CSV/JSON worklists](docs/worklist-exports.md) add explicit previews,
-click-time evidence checks and separate issues. Final browser/accessibility release
-checks remain ML-206.
+click-time evidence checks and separate issues. [ML-206 Windows/browser release checks](docs/reviews/local-viewer-release-2026-10-17.md)
+cover clean installation, real-data keyboard/download/refusal workflows and
+user-confirmed 200% zoom; this is not accessibility certification.
 [ML-130 prepared actual validated data](docs/reviews/isanti-viewer-preparation-2026-10-16.md)
 using fresh October 16 GIS and the unchanged October 13 listing. The read-only UI
 does not acquire or reimport county data.

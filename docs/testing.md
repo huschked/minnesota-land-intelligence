@@ -594,3 +594,25 @@ files were rehashed unchanged after committed-code checks and again after restar
 Repository privacy was checked before the implementation push; only the three
 data `.gitkeep` placeholders are tracked, not sources, exports or private helpers.
 Healthy startup/AppTest are not actual browser-download or accessibility certification.
+
+## ML-206 local viewer release
+
+The [2026-10-17 release checklist](reviews/local-viewer-release-2026-10-17.md)
+records the actual Windows/IAB workflow, fresh isolated installation/startup,
+native real-data CSV/JSON download checks, selected identity across service sorting,
+keyboard/focus, canvas clipboard guard and synthetic held/empty/changed-evidence
+refusal. User-confirmed 200% zoom is explicitly separate from agent automation;
+no exact browser engine version, screen-reader or WCAG certification is invented.
+Source/count/unknown displays use the ML-130 review, not fixture-only usability.
+
+Local affected checks: **22 passed in 62.12s**; a pytest cache permission warning
+was recorded. Fresh `.venv-ml206`: **36 passed in 3.48s**, with cache disabled,
+and `pip check` passed. These suites overlap and are not a full-suite sum.
+All **871** baseline saved files retained exact sizes/SHA-256. Only disposable
+synthetic evidence was changed for the browser refusal test. Private QA logs,
+screenshots, baseline/helpers and environments are ignored, not GitHub data backups.
+
+No tracked runtime/test/configuration/dependency changes were needed. The ML-205
+840-case four-platform/Python full gate above still applies to unchanged code;
+this documentation-only handoff uses configured Linux-only fast CI, not another
+claim of Windows regression coverage. No live county test/request was run.
