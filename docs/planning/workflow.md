@@ -51,12 +51,29 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-304 flood-category overlap is Ready and the next recommendation, beginning
-   with its actual datum operation and independent coverage/panel/revision gates;
-   not automatically started. ML-303's separate wetland screen is Done.
-   Remaining-area estimates/integration remain ML-305/306.
+1. ML-305 is Ready and recommended next: define the explicit preliminary mapped-
+   constraint union/remaining-acre policy, preserving compatible geometry, source
+   dates and null/held results. Not automatically started. ML-303/304 screens are
+   Done; ML-306 retains official-map validation/integration and review of the
+   neighboring not-printed panel holds and numerical residual. No scope extends
+   to legal buildability, source-data redistribution, UI changes or scoring.
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
    financial ranking, legal buildability or owner outreach is authorized here.
+
+ML-304 is Done, owner Codex, 2026-10-19. [Effective FEMA observations](../floods.md)
+pin the same 15-parcel geometry into a separate dated run. Native geographic
+datum alignment, AOI rather than county filtering, exact memberships, independent
+study/panel/zone coverage and raw/spatial dates are verified. Nine parcels have
+numeric results (eight SFHA-positive, one mapped zero); six remain conservatively
+held for neighboring not-printed panel contexts, one also with a tiny processing
+residue. They do not establish absent Isanti coverage or a physical gap; ML-306
+tracks review. No unknown is turned into zero. All 2,323 baseline files and the
+old wetland results are unchanged/reproducible. Final Linux 3.11/3.12 jobs passed
+all 1,125 offline cases; new/affected Windows cases passed locally. Slow hosted
+Windows jobs were cancelled under the user's established preference after Linux
+success; the workflow is cancelled and unchanged gate failed, not a four-platform
+pass. No remaining acres, tax refresh, UI/server or legal/insurance conclusion.
+See [dated evidence](../testing.md#ml-304-effective-floodplain-overlap).
 
 ML-303 is Done, owner Codex, 2026-10-19, with the explicit user-approved hosted
 Windows cancellation exception. The [wetland screen](../wetlands.md) covers all

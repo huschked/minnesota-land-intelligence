@@ -4,6 +4,9 @@ ML-304 adds a separate [effective FEMA flood CLI screen](docs/floods.md): saved
 geometry input, independent study/panel/zone coverage, distinct SFHA/floodway/X
 categories and spatial date/revision context. Unknowns hold metrics; no remaining
 acres, no-risk/buildability determination or viewer change is implied.
+The [verified pilot](docs/testing.md#ml-304-effective-floodplain-overlap) has nine
+numeric results and six explicitly held/null results, not 15 complete numeric
+flood estimates. ML-306 tracks the conservative panel-context/residual review.
 
 ML-303 adds a separate [mapped-wetland CLI screen](docs/wetlands.md) with explicit
 saved polygon selection, dated DNR capture, audited datum alignment, independent

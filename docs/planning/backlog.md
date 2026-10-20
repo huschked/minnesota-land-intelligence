@@ -1020,7 +1020,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-304"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -1032,21 +1032,21 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Retain official flood categories, effective map dates, and coverage status.
-- [ ] Test category overlap, revised/unmapped areas, geometry boundaries, and null coverage; avoid regulatory determinations.
-- [ ] Acquire/reconcile effective FEMA NFHL zones with independent coverage/panel/revision evidence; retain X subtypes, floodway and SFHA flags, raw invalid dates and nulls. Cross-county/study AOI features must not be missed. No preliminary/effective mixing, county-layer substitution, automatic LOMA conclusions or addition of revision footprints as hazard area.
+- [x] Retain official flood categories, effective map dates, and coverage status.
+- [x] Test category overlap, revised/unmapped areas, geometry boundaries, and null coverage; avoid regulatory determinations.
+- [x] Acquire/reconcile effective FEMA NFHL zones with independent coverage/panel/revision evidence; retain X subtypes, floodway and SFHA flags, raw invalid dates and nulls. Cross-county/study AOI features must not be missed. No preliminary/effective mixing, county-layer substitution, automatic LOMA conclusions or addition of revision footprints as hazard area.
 
-**Validation:** Plan offline exact-source/CRS/OID/pagination/drift checks; effective category/subtype/SFHA/floodway preservation; union/clip zero/full/boundary/multipart controls; independent missing/partial coverage; spatial panel/revision dates including raw year-8888 refusal; cross-study/county AOI membership; pinned publication and semantic tamper refusal. Resolve the actual FEMA-to-analysis datum operation before numeric results, without assuming the DNR operation applies. After explicit selection, use the saved 15-parcel geometry scope for separately dated bounded verification. No UI, remaining-acre formula or regulatory/financial conclusion.
+**Validation:** Final runtime 0d6d5ac passed all 1,125 offline cases (105 new flood cases; no skips, one live test deselected) on hosted Linux 3.11/3.12; new/affected cases and wetland regression also passed locally on Windows 3.12. Lint/dependency/board/live-test collection passed. Slow hosted Windows jobs were cancelled after Linux success under the user's standing preference; workflow cancelled and unchanged gate failed, not full Windows coverage. Actual run a4618c9a288e4742b60a96537231cf60 pins geometry 3804ff3662ac4e63939defa218c09df3: 19 zones, one availability footprint, 16 panels, zero AOI revisions and five study records; nine numeric parcels (eight mapped SFHA positive/one zero), six explicitly held/null. All contexts/metrics reproduce offline, original wetland results reproduce, all 2,323 baseline files unchanged. See [dated evidence and limits](../testing.md#ml-304-effective-floodplain-overlap).
 
-**Notes:** Owner: Codex. Selected/started 2026-10-19 by the user. Implement the [ML-301](../suitability-sources.md) effective FEMA contract with explicit saved 15-parcel geometry, independently checked datum/coverage and separate new observations. Observed year-8888 study date remains invalid evidence, not a current map date; panel dates and revision dates stay independent. Missing coverage is unknown and mapped minimal hazard is not no flood risk. County polygons are comparison-only, not a fallback. Preserve wetland/tax/GIS runs and viewer; no remaining-acre formula, score, UI, server restart or staff contact.
+**Notes:** Owner: Codex. Started/completed 2026-10-19, with the disclosed hosted Windows verification exception. Implements the [separate flood CLI/contract](../floods.md). Native FEMA NAD83 geographic input is explicitly checked/aligned, not DNR UTM or county-datum relabeling. Unknown MapServer metadata remains unknown. Null IDs require zero counts and independent untruncated empty feature pages at both ends; truncation remains refused. Four initial failed captures remain failed. Six parcel totals stay null under conservative neighboring not-printed panel checks; one also retains a microscopic zone-union numerical residue, not a claimed physical gap. All 15 have complete study-matched coverage; holds do not assert Isanti data is unavailable. ML-306 tracks applicability/residual review before any revised policy. Raw year-8888/null dates and eligible 2003 panel dates remain separate from 2026 retrieval. No regulatory/insurance/no-risk conclusion, remaining acres, wetland combination, score, tax refresh, UI/server change, source substitution, redistribution/hosting clearance or staff contact. ML-305 is recommended next, not started.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Effective flood contract/commands](../floods.md), [testing and CI exception](../testing.md#ml-304-effective-floodplain-overlap), `src/mn_land/floods.py`, `src/mn_land/flood_runs.py`, `src/mn_land/sources/fema_nfhl.py`, `src/mn_land/counties/isanti/flood_crs.py`, `tests/unit/test_floods.py`, `tests/unit/test_flood_ingestion.py`; ignored `data/processed/isanti/preparation/ml-304-2026-10-19/audit-a4618c9a288e4742b60a96537231cf60.json` and `shortlist-results.md`.
 
 ### ML-305 - Estimate usable upland acres without double subtraction
 
 <a id="ml-305"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -1061,9 +1061,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Define the screening formula using the union of constraint geometry so wetland/floodplain overlap is subtracted once.
 - [ ] Bound estimates by measured parcel area, quantify incomplete coverage, and label results as estimated usable acres rather than legally buildable acres.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Plan offline zero/full/partial/overlapping-constraint union controls, measured-area bounds, holes/multipart, duplicate/subset geometry and null propagation. Explicitly version included categories before calculation (wetland/open-water, separate deepwater/riverine, SFHA/floodway subset and 0.2%/minimal-hazard distinctions); no silent inclusion or legal land-use rule. Pin deliberately selected completed wetland/flood observations to identical parcel geometry hashes, preserve independent dates/policies and refuse incompatible/held inputs. No subtraction from deeded acres, no double-counting floodway or shared wetland/flood area, no numeric result for ML-304's six held rows. Add pinned reproduction/tamper controls; no UI or score scope.
 
-**Notes:** undefined
+**Notes:** Owner: Unassigned. Refined/Ready after ML-303/304, not started. Define an explicit preliminary mapped-constraint policy when selected; remaining land is not legally buildable land. Keep six ML-304 held rows unknown rather than treating them as zero constraints. Their panel applicability/numerical diagnostics remain explicit review items in ML-306; any changed interpretation requires a new versioned observation, not edits to old results. No zoning, access, septic, market-price or legal/financial suitability inference.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 
@@ -1088,7 +1088,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** No zoning or dwelling-count conclusions in this epic.
+**Notes:** No zoning or dwelling-count conclusions in this epic. ML-304 follow-up validation must review the six neighboring-study not-printed-panel holds and parcel 010131402's approximately 1.96e-8 m² numerical zone-union residue against actual source evidence. Distinguish panel-grid intersection from study applicability, and processing residue from physical missing coverage; do not suppress unknowns, snap/buffer results or choose a map implicitly. Any less conservative policy must be explicit/versioned with regression controls, preserve v1 replay and produce new observations rather than overwrite the original nine numeric/six held results. Publishing must distinguish these holds from actual source unavailability.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

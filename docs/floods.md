@@ -59,6 +59,13 @@ the OID. FEMA's spatial scan can produce a truncated empty page with a one-recor
 cap; the reviewed larger cap must actually return an untruncated empty page.
 The truncation guard is not ignored or weakened.
 
+The verified 15-parcel pilot has nine numeric results and six conservative
+held/null rows. Neighboring not-printed panel rectangles trigger the initial
+context rule even though study-matched Isanti coverage is complete; one held row
+also retains a microscopic exact zone-union numerical residue. These are not
+assertions of missing Isanti data or a physical unmapped gap. ML-306 records
+explicit applicability/residual review before any new, less conservative policy.
+
 The table is queried only for safe, explicitly collected source study IDs, with
 its own start/end metadata/count/OID reconciliation, 100-row cap and exact field/
 identity/order checks. Missing or multiple study rows are not silently resolved.

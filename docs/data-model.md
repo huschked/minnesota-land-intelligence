@@ -232,9 +232,9 @@ null markers and per-row context, not a canonical source rewrite or numeric work
 
 ## Original suitability design gates (ML-301)
 
-The discovery below did not implement enrichment. ML-302 geometry and ML-303
-wetland observations now implement their separate models above; flood and
-combined remaining-area observations remain future work.
+The discovery below did not implement enrichment. ML-302 geometry and ML-303/304
+wetland/flood observations now implement their separate models above; combined
+remaining-area observations remain future work.
 
 [Source discovery](suitability-sources.md) defines requirements for separate dated
 geometry/enrichment observations; it does not add fields to `Parcel`, DTOs or saved

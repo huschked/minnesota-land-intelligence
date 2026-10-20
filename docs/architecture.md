@@ -192,9 +192,9 @@ outside these recorded checks.
 
 ## Historical Phase 2 source decision (ML-301)
 
-This paragraph records the discovery boundary. ML-302 geometry and ML-303
-wetland observations are now implemented separately as described above;
-ML-304 flood and ML-305/306 integration remain future work.
+This paragraph records the discovery boundary. ML-302 geometry, ML-303 wetland
+and ML-304 flood observations are now implemented separately as described above;
+ML-305/306 combination, validation and integration remain future work.
 
 The [suitability contract](suitability-sources.md) selects DNR NWI/project footprints
 and FEMA effective NFHL/coverage/panel/revision evidence after bounded official

@@ -2,7 +2,8 @@
 
 ## ML-304 effective floodplain overlap
 
-Implementation verification in progress, 2026-10-19 (America/Chicago).
+Completed 2026-10-19 (America/Chicago), with explicit held-result and hosted
+Windows verification limits below.
 The first 96 new FEMA cases and all 77 wetland cases passed locally on Windows 3.12.14
 (173/173, 56.77 s), including geographic/grid controls, unit/roundtrip/convergence
 gates, exact AOI/OID pagination and drift, MapServer omissions kept unknown,
@@ -29,16 +30,65 @@ and no completion. One ordinary bounded retry of the exact failed count query
 then succeeded. Second capture `c3bc769544aa4c16a80811cd3439d177` stopped at
 the source's zero-count/null-ID revision response under the original strict
 inventory contract; it remains failed. A source-specific independently confirmed
-empty-page rule was added and separately tested before another new run. Partial captures are
-not mixed into a completed result or called zero coverage. Actual capture/audit
-and hosted regression outcomes will be recorded before Done.
+empty-page rule was added and separately tested. Third capture
+`a74454cf314e4f9fa6052800c81468f2` stopped on another connection failure; fourth
+`b2c4cb0a0a7342369e7fe51193de0dd6` correctly rejected an empty one-record page
+marked truncated. A bounded diagnostic at the source's advertised 2,000-record
+cap returned an untruncated empty page. The production confirmation now uses
+min(2,000, source cap), still refusing any truncation. That case and the explicit
+native-source CRS guard passed affected checks; no failure was promoted or mixed
+into a complete result. The pagination fix passed 134 flood/wetland-ingestion
+cases locally (76.20 s), followed by all 16 affected schema cases (0.50 s).
 
-Baseline evidence pins 2,323 historical files, including all retained ML-303
+Completed actual run `a4618c9a288e4742b60a96537231cf60` captured
+2026-10-20 02:02:42–02:04:49 UTC (October 19 locally), in 94 logical requests/
+95 wire attempts. It reconciles 19 zone features, one availability footprint,
+16 panel records, zero AOI-intersecting LOMRs and five associated study records.
+Nine parcels have numeric results: eight positive mapped SFHA and one mapped
+zero. Six remain held/null under the versioned strict panel-context rule: their
+intersections include neighboring-study `Countywide, Not Printed` rectangles.
+Independent study-matched coverage is complete for all 15; these holds are **not**
+a conclusion that Isanti coverage is absent. One held parcel also retains an
+approximately 1.96e-8 m² exact zone-union numerical residue, not a physical gap
+claim. No snapping/tolerance was introduced to force a complete result.
+ML-306 records applicability/residual review before any revised policy.
+
+Eligible Isanti panel dates are 2003-11-05, not the 2026 retrieval date. Raw
+year-8888 study index values remain unusable; neighboring dates and null database
+dates stay separate. None of the nine numeric rows has mapped floodway or
+0.2%-annual-chance overlap; these zeros are not no-risk or legal map assertions.
+The saved run's offline replay reproduces all context, coverage, classes and
+metrics at the final implementation. Completion SHA-256 is
+`d247350e3a2b47e352d4ed142a3e21ce038fe08702b0f2d2bcc967c5eeaf1387`.
+
+The final audit verifies 2,323 historical files unchanged, including all retained ML-303
 wetland runs and the earlier failed capture, under ignored
 `data/processed/isanti/preparation/ml-304-2026-10-19/`. No UI/server change, wetland
 combination, remaining-area estimate, tax refresh, outreach or legal/insurance
 determination is included. The official FEMA guidance PDF was inaccessible;
 its search excerpt was not used to invent a meaning for placeholder dates.
+The ignored `audit-a4618c9a288e4742b60a96537231cf60.json` and
+`shortlist-results.md` retain exact hashes, counts, per-parcel results and caveats.
+The prior wetland completion still reproduces with all original 15 results;
+all four failed flood captures have failure markers and no completion.
+
+Final runtime revision `0d6d5ac557ad68ff7947797f6f941f1cb9369dc5` passed all
+**1,125 offline cases, no skips, one live test deselected**, on hosted Linux
+[Python 3.11 (95.74 s)](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39356872797/job/118413610418)
+and [Python 3.12 (126.24 s)](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39356872797/job/118413610392).
+Both jobs passed lint/dependency/board checks and collected the one live test
+without executing it. This includes 105 new flood cases. The earlier runtime
+revision `2375567` had passed 1,123 cases on both Linux versions before the live
+pagination/native-source guard correction; that earlier count is not substituted
+for final-revision coverage. New/affected cases also passed locally on Windows.
+
+Following the user's standing preference, the still-running hosted Windows
+3.11/3.12 jobs were cancelled after both final Linux jobs passed. The
+[full implementation workflow](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39356872797)
+is **cancelled**, both Windows jobs **incomplete/cancelled**, and the unchanged
+CI gate correctly **failed**. This is a disclosed accepted verification exception,
+not a four-platform pass or weakened assertion. The documentation-only completion
+commit uses the existing Linux-only fast policy and is not Windows verification.
 
 ## ML-303 mapped wetland overlap
 

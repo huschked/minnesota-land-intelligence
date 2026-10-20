@@ -30,8 +30,8 @@ buildability, flood/remaining-acre calculation or viewer change is included.
 explicit completed review, requiring exact `PARCELID`/`UNFORMATTEDPIN`/`OBJECTID`
 agreement. Native ESRI:103736 is `NAD_1983_HARN_Adj_MN_Isanti_Feet`, an adjusted
 county ellipsoid with US survey feet, not ordinary NAD83/UTM. Same-native-datum
-local equal-area screening avoids an unapproved datum shift; ML-303 now resolves
-its DNR alignment separately, while ML-304 must resolve FEMA alignment. Deeded acres, measured
+local equal-area screening avoids an unapproved datum shift; ML-303/304 now resolve
+their DNR/FEMA input operations separately. Deeded acres, measured
 GIS acres and saved snapshot dates remain distinct. Unsupported curves/Z/M,
 ambiguous identity and invalid shapes hold without repair or partial completion.
 The user-approved live scope is only the existing 15-parcel focused review;
