@@ -58,13 +58,30 @@ def layer_schema(metadata: dict, spec: PolygonLayer) -> dict:
     return result
 
 
-def fetch_polygons(request, spec: PolygonLayer, aoi_groups: list[dict]) -> tuple[list[dict], dict]:
+def confirmed_inventory(request, url: str, base: dict, payload: dict, count: int,
+                        oid: str, limit: int, label: str) -> set[int]:
+    """A null ID array is NOT accepted alone: independently prove an empty page.
+
+    The original response is retained unchanged. Missing ID keys, positive count,
+    errors, truncation and any nonempty confirmation still fail normal checks.
+    """
+    if count == 0 and "objectIds" in payload and payload["objectIds"] is None:
+        proof = request(url, {**base, "outFields": oid, "returnGeometry": "false",
+                             "orderByFields": f"{oid} ASC", "resultOffset": 0, "resultRecordCount": 1})
+        if proof.get("features") != [] or transfer_flag(proof, label + " empty proof") is True:
+            raise GeometryError("Null ID inventory lacks independent empty feature-page proof")
+        payload = {**payload, "objectIds": []}
+    return inventory(payload, count, oid, limit, label)
+
+
+def fetch_polygons(request, spec: PolygonLayer, aoi_groups: list[dict], *,
+                   schema=layer_schema, confirm_null_empty: bool = False) -> tuple[list[dict], dict]:
     if not isinstance(aoi_groups, list) or not 0 < len(aoi_groups) <= 13:
         raise GeometryError("Select 1..13 bounded native AOI groups")
     for group in aoi_groups:
         if len(json.dumps(group, allow_nan=False).encode()) > 6000:
             raise GeometryError("Spatial query geometry byte budget exceeded")
-    start_schema = layer_schema(request(spec.url, {"f": "json"}), spec)
+    start_schema = schema(request(spec.url, {"f": "json"}), spec)
     oid = start_schema["object_id"]
     query_url = spec.url + "/query"
 
@@ -78,8 +95,10 @@ def fetch_polygons(request, spec: PolygonLayer, aoi_groups: list[dict]) -> tuple
                             "thematic count", minimum=0)
             if count > POLICY.max_inventory_ids:
                 raise GeometryError("Thematic count exceeds inventory budget")
-            ids = inventory(request(query_url, {**base, "returnIdsOnly": "true"}), count, oid,
-                            POLICY.max_inventory_ids, "thematic AOI")
+            payload = request(query_url, {**base, "returnIdsOnly": "true"})
+            ids = confirmed_inventory(request, query_url, base, payload, count, oid,
+                POLICY.max_inventory_ids, "thematic AOI") if confirm_null_empty else inventory(
+                payload, count, oid, POLICY.max_inventory_ids, "thematic AOI")
             results.append(sorted(ids))
         return results
 
@@ -139,7 +158,7 @@ def fetch_polygons(request, spec: PolygonLayer, aoi_groups: list[dict]) -> tuple
     for offset in range(0, len(ids), batch_size):
         batch(ids[offset:offset + batch_size])
     last = memberships()
-    end_schema = layer_schema(request(spec.url, {"f": "json"}), spec)
+    end_schema = schema(request(spec.url, {"f": "json"}), spec)
     if first != last or start_schema != end_schema or seen != set(ids):
         raise GeometryError("Thematic schema/edit token/membership drift")
     return features, {"schema": start_schema, "aoi_membership": first, "unique_count": len(ids),

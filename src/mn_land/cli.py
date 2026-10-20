@@ -35,6 +35,12 @@ def build_parser() -> argparse.ArgumentParser:
         prog="mn-land", description="Minnesota Land Intelligence Platform"
     )
     sub = parser.add_subparsers(dest="command", required=True)
+    flood_command = sub.add_parser("analyze-floods", help="Capture effective FEMA zones and independent coverage")
+    flood_command.add_argument("--county", choices=("isanti",), required=True)
+    flood_command.add_argument("--geometry-snapshot", type=Path, required=True)
+    flood_command.add_argument("--output-root", type=Path, help="Dedicated flood run root")
+    flood_check = sub.add_parser("validate-floods", help="Validate saved FEMA observations offline")
+    flood_check.add_argument("--snapshot", type=Path, required=True)
     wetland_command = sub.add_parser("analyze-wetlands", help="Capture DNR NWI/project coverage for saved polygons")
     wetland_command.add_argument("--county", choices=("isanti",), required=True)
     wetland_command.add_argument("--geometry-snapshot", type=Path, required=True)
@@ -108,6 +114,25 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args(argv)
+    if args.command in {"analyze-floods", "validate-floods"}:
+        try:
+            from mn_land.flood_runs import acquire_floods
+            from mn_land.runs import validate_run
+
+            path = acquire_floods(args.geometry_snapshot,
+                output_root=args.output_root or SETTINGS.processed_dir / "isanti" / "floods"
+            ) if args.command == "analyze-floods" else args.snapshot
+            validated = validate_run(path, "flood_analysis")
+            print(f"Effective FEMA observation run: {validated.path}")
+            print(json.dumps(validated.manifest["summary"], sort_keys=True))
+            print("Held metrics are null. Mapped screening only, not no flood risk, usable acres or legal advice.")
+        except ImportError:
+            LOGGER.error('Floods require the optional GIS extra: pip install -e ".[gis]"')
+            return 2
+        except (RunValidationError, ArcGISError, OSError, ValueError, RuntimeError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
+        return 0
     if args.command in {"analyze-wetlands", "validate-wetlands"}:
         try:
             from mn_land.runs import validate_run

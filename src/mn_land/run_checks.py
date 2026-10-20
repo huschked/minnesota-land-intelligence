@@ -113,6 +113,11 @@ def _set(values: Any) -> set[int]:
 def validate_content(path: Path, completion: dict, manifest: dict) -> None:
     kind = completion["kind"]
     files = {entry["path"] for entry in completion["artifacts"]}
+    if kind == "flood_analysis":
+        from mn_land.flood_runs import validate_flood_content
+
+        validate_flood_content(path, completion, manifest)
+        return
     if kind == "wetland_analysis":
         from mn_land.wetland_runs import validate_wetland_content
 

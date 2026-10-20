@@ -54,6 +54,7 @@ DEPENDENCIES = {
     "comparison": {"before": "delinquency_processed", "after": "delinquency_processed"},
     "parcel_geometry": {"candidates": "review"},
     "wetland_analysis": {"parcels": "parcel_geometry"},
+    "flood_analysis": {"parcels": "parcel_geometry"},
 }
 CONTROL_FILES = {"completion.json", "completion.pending.json", "failure.json"}
 MAX_MANIFEST_BYTES = 8 * 1024 * 1024

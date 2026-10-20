@@ -1,5 +1,17 @@
 # Isanti County
 
+## Effective mapped flood screen — 2026-10-19 (ML-304)
+
+The [flood CLI/contract](../floods.md) is separate from the wetland screen and
+saved tax/GIS runs. FEMA native NAD83 geographic angles are explicitly aligned
+through the reviewed Minnesota grid/county bridge; DNR UTM input is not reused.
+Availability, valid effective panels and zone coverage must match by study.
+Adjacent studies are not filtered out. SFHA/floodway/X subtypes and spatial dates
+are separate; raw future year-8888 index/null database dates remain unusable,
+not substituted by a panel or capture date. Unknown/partial/conflicting evidence
+holds metrics. Revision footprints are context only, never extra hazard acreage.
+No UI/server restart, remaining acres, buildability or financial conclusion.
+
 ## Mapped wetland screen — 2026-10-19 (ML-303)
 
 The [separate DNR wetland operation](../wetlands.md) uses explicit saved geometry,

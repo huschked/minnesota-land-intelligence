@@ -1020,7 +1020,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-304"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -1038,7 +1038,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Plan offline exact-source/CRS/OID/pagination/drift checks; effective category/subtype/SFHA/floodway preservation; union/clip zero/full/boundary/multipart controls; independent missing/partial coverage; spatial panel/revision dates including raw year-8888 refusal; cross-study/county AOI membership; pinned publication and semantic tamper refusal. Resolve the actual FEMA-to-analysis datum operation before numeric results, without assuming the DNR operation applies. After explicit selection, use the saved 15-parcel geometry scope for separately dated bounded verification. No UI, remaining-acre formula or regulatory/financial conclusion.
 
-**Notes:** Owner: Unassigned. Refined/Ready after ML-303, not started or automatically authorized. Future implementation under [ML-301](../suitability-sources.md). Observed year-8888 study date is invalid evidence, not a current map date; panel dates and revision dates stay independent. Missing coverage is unknown and mapped minimal hazard is not no flood risk. The county layer lacks the selected FEMA subtype schema and is comparison-only.
+**Notes:** Owner: Codex. Selected/started 2026-10-19 by the user. Implement the [ML-301](../suitability-sources.md) effective FEMA contract with explicit saved 15-parcel geometry, independently checked datum/coverage and separate new observations. Observed year-8888 study date remains invalid evidence, not a current map date; panel dates and revision dates stay independent. Missing coverage is unknown and mapped minimal hazard is not no flood risk. County polygons are comparison-only, not a fallback. Preserve wetland/tax/GIS runs and viewer; no remaining-acre formula, score, UI, server restart or staff contact.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

@@ -1,5 +1,21 @@
 # Data model
 
+## Effective flood observations (ML-304)
+
+`flood_analysis` pins completed geometry/review/join/raw source lineage separately
+from wetlands. Native source/wire data stays in `capture/`, copied alignment
+references in `reference/`, and exact parcel/OID/geometry hashes in selection.
+`source_features.json` retains raw FEMA attributes, native geometry hash and
+validated projected WKB; `study_records.json` retains exact associated table rows.
+`floods.json` contains measured/deeded distinctions, separate availability/panel/
+zone/study-matched coverage and uncovered geometries, exact observed category
+tuples, conflicts, raw/spatial source contexts and separate dates. Overall SFHA,
+floodway, 0.2%-annual-chance and minimal-hazard metrics have m²/acres/percent/WKB,
+or null on held rows. Floodway is nested in SFHA; LOMR footprints remain context.
+The manifest versions native geographic alignment, policy/budgets/source checks,
+old geometry/new capture dates and row counts. No `Parcel`/tax/wetland fields are
+overwritten. See [semantics and offline reproduction](floods.md).
+
 ## Mapped wetland observations (ML-303)
 
 The separate `wetland_analysis` graph pins one completed geometry run plus its

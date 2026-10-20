@@ -1,5 +1,45 @@
 # Offline tests and CI (ML-118)
 
+## ML-304 effective floodplain overlap
+
+Implementation verification in progress, 2026-10-19 (America/Chicago).
+The first 96 new FEMA cases and all 77 wetland cases passed locally on Windows 3.12.14
+(173/173, 56.77 s), including geographic/grid controls, unit/roundtrip/convergence
+gates, exact AOI/OID pagination and drift, MapServer omissions kept unknown,
+categories/conflicts/duplicates/boundaries/holes/multipart, study-matched and
+missing/partial coverage, panel/revision dates/status, raw year-8888/null study
+dates, revision footprints not added as hazards, table selection/identity,
+wire replay, portable pinned publication and rehashed-area tamper refusal.
+An initial fixture wrongly returned a row for `where=1=0`; it was corrected to
+honor the requested empty selection. Production guards/assertions were not relaxed.
+Lint and board checks pass. Collection finds 1,116 offline cases plus one live
+integration test at that revision. Six additional cases now cover FEMA's explicit
+zero-count/null-ID format, requiring an independent empty feature-page proof at
+both ends; missing keys, nonzero counts, returned rows and truncation still fail.
+The DNR default is unchanged. Those six plus prior FEMA/wetland tests passed
+(179/179, 52.77 s). A final guard also rejects advertised hashed/unstable OIDs.
+A sandbox temp-cleanup warning on collection was resolved by a
+read-only escalated collection; no OS permissions or existing temp files changed.
+
+The explicitly selected geometry is `3804ff3662ac4e63939defa218c09df3` (15 focused
+parcels), not latest or refreshed tax input. The first new FEMA run
+`e3910fff3bec4d338ea5c5c13e5b8c33` stopped on a transient connection failure
+after bounded retries during availability acquisition; it has a failure marker
+and no completion. One ordinary bounded retry of the exact failed count query
+then succeeded. Second capture `c3bc769544aa4c16a80811cd3439d177` stopped at
+the source's zero-count/null-ID revision response under the original strict
+inventory contract; it remains failed. A source-specific independently confirmed
+empty-page rule was added and separately tested before another new run. Partial captures are
+not mixed into a completed result or called zero coverage. Actual capture/audit
+and hosted regression outcomes will be recorded before Done.
+
+Baseline evidence pins 2,323 historical files, including all retained ML-303
+wetland runs and the earlier failed capture, under ignored
+`data/processed/isanti/preparation/ml-304-2026-10-19/`. No UI/server change, wetland
+combination, remaining-area estimate, tax refresh, outreach or legal/insurance
+determination is included. The official FEMA guidance PDF was inaccessible;
+its search excerpt was not used to invent a meaning for placeholder dates.
+
 ## ML-303 mapped wetland overlap
 
 Completed 2026-10-19 (America/Chicago), with the explicit Windows exception below.

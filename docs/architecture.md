@@ -1,5 +1,18 @@
 # Architecture
 
+## Separate effective flood observations (ML-304)
+
+`flood_runs.py` pins one explicit geometry graph into `flood_analysis`, separately
+from wetland/tax/UI paths. `sources/fema_nfhl.py` owns fixed effective FEMA layer/
+table identities, MapServer schema omissions, safe study-ID table selection and
+category policy. A schema callback extends the existing exact polygon acquisition
+without changing the DNR default. `counties/isanti/flood_crs.py` explicitly handles
+native NAD83 geographic input with the audited grid/county bridge, not DNR's UTM
+stage. `floods.py` validates, projects, dissolves/clips exact category tuples and
+gates metrics on study-matched availability, dated panels and zone geometry.
+Panel/revision/study contexts stay distinct; revisions are not extra hazard area.
+All calculation/context/coverage results reproduce offline. See [contract](floods.md).
+
 ## Separate wetland observations (ML-303)
 
 `wetland_runs.py` pins an explicit geometry graph into a new `wetland_analysis`

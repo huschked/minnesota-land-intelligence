@@ -1,5 +1,10 @@
 # Minnesota Land Intelligence Platform
 
+ML-304 adds a separate [effective FEMA flood CLI screen](docs/floods.md): saved
+geometry input, independent study/panel/zone coverage, distinct SFHA/floodway/X
+categories and spatial date/revision context. Unknowns hold metrics; no remaining
+acres, no-risk/buildability determination or viewer change is implied.
+
 ML-303 adds a separate [mapped-wetland CLI screen](docs/wetlands.md) with explicit
 saved polygon selection, dated DNR capture, audited datum alignment, independent
 project coverage and mapped wetland acreage/percent. Deepwater/riverine and

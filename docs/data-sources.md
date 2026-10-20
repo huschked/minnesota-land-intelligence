@@ -1,5 +1,18 @@
 # Data sources
 
+## Effective FEMA flood acquisition (ML-304)
+
+[The separate flood path](floods.md) uses the selected official NFHL MapServer:
+zones 28, independent availability 0, panels 3, LOMRs 1 and associated Study_Info
+41. Native EPSG:4269 geographic coordinates receive an explicit audited operation,
+not ordinary-NAD83 relabeling, DNR's UTM input or square-degree area. Spatial AOIs
+are not restricted by a county/study filter; study IDs join coverage and date
+context only after exact membership retrieval. Missing MapServer metadata
+declarations stay unknown and actual returned geometry gates support. Source
+counts/OIDs/schema/edit evidence reconcile and originals are retained. No county
+fallback, preliminary/effective mixture, revision-as-hazard addition, inferred
+LOMA relief, source-data redistribution clearance or tax refresh is introduced.
+
 ## DNR wetland acquisition (ML-303)
 
 [The wetland path](wetlands.md) captures DNR Statewide NWI (layer 0) and Project
