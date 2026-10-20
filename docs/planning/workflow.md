@@ -51,11 +51,25 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-303 wetland overlap is the next recommendation, beginning with explicit
-   cross-datum alignment/coverage gates; not automatically started.
-   Flood overlays remain ML-304, and remaining-area estimates ML-305/306.
+1. ML-304 flood-category overlap is Ready and the next recommendation, beginning
+   with its actual datum operation and independent coverage/panel/revision gates;
+   not automatically started. ML-303's separate wetland screen is Done.
+   Remaining-area estimates/integration remain ML-305/306.
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
    financial ranking, legal buildability or owner outreach is authorized here.
+
+ML-303 is Done, owner Codex, 2026-10-19, with the explicit user-approved hosted
+Windows cancellation exception. The [wetland screen](../wetlands.md) covers all
+15 focused parcels using 80 DNR NWI features and independent ECMN coverage;
+2010 imagery/2013 delivery is not 2026 imagery. The audited county bridge uses
+an actual pinned NOAA grid and visually checked historical MnDOT controls;
+unknown/partial coverage or classifications remain held/null. Both saved policy
+versions reproduce offline and all 1,177 baseline files are unchanged. All 1,020
+offline tests passed on Linux 3.11/3.12 and all 77 new cases locally on Windows.
+After Linux success, hosted Windows jobs were cancelled as requested; the
+implementation workflow is cancelled and the unchanged gate failed. This is
+not a full Windows pass. No UI/server, tax balance, flood, usable acres or score
+change is included. See [dated evidence](../testing.md#ml-303-mapped-wetland-overlap).
 
 ML-302's geometry operation is isolated from saved tax/attribute runs and viewer
 processes. It preserves native true-curve responses, holds unsupported/invalid

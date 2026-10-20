@@ -177,7 +177,11 @@ from AppTest and user-performed 200% zoom acceptance. It adds no runtime compone
 network exposure or data mutation; screen-reader/conformance certification remains
 outside these recorded checks.
 
-## Phase 2 source decision (ML-301; implementation remains future)
+## Historical Phase 2 source decision (ML-301)
+
+This paragraph records the discovery boundary. ML-302 geometry and ML-303
+wetland observations are now implemented separately as described above;
+ML-304 flood and ML-305/306 integration remain future work.
 
 The [suitability contract](suitability-sources.md) selects DNR NWI/project footprints
 and FEMA effective NFHL/coverage/panel/revision evidence after bounded official

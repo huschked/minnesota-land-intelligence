@@ -2,7 +2,7 @@
 
 ## ML-303 mapped wetland overlap
 
-Implementation verification in progress, 2026-10-19 (America/Chicago).
+Completed 2026-10-19 (America/Chicago), with the explicit Windows exception below.
 All 77 new offline checks passed locally on Windows/Python 3.12.14 in 25.68 s:
 zero/full/boundary, holes/multipart, dissolve/deduplication, conflicting/unknown
 classes, open-water/deepwater/riverine distinctions, independent missing/partial/
@@ -35,10 +35,27 @@ currentness or a regulatory delineation. No UI/server change was made.
 The prior-file audit checked all 1,177 baseline files with no byte/hash changes;
 original data and new raw captures remain ignored/private. Dated local evidence
 is under `data/processed/isanti/preparation/ml-303-2026-10-19/`.
-Full hosted Linux regression and the final run audit are pending. The user
-explicitly approved stopping still-running hosted Windows jobs after full Linux
-success and recording that matrix as incomplete; this does not weaken CI
-assertions or report a Windows full-suite pass.
+The final offline audit reproduced both completed runs, including v1's held
+results, and confirmed that the failed run was never promoted. V2 completion
+SHA-256 is `a044b94685f557b62d2abef0f68eb45da5bae05e052a1b76c09d78553922d9b0`.
+Both captures used 45 logical requests/45 wire attempts; largest body 24,568,263
+bytes. `audit.json` records exact hashes, per-parcel results and source contexts;
+`shortlist-results.md` is the readable local table, not a public dataset export.
+
+Implementation revision `e5c8469dab74d7fff2ee87f81c5734b2910ca4b2` passed all
+**1,020 offline tests with no skips**, one live test deselected, in hosted Linux
+[Python 3.11 (71.12 s)](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39352155445/job/118398617175)
+and [Python 3.12 (83.76 s)](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39352155445/job/118398617116).
+Both jobs passed lint, dependency/board checks and collected the one live test
+without executing it. The 77 new cases also passed locally on Windows 3.12.
+
+After both Linux jobs finished, the user-approved cancellation stopped the two
+still-running hosted Windows jobs. [The implementation workflow](https://github.com/huschked/minnesota-land-intelligence/actions/runs/39352155445)
+is **cancelled**, both Windows matrix jobs are **incomplete/cancelled**, and the
+unchanged CI gate correctly reports **failure**. This is an explicitly accepted
+verification exception, not a four-platform pass or a weakened gate. No Windows
+rerun was requested. The documentation-only completion commit uses the existing
+Linux-only fast policy; that is not a replacement full Windows result.
 
 ## ML-302 parcel polygon foundation
 

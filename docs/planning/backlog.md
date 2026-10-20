@@ -994,7 +994,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-303"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -1006,21 +1006,21 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Clip/dissolve appropriate wetland features and prevent duplicate/overlapping feature area from being counted twice.
-- [ ] Test no overlap, full overlap, boundaries, multipart parcels, and missing source coverage; retain source/algorithm versions.
-- [ ] Acquire/reconcile dated DNR NWI and project footprints for exact parcel AOIs under ML-301's contract; distinguish wetland/deepwater/open-water/unknown classes and explicitly version inclusion policy. Bind imagery/project dates spatially, verify coverage independently and never silently union/substitute federal/state versions or report failed/partial coverage as zero.
+- [x] Clip/dissolve appropriate wetland features and prevent duplicate/overlapping feature area from being counted twice.
+- [x] Test no overlap, full overlap, boundaries, multipart parcels, and missing source coverage; retain source/algorithm versions.
+- [x] Acquire/reconcile dated DNR NWI and project footprints for exact parcel AOIs under ML-301's contract; distinguish wetland/deepwater/open-water/unknown classes and explicitly version inclusion policy. Bind imagery/project dates spatially, verify coverage independently and never silently union/substitute federal/state versions or report failed/partial coverage as zero.
 
-**Validation:** Planned: offline union/clip controls for zero/full/boundary/hole/multipart overlap; duplicate/overlapping source features; classification inclusion/conflicts/unknowns; complete/partial/missing project coverage and spatial dates; native CRS and audited datum alignment refusal/controls; bounded exact OID membership/source drift; pinned graph integrity and reproducible new run publication. Live verification will explicitly use ML-302 geometry run 3804ff3662ac4e63939defa218c09df3 (15 focused parcels), not latest or recaptured tax/GIS inputs. No UI feature or flood/remaining-area calculation.
+**Validation:** All 77 new offline checks passed locally on Windows 3.12; all 1,020 offline tests (no skips, one live deselected) passed on hosted Linux 3.11/3.12 at e5c8469. Lint/dependency/board and live-test collection passed. After Linux success, both still-running hosted Windows jobs were cancelled at the user's explicit request; the workflow is cancelled and unchanged CI gate failed, not a full Windows pass. Live run cc72a8e3c282433696c19203f21b75ea pins geometry 3804ff3662ac4e63939defa218c09df3: 80 NWI features, one independent project, 15 covered/numeric parcels, 14 positive overlaps and one mapped zero. Offline replay reproduces v1/v2; all 1,177 baseline files unchanged. See [dated evidence and accepted limitation](../testing.md#ml-303-mapped-wetland-overlap).
 
-**Notes:** Owner: Codex. Selected/started 2026-10-19 by the user. Implement the [ML-301](../suitability-sources.md) contract using the completed ML-302 geometry foundation. Resolve actual adjusted-county-datum alignment with DNR NAD83 UTM before allowing numeric overlays; no silent relabeling, ballpark transform, source substitution or invented zero. Reassess Isanti-specific federal/state versions if newer regional evidence is available; national/catalog modification dates alone do not establish fresher imagery. No regulatory wetland delineation or legal buildability conclusion. Preserve previous saved data/viewer and use targeted checks; do not repeatedly rerun slow Windows checks.
+**Notes:** Owner: Codex. Started/completed 2026-10-19 with the user's explicit hosted Windows verification exception. Implements the separate [wetland CLI/contract](../wetlands.md); audited MnDOT county bridge and pinned NOAA grid, no silent datum relabeling/ballpark fallback. Spatial context is 2010 imagery/2013 project delivery, separate from 2026 capture and old tax/parcel dates. No newer Isanti-specific federal version was established; no source union/substitution. Initial 16 MiB capture remains failed; v1 detailed-label holds remain reproducible, and v2 is a separate complete observation. No geometry repair, regulatory delineation, legal buildability, usable acres, financial score, tax refresh, UI/server change, redistribution/hosting clearance or staff contact. ML-304 recommended next, not started.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Calculation/source/CRS contract](../wetlands.md), [testing and CI exception](../testing.md#ml-303-mapped-wetland-overlap), `src/mn_land/wetlands.py`, `src/mn_land/wetland_runs.py`, `src/mn_land/counties/isanti/wetland_crs.py`, `tests/unit/test_wetlands.py`, `tests/unit/test_wetland_ingestion.py`; ignored dated `data/processed/isanti/preparation/ml-303-2026-10-19/audit.json` and `shortlist-results.md`.
 
 ### ML-304 - Calculate floodplain overlap by mapped category
 
 <a id="ml-304"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -1036,9 +1036,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Test category overlap, revised/unmapped areas, geometry boundaries, and null coverage; avoid regulatory determinations.
 - [ ] Acquire/reconcile effective FEMA NFHL zones with independent coverage/panel/revision evidence; retain X subtypes, floodway and SFHA flags, raw invalid dates and nulls. Cross-county/study AOI features must not be missed. No preliminary/effective mixing, county-layer substitution, automatic LOMA conclusions or addition of revision footprints as hazard area.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Plan offline exact-source/CRS/OID/pagination/drift checks; effective category/subtype/SFHA/floodway preservation; union/clip zero/full/boundary/multipart controls; independent missing/partial coverage; spatial panel/revision dates including raw year-8888 refusal; cross-study/county AOI membership; pinned publication and semantic tamper refusal. Resolve the actual FEMA-to-analysis datum operation before numeric results, without assuming the DNR operation applies. After explicit selection, use the saved 15-parcel geometry scope for separately dated bounded verification. No UI, remaining-acre formula or regulatory/financial conclusion.
 
-**Notes:** Future implementation under [ML-301](../suitability-sources.md), not started. Observed year-8888 study date is invalid evidence, not a current map date; panel dates and revision dates stay independent. Missing coverage is unknown and mapped minimal hazard is not no flood risk. The county layer lacks the selected FEMA subtype schema and is comparison-only.
+**Notes:** Owner: Unassigned. Refined/Ready after ML-303, not started or automatically authorized. Future implementation under [ML-301](../suitability-sources.md). Observed year-8888 study date is invalid evidence, not a current map date; panel dates and revision dates stay independent. Missing coverage is unknown and mapped minimal hazard is not no flood risk. The county layer lacks the selected FEMA subtype schema and is comparison-only.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

@@ -214,7 +214,11 @@ Saved issue CSV blanks become null and remaining issue values stay strings; diag
 metadata is allowlisted. CSV is a disclosed protected-text presentation, with explicit
 null markers and per-row context, not a canonical source rewrite or numeric workbook.
 
-## Proposed suitability observations (ML-301; not implemented)
+## Original suitability design gates (ML-301)
+
+The discovery below did not implement enrichment. ML-302 geometry and ML-303
+wetland observations now implement their separate models above; flood and
+combined remaining-area observations remain future work.
 
 [Source discovery](suitability-sources.md) defines requirements for separate dated
 geometry/enrichment observations; it does not add fields to `Parcel`, DTOs or saved

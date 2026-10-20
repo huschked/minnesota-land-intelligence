@@ -4,6 +4,10 @@ Implemented 2026-10-18. This is a separate CLI acquisition/analysis path, not a
 viewer feature, thematic overlay, remaining/usable acreage or legal opinion.
 Saved candidate/tax runs and the attribute-only ArcGIS client remain unchanged.
 
+Successor [ML-303](wetlands.md) now adds a separate mapped wetland observation
+using this explicit completed geometry. Its audited cross-datum operation does
+not alter the ML-302 same-datum contract or automatically approve FEMA alignment.
+
 ## Explicit operation and installation
 
 The optional `gis` extra pins Shapely 2.1.2 and pyproj 3.7.2. Shapely/GEOS checks
