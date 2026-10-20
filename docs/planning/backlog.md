@@ -1,6 +1,6 @@
 # Epics and story backlog
 
-Updated: 2026-10-18. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
+Updated: 2026-10-19. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
 The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links and contextual CSV/JSON worklists (ML-202–206). [ML-206 release evidence](../reviews/local-viewer-release-2026-10-17.md) records fresh installation, actual-data keyboard/download/refusal checks and user-confirmed 200% zoom, not accessibility certification; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
@@ -994,7 +994,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-303"></a>
 
-**Status:** Backlog
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -1010,9 +1010,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 - [ ] Test no overlap, full overlap, boundaries, multipart parcels, and missing source coverage; retain source/algorithm versions.
 - [ ] Acquire/reconcile dated DNR NWI and project footprints for exact parcel AOIs under ML-301's contract; distinguish wetland/deepwater/open-water/unknown classes and explicitly version inclusion policy. Bind imagery/project dates spatially, verify coverage independently and never silently union/substitute federal/state versions or report failed/partial coverage as zero.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Planned: offline union/clip controls for zero/full/boundary/hole/multipart overlap; duplicate/overlapping source features; classification inclusion/conflicts/unknowns; complete/partial/missing project coverage and spatial dates; native CRS and audited datum alignment refusal/controls; bounded exact OID membership/source drift; pinned graph integrity and reproducible new run publication. Live verification will explicitly use ML-302 geometry run 3804ff3662ac4e63939defa218c09df3 (15 focused parcels), not latest or recaptured tax/GIS inputs. No UI feature or flood/remaining-area calculation.
 
-**Notes:** Future implementation under [ML-301](../suitability-sources.md), not started. Reassess Isanti-specific federal/state versions if newer regional evidence is available; national/catalog modification dates alone do not establish fresher imagery. No regulatory wetland delineation or legal buildability conclusion.
+**Notes:** Owner: Codex. Selected/started 2026-10-19 by the user. Implement the [ML-301](../suitability-sources.md) contract using the completed ML-302 geometry foundation. Resolve actual adjusted-county-datum alignment with DNR NAD83 UTM before allowing numeric overlays; no silent relabeling, ballpark transform, source substitution or invented zero. Reassess Isanti-specific federal/state versions if newer regional evidence is available; national/catalog modification dates alone do not establish fresher imagery. No regulatory wetland delineation or legal buildability conclusion. Preserve previous saved data/viewer and use targeted checks; do not repeatedly rerun slow Windows checks.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

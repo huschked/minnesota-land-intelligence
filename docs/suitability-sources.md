@@ -1,9 +1,9 @@
 # Isanti suitability source contract (ML-301)
 
-Successor implementation: [ML-302 parcel geometry foundation](geometry.md),
-2026-10-18. It implements the separate parcel capture/CRS/topology/area portion
-only. This dated discovery remains the thematic source contract; wetlands,
-floodplain, cross-datum alignment and remaining-acreage work are still later cards.
+Successor implementations: [ML-302 parcel geometry foundation](geometry.md),
+2026-10-18, and [ML-303 separate DNR wetland observations](wetlands.md), 2026-10-19.
+ML-303 implements its explicit datum/coverage/dating gates without changing this
+historical discovery. Floodplain and remaining-acreage work remain later cards.
 
 Decision/review date: **2026-10-17, America/Chicago**. Live observations were made
 2026-10-18 04:07–04:25 UTC, still October 17 locally. This is source discovery and

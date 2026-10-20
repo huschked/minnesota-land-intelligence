@@ -1,5 +1,17 @@
 # Isanti County
 
+## Mapped wetland screen — 2026-10-19 (ML-303)
+
+The [separate DNR wetland operation](../wetlands.md) uses explicit saved geometry,
+not a fresh tax balance. `wetland_crs.py` resolves the county-adjusted projection
+bridge with two visually checked MnDOT historical coordinate tables and the
+actual pinned Minnesota NOAA HPGN/HARN grid. No automatic ordinary-NAD83
+substitution is used. DNR native UTM geometries are captured unchanged before
+analysis-copy clipping/transformation. Independent project footprints gate
+coverage; spatial imagery/delivery context and separate deepwater/open-water/
+riverine classes remain visible. Unknowns give held/null totals. No legal
+buildability, flood/remaining-acre calculation or viewer change is included.
+
 ## Native parcel polygon capture — 2026-10-18 (ML-302)
 
 [Geometry CLI/contract](../geometry.md) adds a separate bounded capture from an

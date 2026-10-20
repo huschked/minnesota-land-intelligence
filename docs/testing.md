@@ -1,5 +1,45 @@
 # Offline tests and CI (ML-118)
 
+## ML-303 mapped wetland overlap
+
+Implementation verification in progress, 2026-10-19 (America/Chicago).
+All 77 new offline checks passed locally on Windows/Python 3.12.14 in 25.68 s:
+zero/full/boundary, holes/multipart, dissolve/deduplication, conflicting/unknown
+classes, open-water/deepwater/riverine distinctions, independent missing/partial/
+complete coverage, spatial date contexts/invalid dates, actual pinned grid and
+historical MnDOT controls, missing/changed resources/out-of-grid refusal,
+invalid/oversized geometry, bounded pagination/OID/schema/edit drift, wire retry/
+hash replay, logical/aggregate/single-feature limits, portable pinned publication
+and derived-area tamper refusal. Lint and generated-board checks pass. The final
+style-only context-manager edit also passed its affected budget case (1/1).
+
+Explicit source geometry is `3804ff3662ac4e63939defa218c09df3`, completion SHA-256
+`d5877fb743a4962c66c22ca8d42819313013da9740efe0b2e0129a43ae391d6a`.
+The separately captured v2 DNR observation is
+`data/processed/isanti/wetlands/cc72a8e3c282433696c19203f21b75ea`.
+Its source capture is 2026-10-20 01:09:23–01:10:49 UTC (October 19 locally),
+not a new tax/parcel capture. It reconciles 80 NWI features and one independent
+ECMN project footprint over four bounded query groups. All 15 parcels have
+complete project coverage and numeric results: 14 positive mapped wetland
+overlaps and one verified mapped zero; range 0–92.04814733%. Project context is
+2010 imagery and 2013-05-24 delivery, **not 2026 imagery**.
+
+First attempt `51ed54b030774d6b8880c7941817ac0e` failed at the original 16 MiB
+per-response budget on a connected river feature and remains failed. Separate
+64 MiB attempt `98dce063994042519bd0759bfdb469d7` completed under inclusion v1
+with five numeric/ten held results: DNR's detailed forested/shrub labels were
+unsupported, not guessed. Version 2 explicitly adds verified detailed label/code
+pairs; v1 remains replayable rather than rewritten. None is relabelled as tax
+currentness or a regulatory delineation. No UI/server change was made.
+
+The prior-file audit checked all 1,177 baseline files with no byte/hash changes;
+original data and new raw captures remain ignored/private. Dated local evidence
+is under `data/processed/isanti/preparation/ml-303-2026-10-19/`.
+Full hosted Linux regression and the final run audit are pending. The user
+explicitly approved stopping still-running hosted Windows jobs after full Linux
+success and recording that matrix as incomplete; this does not weaken CI
+assertions or report a Windows full-suite pass.
+
 ## ML-302 parcel polygon foundation
 
 2026-10-18: [implementation/commands/limitations](geometry.md). Optional `gis`

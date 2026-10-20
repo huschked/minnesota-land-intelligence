@@ -1,9 +1,15 @@
 # Minnesota Land Intelligence Platform
 
+ML-303 adds a separate [mapped-wetland CLI screen](docs/wetlands.md) with explicit
+saved polygon selection, dated DNR capture, audited datum alignment, independent
+project coverage and mapped wetland acreage/percent. Deepwater/riverine and
+unknowns stay separate; no buildability or remaining-acre claim. These results
+are not yet integrated into the viewer. Flood overlays remain ML-304.
+
 ML-302 adds a separate [parcel-polygon CLI foundation](docs/geometry.md): explicit
 completed-review selection, new dated native capture, topology/CRS checks and
 GIS-measured acreage separate from deeded acreage. Install the optional `gis`
-extra for these commands. No wetlands/floodplain overlays or viewer changes yet.
+extra for these commands. It does not itself perform thematic overlays.
 
 Track work in the [Kanban board](docs/planning/kanban.md). Its
 [epic/story backlog](docs/planning/backlog.md) contains acceptance criteria,

@@ -53,6 +53,7 @@ DEPENDENCIES = {
     "review": {"join": "delinquency_processed"},
     "comparison": {"before": "delinquency_processed", "after": "delinquency_processed"},
     "parcel_geometry": {"candidates": "review"},
+    "wetland_analysis": {"parcels": "parcel_geometry"},
 }
 CONTROL_FILES = {"completion.json", "completion.pending.json", "failure.json"}
 MAX_MANIFEST_BYTES = 8 * 1024 * 1024
@@ -252,7 +253,7 @@ def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0
     try:
         if (
             kind not in DEPENDENCIES
-            or depth > 3
+            or depth > 4
             or path.is_symlink()
             or path.resolve(strict=True) != path.parent.resolve(strict=True) / path.name
             or (path / "failure.json").exists()

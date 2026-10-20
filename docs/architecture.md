@@ -1,5 +1,21 @@
 # Architecture
 
+## Separate wetland observations (ML-303)
+
+`wetland_runs.py` pins an explicit geometry graph into a new `wetland_analysis`
+run. `sources/dnr_nwi.py` owns reviewed DNR layer/field and versioned inclusion
+contracts; `ingestion/spatial_capture.py` and `spatial_layers.py` retain bounded
+native responses and reconcile exact AOI/OID membership. The Isanti
+`wetland_crs.py` adapter owns the audited adjusted-datum bridge and pinned NOAA
+grid. `wetlands.py` performs deterministic validation, local analysis-copy
+projection, dissolve/clip and independent project-coverage/date binding.
+Offline validation replays capture evidence and reproduces derived results.
+Unknown/partial coverage or classification is a held row with null totals, not
+zero. The run graph depth budget is four edges for wetland -> geometry -> review
+-> join -> raw; fixed allowed kinds/labels, containment and hashes still apply.
+No base import needs GIS libraries, and no viewer/tax pipeline is changed.
+See [wetland contracts and limitations](wetlands.md).
+
 ## Separate polygon foundation (ML-302)
 
 `geometry_runs.py` pins one explicit completed review into a new `parcel_geometry`
@@ -11,8 +27,9 @@ with optional Shapely/pyproj dependencies. Captures and analysis share one
 all-selected-or-failed completion. `run_checks.py` routes offline integrity and
 reproduction checks lazily; existing result kinds retain their contracts.
 No viewer, thematic service, score or tax pipeline imports this acquisition path.
-See [CRS/tolerance/completion decisions](geometry.md), including the unresolved
-future cross-datum thematic-alignment gate and default no-repair policy.
+See [CRS/tolerance/completion decisions](geometry.md) and default no-repair policy.
+ML-303 separately resolves its explicit DNR alignment; FEMA alignment remains
+ML-304's own gate, not a blanket approval of other CRS transformations.
 
 The parcel pipeline is deliberately linear: official ArcGIS service → complete raw acquisition → pinned source copy → county adapter/canonical parcel → validation/filtering → completed per-run exports. `ArcGISClient` owns HTTP, retries, metadata, count checks, and pagination. The Isanti county adapter package owns county GIS field names and schema declarations. Core filtering accepts `Parcel` instances and records deterministic rejection reasons.
 

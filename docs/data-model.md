@@ -1,5 +1,22 @@
 # Data model
 
+## Mapped wetland observations (ML-303)
+
+The separate `wetland_analysis` graph pins one completed geometry run plus its
+review/tax/GIS lineage. `selection.json` pins parcel/OID and analysis geometry
+hashes. `source_features.json` preserves DNR raw attributes, source geometry hash,
+classification and locally clipped/transformed analysis WKB. Exact native/wire
+responses remain in `capture/`; pinned alignment resources in `reference/`.
+`wetlands.json` records measured parcel area, independent project coverage,
+uncovered/conflict/category geometries, source contributors, all spatial project
+date contexts, hold reasons and overall mapped wetland m²/acres/percent. A held
+row has null overall metrics, even when observed category fragments are retained.
+Zero is only a complete-coverage, known-classification observation. Manifest
+versions inclusion/calculation policies, all source/capture dates, full CRS/grid/
+library evidence, source checks and budgets. Completed observation runs may have
+held rows; failed acquisition/geometry cannot publish. No field is inserted into
+old `Parcel`/tax exports. See [semantics and replay](wetlands.md).
+
 ## Separate polygon observations (ML-302)
 
 Implemented [geometry evidence](geometry.md) lives in a new `parcel_geometry`
@@ -14,7 +31,8 @@ evidence, budgets and non-atomic/source-accuracy warnings. Original capture date
 and saved deeded values remain independent. Null deeded acreage produces null
 comparison, never zero; unsupported/invalid geometry produces a failed run with
 retained originals, not a complete zero-area parcel. Repairs are unsupported.
-No wetland/flood/usable-acre/scoring observations are implemented by this model.
+This polygon model alone does not include wetland/flood/usable-acre/scoring
+observations; ML-303's separate wetland model is described above.
 
 `Parcel` is the county-independent record. Money uses `Decimal`; acreage also uses `Decimal`. Missing values remain `None`, never zero. Geometry is optional because Phase 1 does not perform spatial analysis and avoids transferring large polygons by default.
 

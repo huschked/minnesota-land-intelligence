@@ -1,5 +1,20 @@
 # Data sources
 
+## DNR wetland acquisition (ML-303)
+
+[The wetland path](wetlands.md) captures DNR Statewide NWI (layer 0) and Project
+Boundary (layer 1) for explicit parcel AOIs in native EPSG:26915. Initial/final
+counts/OIDs, schema and available edit tokens reconcile; absent edit consistency
+is disclosed. Independent project footprints gate coverage, and their intersected
+imagery/delivery dates remain separate from 2026 retrieval and old parcel/tax dates.
+The explicit Isanti adapter uses the pinned NOAA Minnesota HARN grid and visually
+checked MnDOT coordinate pairs, not ordinary-NAD83 relabeling or ballpark fallback.
+Unsupported/contradictory classes and incomplete coverage hold numeric totals.
+This implements the DNR selection, not a federal/state union or proof of the
+newest regional imagery. Source accuracy and unresolved distribution limitations
+in [ML-301](suitability-sources.md) still apply. No FEMA implementation or tax
+balance refresh occurs here.
+
 ## Parcel geometry acquisition (ML-302)
 
 The [separate geometry path](geometry.md) uses the existing official Isanti

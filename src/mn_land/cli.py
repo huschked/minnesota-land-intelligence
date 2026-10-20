@@ -35,6 +35,12 @@ def build_parser() -> argparse.ArgumentParser:
         prog="mn-land", description="Minnesota Land Intelligence Platform"
     )
     sub = parser.add_subparsers(dest="command", required=True)
+    wetland_command = sub.add_parser("analyze-wetlands", help="Capture DNR NWI/project coverage for saved polygons")
+    wetland_command.add_argument("--county", choices=("isanti",), required=True)
+    wetland_command.add_argument("--geometry-snapshot", type=Path, required=True)
+    wetland_command.add_argument("--output-root", type=Path, help="Dedicated wetland run root")
+    wetland_check = sub.add_parser("validate-wetlands", help="Validate saved wetland observations offline")
+    wetland_check.add_argument("--snapshot", type=Path, required=True)
     geometry_command = sub.add_parser(
         "acquire-geometry", help="New dated polygon capture from an explicit completed review",
     )
@@ -102,6 +108,27 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args(argv)
+    if args.command in {"analyze-wetlands", "validate-wetlands"}:
+        try:
+            from mn_land.runs import validate_run
+            from mn_land.wetland_runs import acquire_wetlands
+
+            if args.command == "analyze-wetlands":
+                path = acquire_wetlands(args.geometry_snapshot,
+                    output_root=args.output_root or SETTINGS.processed_dir / "isanti" / "wetlands")
+            else:
+                path = args.snapshot
+            validated = validate_run(path, "wetland_analysis")
+            print(f"Wetland observation run: {validated.path}")
+            print(json.dumps(validated.manifest["summary"], sort_keys=True))
+            print("Held parcels have null metrics. Mapped screening only, not buildability or usable acres.")
+        except ImportError:
+            LOGGER.error('Wetlands require the optional GIS extra: pip install -e ".[gis]"')
+            return 2
+        except (RunValidationError, ArcGISError, OSError, ValueError, RuntimeError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
+        return 0
     if args.command in {"acquire-geometry", "validate-geometry"}:
         try:
             from mn_land.geometry_runs import acquire_geometry

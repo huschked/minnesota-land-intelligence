@@ -1,0 +1,26 @@
+{
+  "policy": "mndot-isanti-1996-epsg1706-v1",
+  "county_projection_source": "https://www.dot.state.mn.us/surveying/toolstech/mapproj.html",
+  "projection_control_tolerance_metres": 0.001,
+  "grid_control_tolerance_metres": 0.25,
+  "controls": [
+    {"gsid": "12519", "name": "BO MNDT TEMP",
+     "source": "https://www.olmweb.dot.state.mn.us/Geod/PDF%20Single%20Sheet/GSID_12519.pdf",
+     "source_sha256": "ce5f23f7aabf29837267d32ebf9e0b02538195e511b6f9f8898d8d4d5d3acee4",
+     "source_page": 1, "source_date": "2026-07-06",
+     "county_1996_feet": [463489.050, 196555.450],
+     "nad83_1996_latitude_dms": [45, 33, 39.92964],
+     "nad83_1996_west_longitude_dms": [93, 13, 33.12240],
+     "nad83_1986_latitude_dms": [45, 33, 39.92794],
+     "nad83_1986_west_longitude_dms": [93, 13, 33.11847]},
+    {"gsid": "12549", "name": "DALBO",
+     "source": "https://www.olmweb.dot.state.mn.us/Geod/PDF%20Single%20Sheet/GSID_12549.pdf",
+     "source_sha256": "3b9d81499147501dbe7f5ddcdb8e3762b1dd9601ba02a2c6865ded52222eb307",
+     "source_page": 2, "source_date": "2026-07-06",
+     "county_1996_feet": [421788.386, 225612.489],
+     "nad83_1996_latitude_dms": [45, 38, 25.63864],
+     "nad83_1996_west_longitude_dms": [93, 23, 20.73088],
+     "nad83_1986_latitude_dms": [45, 38, 25.63485],
+     "nad83_1986_west_longitude_dms": [93, 23, 20.72091]}
+  ]
+}
