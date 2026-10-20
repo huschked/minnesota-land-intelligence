@@ -142,6 +142,8 @@ def map_schema(metadata: dict, spec: PolygonLayer) -> dict:
                 raise GeometryError("Unsupported FEMA declared dimensions")
         sr = metadata.get("extent", {}).get("spatialReference")
         spatial_reference(sr, spec.wkid)
+        if "sourceSpatialReference" in metadata:
+            spatial_reference(metadata["sourceSpatialReference"], spec.wkid)
         result.update(spatial_reference=sr, geometry_type="esriGeometryPolygon", true_curves=True,
                       has_z=metadata.get("hasZ"), has_m=metadata.get("hasM"),
                       dimension_gate="returned native coordinates must be exactly 2D")
@@ -164,7 +166,8 @@ def fetch_studies(request: Callable, identifiers: list[str]) -> tuple[list[dict]
         if count > 100:
             raise GeometryError("FEMA study table exceeds 100-row budget")
         return sorted(confirmed_inventory(request, url, base,
-            request(url, {**base, "returnIdsOnly": "true"}), count, "OBJECTID", 100, "FEMA study"))
+            request(url, {**base, "returnIdsOnly": "true"}), count, "OBJECTID", 100, "FEMA study",
+            record_limit=first["max_record_count"]))
 
     ids = members()
     rows = []

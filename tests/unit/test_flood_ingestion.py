@@ -122,7 +122,7 @@ def test_mapserver_metadata_omissions_retained_unknown_and_not_mutated():
 
 
 @pytest.mark.parametrize("change", ["id", "name", "type", "query", "pagination", "order", "oid",
-    "oid_conflict", "duplicate", "field", "nullable", "dimension", "curves", "wkid", "hashed_oid"])
+    "oid_conflict", "duplicate", "field", "nullable", "dimension", "curves", "wkid", "hashed_oid", "source_sr"])
 def test_fema_schema_capability_identity_type_dimension_holds(change):
     raw = metadata(ZONES)
     if change == "id": raw["id"] = 27
@@ -140,6 +140,7 @@ def test_fema_schema_capability_identity_type_dimension_holds(change):
     if change == "dimension": raw["hasZ"] = True
     if change == "curves": raw["advancedQueryCapabilities"]["supportsTrueCurve"] = False
     if change == "wkid": raw["extent"]["spatialReference"] = {"wkid": 4326}
+    if change == "source_sr": raw["sourceSpatialReference"] = {"wkid": 3857}
     with pytest.raises(GeometryError): map_schema(raw, ZONES)
 
 
@@ -241,6 +242,21 @@ def test_null_empty_study_inventory_also_requires_independent_page():
     rows, checks = fetch_studies(source.get_json, [])
     assert rows == [] and checks["unique_count"] == 0
     assert source.calls[(STUDIES.url, "page")] == 2
+
+
+def test_empty_proof_uses_advertised_bounded_cap_not_truncated_one_record_scan():
+    spec = LAYERS["revisions"]
+    def mutate(source, key, result, params):
+        if key[1] == "metadata": result["maxRecordCount"] = 2000
+        if key[1] == "ids": result["objectIds"] = None
+        if key[1] == "page" and params["resultRecordCount"] == 1:
+            result["exceededTransferLimit"] = True
+        return result
+    source = Transport({spec.url: []}, mutate)
+    rows, checks = fetch_polygons(source.get_json, spec, GROUPS,
+                                 schema=map_schema, confirm_null_empty=True)
+    assert rows == [] and checks["unique_count"] == 0
+    assert [p["resultRecordCount"] for _, p in source.requests if "outFields" in p] == [2000, 2000]
 
 
 def test_fema_wire_capture_replay_and_request_tamper(tmp_path, monkeypatch):

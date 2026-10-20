@@ -49,11 +49,15 @@ filter. Overlapping AOI groups union OIDs before ordered batches of at most ten.
 Each batch must return exactly its requested IDs, geometry and fields.
 
 Observed FEMA empty queries can return `objectIds: null`. This is never accepted
-alone: an explicit zero count **and an independent empty one-row feature-page
+alone: an explicit zero count **and an independent empty feature-page
 query** must corroborate it, initially and finally. Missing ID keys, nonzero
 counts, any returned feature or truncation fail. Raw null responses are unchanged;
 the DNR default remains strict. This only verifies an empty source query, not
 parcel coverage or a zero hazard result.
+The confirmation uses at most min(2,000, advertised record cap), requesting only
+the OID. FEMA's spatial scan can produce a truncated empty page with a one-record
+cap; the reviewed larger cap must actually return an untruncated empty page.
+The truncation guard is not ignored or weakened.
 
 The table is queried only for safe, explicitly collected source study IDs, with
 its own start/end metadata/count/OID reconciliation, 100-row cap and exact field/

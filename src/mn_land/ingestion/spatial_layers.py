@@ -59,7 +59,7 @@ def layer_schema(metadata: dict, spec: PolygonLayer) -> dict:
 
 
 def confirmed_inventory(request, url: str, base: dict, payload: dict, count: int,
-                        oid: str, limit: int, label: str) -> set[int]:
+                        oid: str, limit: int, label: str, *, record_limit: int) -> set[int]:
     """A null ID array is NOT accepted alone: independently prove an empty page.
 
     The original response is retained unchanged. Missing ID keys, positive count,
@@ -67,7 +67,8 @@ def confirmed_inventory(request, url: str, base: dict, payload: dict, count: int
     """
     if count == 0 and "objectIds" in payload and payload["objectIds"] is None:
         proof = request(url, {**base, "outFields": oid, "returnGeometry": "false",
-                             "orderByFields": f"{oid} ASC", "resultOffset": 0, "resultRecordCount": 1})
+                             "orderByFields": f"{oid} ASC", "resultOffset": 0,
+                             "resultRecordCount": min(2000, record_limit)})
         if proof.get("features") != [] or transfer_flag(proof, label + " empty proof") is True:
             raise GeometryError("Null ID inventory lacks independent empty feature-page proof")
         payload = {**payload, "objectIds": []}
@@ -97,7 +98,8 @@ def fetch_polygons(request, spec: PolygonLayer, aoi_groups: list[dict], *,
                 raise GeometryError("Thematic count exceeds inventory budget")
             payload = request(query_url, {**base, "returnIdsOnly": "true"})
             ids = confirmed_inventory(request, query_url, base, payload, count, oid,
-                POLICY.max_inventory_ids, "thematic AOI") if confirm_null_empty else inventory(
+                POLICY.max_inventory_ids, "thematic AOI", record_limit=start_schema["max_record_count"]
+            ) if confirm_null_empty else inventory(
                 payload, count, oid, POLICY.max_inventory_ids, "thematic AOI")
             results.append(sorted(ids))
         return results

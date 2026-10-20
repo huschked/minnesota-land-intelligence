@@ -29,6 +29,7 @@ PROCESSING_POLICY = {
     "date_gate": "1900..capture date; raw null/invalid/future dates never replaced",
     "revision_policy": "spatial context only; never added as hazard geometry or automatic LOMA relief",
     "empty_inventory": "null IDs only with explicit count zero plus independent empty feature page; start/end reconciled",
+    "empty_proof_record_cap": "min(2000, advertised source record cap); any truncation still refused",
 }
 
 
