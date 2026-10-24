@@ -33,6 +33,13 @@ the exact transformed coordinates and unchanged alignment evidence. No datum/gri
 fallback, temp copy, download, source repair or Windows setting change is used.
 That run retains failure evidence and no completion; a new retry will be separate.
 
+Intermediate hosted regression reached 1,192 passing cases and one fixture error:
+the intentional-tamper test called the production exclusively-creating writer on
+an existing synthetic artifact. That writer correctly refused overwrite. Only
+the test's deliberate tampering writes were corrected; production immutability
+and the semantic-tamper assertions remain unchanged. Final full regression is
+required at the corrected test revision; the intermediate job is not a pass.
+
 ## ML-305 combined mapped constraints
 
 Completed 2026-10-24 (America/Chicago), with the explicit hosted Windows

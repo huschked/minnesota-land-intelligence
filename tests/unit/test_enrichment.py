@@ -153,11 +153,13 @@ def test_genuine_publication_source_binding_tamper_replay_and_download(viewer_da
     completion_bytes = (output/"completion.json").read_bytes()
     doc = read_json(output/"enrichment.json")
     doc["records"][0]["estimated_remaining_acres"] = 999
-    write_json(output/"enrichment.json", doc)
+    # Deliberately tamper only this synthetic test run. Production write_json
+    # is exclusively creating and must continue to refuse existing artifacts.
+    (output/"enrichment.json").write_text(json.dumps(doc), encoding="utf-8")
     completion = read_json(output/"completion.json")
     entry = next(e for e in completion["artifacts"] if e["path"] == "enrichment.json")
     entry.update(bytes=(output/"enrichment.json").stat().st_size, sha256=sha256_file(output/"enrichment.json"))
-    write_json(output/"completion.json", completion)
+    (output/"completion.json").write_text(json.dumps(completion), encoding="utf-8")
     with pytest.raises(RunValidationError): validate_run(output, "suitability_enrichment")
     with pytest.raises(RunValidationError): service.download(preview, "json")
     (output/"enrichment.json").write_bytes(original)
