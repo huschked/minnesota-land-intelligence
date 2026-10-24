@@ -1,5 +1,29 @@
 # Offline tests and CI (ML-118)
 
+## ML-306 suitability validation and publication
+
+Started 2026-10-24 (America/Chicago); implementation/actual-data verification is
+in progress, not yet a full regression or completed release claim.
+
+Twenty new canonical export/map-review guard cases passed locally on Windows
+(3.41 s); six new suitability UI cases passed (21.31 s). The nine existing parcel-
+detail/worklist UI cases also passed (49.41 s). Initial UI attempts failed before
+app execution because the sandbox denied Windows asyncio's loopback wake-up socket;
+the same network-blocked tests passed outside the sandbox. New synthetic fixtures
+initially did not meet the default focused-view filter; fixtures were corrected
+to use known zero improvements / explicit prior view. Production filters and
+assertions were not weakened. The genuine pinned six-edge publication/replay
+case is reserved for full hosted regression rather than repeated long Windows runs.
+
+Three official DNR map views and FEMA native zone/panel renders were inspected:
+high overlap 040060400, covered zero 060311200, and held/cross-study 010131402.
+All six held source-panel inventories were reviewed. Source-bound map findings,
+eight retained evidence files and explicit qualitative/numerical/source limits
+are documented in [suitability](suitability.md), without changing any v1 hold.
+The pre-publication preservation baseline pins 5,778 original files. A new local
+publication and final offline audit are in progress; no source/tax refresh or
+new regulatory/insurance conclusion is claimed.
+
 ## ML-305 combined mapped constraints
 
 Completed 2026-10-24 (America/Chicago), with the explicit hosted Windows

@@ -1,5 +1,16 @@
 # Data sources
 
+## Official-map comparison and saved enrichment (ML-306)
+
+[ML-306](suitability.md) publishes saved calculations, not new ingestion. Dated
+DNR Wetland Finder views and official FEMA zone/panel renders were inspected for
+high-overlap, covered-zero and held/cross-study samples and retained privately.
+All six not-printed-panel inventories and the tiny computational residue were
+reviewed; v1 holds remain unchanged. Rendered panel grids do not alone resolve
+study applicability, and blank images do not establish zero hazard. Published
+source limitations remain separate from numerical checks. No government contact,
+map selection override, tax refresh or source-data hosting clearance is introduced.
+
 ## Offline combined constraint derivation (ML-305)
 
 [The constraint operation](constraints.md) queries no source. It uses explicit

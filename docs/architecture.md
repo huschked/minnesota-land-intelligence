@@ -1,5 +1,20 @@
 # Architecture
 
+## Suitability publication and optional review integration (ML-306)
+
+`enrichment.py` projects a completed constraint graph into canonical CSV/JSON,
+retaining a source-hash-bound map review and evidence. Its fixed publication graph
+adds one edge (six total), without relaxing historical four/five-edge guards.
+Only the new publication's content check reuses the child freshly validated in
+that same validation call; there is no cross-read integrity cache. All outputs,
+source/report hashes, chronology and accounting reproduce offline.
+`suitability_service.py` binds an explicit publication to the exact loaded review/
+join completion and exposes immutable allowlisted observations/previews. The native
+Streamlit renderer in `ui/suitability.py` adds optional columns, evidence and scoped
+downloads; filters reuse session memory, disk actions revalidate. No implicit
+latest/parcel-ID-only join, source refresh, new map app, score or canonical tax change.
+See [contracts, map review and limits](suitability.md).
+
 ## Offline mapped constraint combination (ML-305)
 
 `constraint_runs.py` accepts two explicit completed wetland/flood runs, requires

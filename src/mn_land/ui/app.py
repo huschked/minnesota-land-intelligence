@@ -19,7 +19,29 @@ from mn_land.parcel_table import (
 )
 from mn_land.review_service import ReviewService
 from mn_land.runs import RunValidationError
+from mn_land.suitability_service import SuitabilityService
 from mn_land.ui.details import render_details
+from mn_land.ui.suitability import (
+    cells as suitability_cells,
+)
+from mn_land.ui.suitability import (
+    check_errors as check_suitability_errors,
+)
+from mn_land.ui.suitability import (
+    clear_preview as clear_suitability_preview,
+)
+from mn_land.ui.suitability import (
+    clear_suitability,
+)
+from mn_land.ui.suitability import (
+    render_details as render_suitability_details,
+)
+from mn_land.ui.suitability import (
+    render_exports as render_suitability_exports,
+)
+from mn_land.ui.suitability import (
+    render_selector as render_suitability_selector,
+)
 from mn_land.ui.worklists import check_export_errors, clear_export, render_worklists
 
 st.set_page_config(page_title="Minnesota land review", layout="wide")
@@ -30,6 +52,7 @@ st.text("Choose a saved result to inspect its source dates, counts and limitatio
 st.caption("Read-only parcel evidence and contextual research exports.")
 
 service = ReviewService(settings.SETTINGS.processed_dir)
+suitability_service = SuitabilityService(settings.SETTINGS.processed_dir)
 st.session_state.setdefault("catalog", None)
 st.session_state.setdefault("loaded", None)
 st.session_state.setdefault("load_error", None)
@@ -39,6 +62,10 @@ st.session_state.setdefault("parcel_details", None)
 st.session_state.setdefault("export_preview", None)
 st.session_state.setdefault("export_revoked", None)
 st.session_state.setdefault("export_errors", SimpleQueue())
+for name in ("suit_loaded", "suit_catalog", "suit_error", "suit_preview", "suit_revoked"):
+    st.session_state.setdefault(name, None)
+st.session_state.setdefault("suit_errors", SimpleQueue())
+check_suitability_errors()
 
 if error := check_export_errors():
     clear_export()
@@ -51,6 +78,7 @@ if error := check_export_errors():
 
 def clear_table():
     clear_export()
+    clear_suitability_preview()
     for name in (
         "table_view",
         "table_search",
@@ -74,6 +102,8 @@ def clear_table():
 
 reload_clicked = st.button("Reload local snapshots", key="reload")
 if reload_clicked or st.session_state.catalog is None:
+    clear_suitability()
+    st.session_state.suit_catalog = None
     clear_export()
     st.session_state.parcel_details = None
     with st.spinner("Checking saved local evidence…"):
@@ -120,6 +150,7 @@ if entry is not None:
 if st.button("Load selected snapshot", key="load", disabled=entry is None or not entry.eligible):
     # Clear first: a failed load must not leave the former result looking current.
     st.session_state.loaded = None
+    clear_suitability()
     st.session_state.parcels = None
     st.session_state.load_error = None
     clear_table()
@@ -134,6 +165,7 @@ if st.session_state.load_error:
     st.error(st.session_state.load_error)
 loaded = st.session_state.loaded
 if loaded is None:
+    clear_suitability()
     st.info("No snapshot loaded. Choose an eligible result and select Load.")
     st.stop()
 
@@ -185,7 +217,7 @@ with st.expander("Recorded source counts and unknown fields"):
     st.subheader("Unknown fields in the prior-year candidate view")
     for label, count in loaded.unknown_counts:
         st.text(f"{label}: {count:,} unknown")
-    st.text("Access, usable/buildable acreage, zoning, resale value and profit: not assessed.")
+    st.text("This tax snapshot does not assess access, usable/buildable acreage, zoning, resale value or profit. Optional mapped suitability is loaded separately below.")
 
 with st.expander("Pinned source identities"):
     st.text(f"Completion SHA-256: {loaded.completion_sha256}")
@@ -200,6 +232,7 @@ dataset = st.session_state.parcels
 if dataset is None or dataset.overview != loaded:
     st.error("No matching table observation is loaded. Explicitly load this snapshot again.")
     st.stop()
+suitability = render_suitability_selector(suitability_service, dataset)
 st.text(f"Loaded candidate floor: {dataset.minimum_acres} deeded acres")
 st.caption("This is not usable or buildable acreage. Lower-acreage parcels were not loaded.")
 if loaded.holds:
@@ -294,6 +327,7 @@ try:
     result = query(dataset, filters, page=st.session_state.get("table_page", 1), page_size=size)
 except (ValueError, TypeError) as exc:
     clear_export()
+    clear_suitability_preview()
     st.session_state.open_parcel = None
     st.session_state.parcel_choice = None
     st.error(str(exc))
@@ -334,6 +368,7 @@ else:
                 else None,
                 "Tax periods (dated listing)": row.periods,
                 "GIS owner": row.owner_name,
+                **suitability_cells(suitability, row.parcel_id),
             }
             for row in result.rows
         ],
@@ -410,6 +445,7 @@ if identity is not None:
     st.text(f"GIS owner: {row.owner_name if row.owner_name is not None else 'Unknown'}")
     st.text(f"Dated listing categories: {row.periods}")
     st.text("Current payment status: unknown. Tax debt is not calculated here.")
+    render_suitability_details(suitability, row.parcel_id)
     if st.session_state.parcel_details is not None:
         render_details(st.session_state.parcel_details)
     else:
@@ -423,3 +459,4 @@ if identity is not None:
     )
 
 render_worklists(service, dataset, filters)
+render_suitability_exports(suitability_service, suitability, dataset, filters)

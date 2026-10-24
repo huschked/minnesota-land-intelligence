@@ -1,5 +1,15 @@
 # Isanti County
 
+## Suitability review/publication — 2026-10-24 (ML-306)
+
+[Saved enrichment and optional viewer integration](../suitability.md) preserve
+the explicit Isanti candidate/geometry/source hashes. Three official-map samples
+cover high overlap, independently covered zero and held/cross-study context.
+All six panel holds remain: Anoka's outside-county reason and Pine's no-SFHA
+not-printed reason are different contexts, not missing Isanti study coverage.
+The approximately 1.96e-8 m² residual remains a processing diagnostic, not a
+physical gap or implicitly closed boundary. No regulatory or insurance conclusion.
+
 ## Combined mapped constraints — 2026-10-24 (ML-305)
 
 [Offline water/SFHA union and remainder](../constraints.md) uses the existing

@@ -35,6 +35,13 @@ def build_parser() -> argparse.ArgumentParser:
         prog="mn-land", description="Minnesota Land Intelligence Platform"
     )
     sub = parser.add_subparsers(dest="command", required=True)
+    enrichment_command = sub.add_parser("publish-suitability", help="Publish canonical saved suitability CSV/JSON with retained map review")
+    enrichment_command.add_argument("--county", choices=("isanti",), required=True)
+    enrichment_command.add_argument("--constraint-snapshot", type=Path, required=True)
+    enrichment_command.add_argument("--validation-report", type=Path, required=True)
+    enrichment_command.add_argument("--output-root", type=Path, help="Dedicated enrichment run root")
+    enrichment_check = sub.add_parser("validate-suitability", help="Reproduce saved suitability exports offline")
+    enrichment_check.add_argument("--snapshot", type=Path, required=True)
     constraint_command = sub.add_parser("analyze-constraints", help="Offline mapped-water/SFHA union and preliminary remainder")
     constraint_command.add_argument("--county", choices=("isanti",), required=True)
     constraint_command.add_argument("--wetland-snapshot", type=Path, required=True)
@@ -121,6 +128,25 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args(argv)
+    if args.command in {"publish-suitability", "validate-suitability"}:
+        try:
+            from mn_land.enrichment import publish_enrichment
+            from mn_land.runs import validate_run
+
+            path = publish_enrichment(args.constraint_snapshot, args.validation_report,
+                output_root=args.output_root or SETTINGS.processed_dir / "isanti" / "enrichment"
+            ) if args.command == "publish-suitability" else args.snapshot
+            validated = validate_run(path, "suitability_enrichment")
+            print(f"Suitability enrichment: {validated.path}")
+            print(json.dumps(validated.manifest["summary"], sort_keys=True))
+            print("Mapped screening only. Held = unknown, not zero. No legal buildability or tax refresh.")
+        except ImportError:
+            LOGGER.error('Suitability requires the optional GIS extra: pip install -e ".[gis]"')
+            return 2
+        except (RunValidationError, OSError, ValueError, RuntimeError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
+        return 0
     if args.command in {"analyze-constraints", "validate-constraints"}:
         try:
             from mn_land.constraint_runs import analyze_constraints

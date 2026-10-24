@@ -51,13 +51,13 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-306 is Ready and recommended next, not started: official-map validation,
+1. ML-306 is In Progress (Codex, selected by the user 2026-10-24): official-map validation,
    canonical enrichment publication and bounded integration of the saved results.
    ML-305 is Done (Codex, 2026-10-24): the explicit preliminary mapped-constraint
    policy preserves compatible geometry, source dates and null/held results.
    ML-303/304 screens are Done; ML-306 retains review of the
    neighboring not-printed panel holds and numerical residual. No scope extends
-   to legal buildability, source-data redistribution, UI changes or scoring.
+   to legal buildability, source-data redistribution, a full map application or scoring.
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
    financial ranking, legal buildability or owner outreach is authorized here.
 

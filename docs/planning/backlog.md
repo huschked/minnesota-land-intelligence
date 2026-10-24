@@ -1071,7 +1071,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-306"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -1088,9 +1088,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
 
-**Notes:** No zoning or dwelling-count conclusions in this epic. ML-304 follow-up validation must review the six neighboring-study not-printed-panel holds and parcel 010131402's approximately 1.96e-8 m² numerical zone-union residue against actual source evidence. Distinguish panel-grid intersection from study applicability, and processing residue from physical missing coverage; do not suppress unknowns, snap/buffer results or choose a map implicitly. Any less conservative policy must be explicit/versioned with regression controls, preserve v1 replay and produce new observations rather than overwrite the original nine numeric/six held results. Publishing must distinguish these holds from actual source unavailability.
+**Notes:** Owner: Codex. Started 2026-10-24 at the user's request. No zoning or dwelling-count conclusions in this epic. ML-304 follow-up validation must review the six neighboring-study not-printed-panel holds and parcel 010131402's approximately 1.96e-8 m² numerical zone-union residue against actual source evidence. Distinguish panel-grid intersection from study applicability, and processing residue from physical missing coverage; do not suppress unknowns, snap/buffer results or choose a map implicitly. Any less conservative policy must be explicit/versioned with regression controls, preserve v1 replay and produce new observations rather than overwrite the original nine numeric/six held results. Publishing must distinguish these holds from actual source unavailability.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Publication, viewer and official-map contract](../suitability.md), `src/mn_land/enrichment.py`, `src/mn_land/suitability_service.py`, `src/mn_land/ui/suitability.py`, `tests/unit/test_enrichment.py`, `tests/unit/test_suitability_ui.py`. Actual verification is in progress; private source-bound map evidence is under `data/processed/isanti/preparation/ml-306-2026-10-24/`.
 
 ## E05 - Phase 3 - Access and terrain
 

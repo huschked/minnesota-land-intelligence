@@ -56,6 +56,7 @@ DEPENDENCIES = {
     "wetland_analysis": {"parcels": "parcel_geometry"},
     "flood_analysis": {"parcels": "parcel_geometry"},
     "constraint_analysis": {"wetlands": "wetland_analysis", "floods": "flood_analysis"},
+    "suitability_enrichment": {"constraints": "constraint_analysis"},
 }
 CONTROL_FILES = {"completion.json", "completion.pending.json", "failure.json"}
 MAX_MANIFEST_BYTES = 8 * 1024 * 1024
@@ -257,6 +258,8 @@ def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0
     # Historical graphs retain their four-edge guard; the allowed kinds form a DAG.
     if depth == 0 and kind == "constraint_analysis":
         _max_depth = 5
+    if depth == 0 and kind == "suitability_enrichment":
+        _max_depth = 6
     try:
         if (
             kind not in DEPENDENCIES
@@ -352,6 +355,7 @@ def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0
         if not isinstance(sources, list) or len(sources) != len(DEPENDENCIES[kind]):
             raise RunValidationError("Invalid source inventory")
         labels = set()
+        validated_sources = {}
         for ref in sources:
             label = ref["label"]
             if label in labels or DEPENDENCIES[kind].get(label) != ref["kind"]:
@@ -362,14 +366,23 @@ def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0
                 raise RunValidationError("Source must be a pinned contained snapshot")
             if sha256_file(source_path / "completion.json") != ref["completion_sha256"]:
                 raise RunValidationError("Source completion hash mismatch")
-            validate_run(source_path, ref["kind"], depth=depth + 1, _max_depth=_max_depth)
+            validated_sources[label] = validate_run(
+                source_path, ref["kind"], depth=depth + 1, _max_depth=_max_depth
+            )
         manifest_name = "summary.json" if kind == "review" else "manifest.json"
         manifest = read_json(safe_path(path, manifest_name))
         if not isinstance(manifest, dict):
             raise RunValidationError("Operation manifest must be an object")
         from mn_land.run_checks import validate_content
 
-        validate_content(path, completion, manifest)
+        if kind == "suitability_enrichment":
+            # Reuse only this call's freshly validated child, never a cross-read
+            # cache. All tree bytes and source semantics were checked above.
+            from mn_land.enrichment import validate_enrichment_content
+
+            validate_enrichment_content(path, completion, manifest, validated_sources["constraints"])
+        else:
+            validate_content(path, completion, manifest)
         if sha256_file(completion_path) != completion_digest:
             raise RunValidationError("Completion changed during validation")
         return ValidatedRun(path, completion, manifest, completion_digest)

@@ -1,5 +1,10 @@
 # Minnesota Land Intelligence Platform
 
+ML-306 adds [source-bound suitability CSV/JSON publication and optional viewer
+integration](docs/suitability.md), currently in verification. Explicitly load a
+compatible publication after the candidate snapshot. Numeric, held and not-assessed
+parcels remain distinct; official-map review is preliminary, not legal buildability.
+
 ML-305 adds an [offline mapped-constraint union and preliminary remaining-acre
 CLI](docs/constraints.md). Explicit completed wetland/flood inputs must share the
 same parcel geometry. Wetland/water and SFHA overlap is subtracted once from

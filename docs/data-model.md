@@ -1,5 +1,18 @@
 # Data model
 
+## Canonical suitability enrichment (ML-306)
+
+`suitability_enrichment` pins an exact completed constraint graph and a hash-bound
+dated official-map review with retained evidence. Canonical `enrichment.json` has
+context and distinct ordered records; fixed-column `enrichment.csv` preserves
+scalar values with JSON context cells and explicit `\N` nulls. Measured/deeded,
+individual wetland/water/flood, shared/union/remainder and source dates/hashes stay
+separate. Overall held metrics remain null. JSON preserves numeric/text/null types;
+CSV consumers must import parcel IDs as text. Viewer-only `not_assessed` rows
+explicitly represent candidate parcels absent from the chosen observation, not
+zero constraints. No tax fields or original snapshots are rewritten.
+See [schema, scope and replay](suitability.md).
+
 ## Combined mapped constraint observations (ML-305)
 
 `constraint_analysis` pins both completed wetland/flood graphs and requires exact
