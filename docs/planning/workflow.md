@@ -51,13 +51,15 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-306 is In Progress (Codex, selected by the user 2026-10-24): official-map validation,
-   canonical enrichment publication and bounded integration of the saved results.
-   ML-305 is Done (Codex, 2026-10-24): the explicit preliminary mapped-constraint
-   policy preserves compatible geometry, source dates and null/held results.
-   ML-303/304 screens are Done; ML-306 retains review of the
-   neighboring not-printed panel holds and numerical residual. No scope extends
-   to legal buildability, source-data redistribution, a full map application or scoring.
+1. ML-401 is Ready/recommended, unassigned and not started: bounded official road
+   and elevation source discovery before access/terrain implementation. Ready does
+   not authorize a new phase automatically. ML-306 is Done (Codex, 2026-10-24):
+   official-map review, canonical suitability publication and optional viewer
+   integration preserve nine numeric/six held observations. E04 is Complete.
+   All 5,778 baseline files remain unchanged. Both Linux versions passed 1,193
+   offline tests; slow hosted Windows jobs were cancelled under the standing
+   preference, leaving the unchanged gate failed, not full matrix coverage.
+   See [ML-306 evidence and browser limits](../testing.md#ml-306-suitability-validation-and-publication).
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
    financial ranking, legal buildability or owner outreach is authorized here.
 

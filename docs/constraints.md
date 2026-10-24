@@ -99,8 +99,8 @@ Rehashing a changed metric, policy, source date or summary cannot bypass semanti
 reproduction. Completion is integrity evidence, not a digital authority signature.
 
 DNR/FEMA source attribution and notices remain in pinned captures. Nothing here
-grants source-data resale/public hosting clearance. ML-306 retains official-map
-comparison, canonical enrichment exports and integration into the review UI.
+grants source-data resale/public hosting clearance. ML-306 separately implements
+[official-map comparison, enrichment exports and optional review UI integration](suitability.md).
 
 ## Verified saved-data pilot — 2026-10-24
 

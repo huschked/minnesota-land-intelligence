@@ -221,8 +221,9 @@ outside these recorded checks.
 
 This paragraph records the discovery boundary. ML-302 geometry, ML-303 wetland
 and ML-304 flood observations are now implemented separately as described above;
-ML-305 combination is implemented separately above; ML-306 official-map validation
-and integration remain future work.
+ML-305 combination and ML-306 official-map validation/publication and bounded
+viewer integration are now implemented separately above. The following records
+the original discovery, not outstanding implementation scope.
 
 The [suitability contract](suitability-sources.md) selects DNR NWI/project footprints
 and FEMA effective NFHL/coverage/panel/revision evidence after bounded official

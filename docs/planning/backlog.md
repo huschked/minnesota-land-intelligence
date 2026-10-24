@@ -928,7 +928,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="e04"></a>
 
-**Epic state:** Active
+**Epic state:** Complete
 
 **Goal:** Estimate spatial constraints and usable upland acreage from authoritative layers.
 
@@ -1071,7 +1071,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-306"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -1083,14 +1083,14 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Compare representative parcels to official maps and document tolerances, errors, and unavailable results.
-- [ ] Publish canonical enrichment CSV/JSON and integrate with existing views where available; keep fixtures offline and document reruns.
+- [x] Compare representative parcels to official maps and document tolerances, errors, and unavailable results.
+- [x] Publish canonical enrichment CSV/JSON and integrate with existing views where available; keep fixtures offline and document reruns.
 
-**Validation:** Add the relevant fixture, calculation, UI, source-sample, or recovery checks from the acceptance criteria; follow the shared Definition of Done.
+**Validation:** Final implementation 88d8201 passed all 1,193 offline tests without skips on Linux 3.11/3.12, plus lint/dependency/version/board/live-collection checks. New canonical/native-path controls passed 21 locally on Windows; new suitability UI passed six and existing detail/worklist UI passed nine. Slow hosted Windows jobs were cancelled after Linux success under the standing user preference; the unchanged gate failed, not full matrix coverage. Real DNR/FEMA map review covered high, zero and held samples plus all six held panel inventories. Completed publication 69b81aefa23b4da685524b09780486d0 reproduces nine numeric/six held records with eight review evidence files; all 5,778 original files unchanged. Real browser loaded exact candidate/publication identities, held details and 15-parcel export preview. Native download delivery limitations are explicit, not inferred from clicks. [Dated verification](../testing.md#ml-306-suitability-validation-and-publication).
 
-**Notes:** Owner: Codex. Started 2026-10-24 at the user's request. No zoning or dwelling-count conclusions in this epic. ML-304 follow-up validation must review the six neighboring-study not-printed-panel holds and parcel 010131402's approximately 1.96e-8 m² numerical zone-union residue against actual source evidence. Distinguish panel-grid intersection from study applicability, and processing residue from physical missing coverage; do not suppress unknowns, snap/buffer results or choose a map implicitly. Any less conservative policy must be explicit/versioned with regression controls, preserve v1 replay and produce new observations rather than overwrite the original nine numeric/six held results. Publishing must distinguish these holds from actual source unavailability.
+**Notes:** Owner: Codex. Started/completed 2026-10-24 at the user's request, with the disclosed hosted Windows exception. Separately publishes canonical CSV/JSON and optional native Streamlit table/details/exports with exact source binding and click-time reproduction. Reviewed not-printed Anoka/Pine reasons separately from complete Isanti coverage; no regulatory applicability decision or less conservative policy introduced. Six original holds and parcel 010131402's approximately 1.96e-8 m² processing residue remain explicit/null, not asserted physical gaps or absent Isanti coverage. No snapping, buffering, source/tax refresh, map application, ranking, zoning, legal buildability, insurance or investment conclusion. The initial Windows grid-path failure remains failed; native spelling preserves the identical grid/transform and passed regression. ML-401 source discovery is Ready, not started.
 
-**Evidence / starting points:** [Publication, viewer and official-map contract](../suitability.md), `src/mn_land/enrichment.py`, `src/mn_land/suitability_service.py`, `src/mn_land/ui/suitability.py`, `tests/unit/test_enrichment.py`, `tests/unit/test_suitability_ui.py`. Actual verification is in progress; private source-bound map evidence is under `data/processed/isanti/preparation/ml-306-2026-10-24/`.
+**Evidence / starting points:** [Publication, viewer and official-map contract](../suitability.md), `src/mn_land/enrichment.py`, `src/mn_land/suitability_service.py`, `src/mn_land/ui/suitability.py`, `tests/unit/test_enrichment.py`, `tests/unit/test_suitability_ui.py`. Private source-bound map/browser/audit evidence is under `data/processed/isanti/preparation/ml-306-2026-10-24/`; county files are not uploaded to GitHub.
 
 ## E05 - Phase 3 - Access and terrain
 
@@ -1108,7 +1108,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-401"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 
@@ -1125,7 +1125,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Review the documented findings, source evidence, decision, and bounded follow-up tasks against the acceptance criteria.
 
-**Notes:** undefined
+**Notes:** Recommended next after ML-306, not started or authorized by Ready status alone. Bounded official-source discovery only; distinguish physical road proximity/frontage from legal access and surface elevation from title/easement evidence. No terrain/frontage implementation, dependency installation, original-data edits or outreach is included in this selection.
 
 **Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
 

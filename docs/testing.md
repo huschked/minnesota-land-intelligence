@@ -2,8 +2,8 @@
 
 ## ML-306 suitability validation and publication
 
-Started 2026-10-24 (America/Chicago); implementation/actual-data verification is
-in progress, not yet a full regression or completed release claim.
+Implemented and verified 2026-10-24 (America/Chicago), with the hosted Windows
+exception and bounded browser-delivery limitations recorded below.
 
 Twenty new canonical export/map-review guard cases passed locally on Windows
 (3.41 s); six new suitability UI cases passed (21.31 s). The nine existing parcel-
@@ -20,9 +20,12 @@ high overlap 040060400, covered zero 060311200, and held/cross-study 010131402.
 All six held source-panel inventories were reviewed. Source-bound map findings,
 eight retained evidence files and explicit qualitative/numerical/source limits
 are documented in [suitability](suitability.md), without changing any v1 hold.
-The pre-publication preservation baseline pins 5,778 original files. A new local
-publication and final offline audit are in progress; no source/tax refresh or
-new regulatory/insurance conclusion is claimed.
+The pre-publication preservation baseline pins 5,778 original files. New completed
+publication `69b81aefa23b4da685524b09780486d0` reproduced offline; the independent
+final audit confirmed all 5,778 unchanged. Its completion SHA-256 is
+`eee81d2561561f830d98dcda530bb33a60c82a92a0484ad37cb09160dca1d17b`.
+It contains 15 records (nine numeric/six held) and eight map-review evidence files.
+No tax or analytical-source refresh or new regulatory/insurance conclusion.
 
 The first actual publication `7f123136c79a4fe1816e50d71abb09ad` failed closed
 while pinning: Python could read the retained 264-character grid pathname but
@@ -31,14 +34,52 @@ path diagnostic loaded the exact same hash-pinned grid successfully. The adapter
 now preserves native path spelling, with a >260-character regression comparing
 the exact transformed coordinates and unchanged alignment evidence. No datum/grid
 fallback, temp copy, download, source repair or Windows setting change is used.
-That run retains failure evidence and no completion; a new retry will be separate.
+That run retains failure evidence and no completion; the completed retry above is separate.
+The native-path regression and canonical guards passed locally: 21 cases in
+3.79 s, with the genuine publication case deliberately deselected there.
 
 Intermediate hosted regression reached 1,192 passing cases and one fixture error:
 the intentional-tamper test called the production exclusively-creating writer on
 an existing synthetic artifact. That writer correctly refused overwrite. Only
 the test's deliberate tampering writes were corrected; production immutability
-and the semantic-tamper assertions remain unchanged. Final full regression is
-required at the corrected test revision; the intermediate job is not a pass.
+and the semantic-tamper assertions remain unchanged. The intermediate job is not
+a pass; final full regression at the corrected revision passed as follows.
+
+[Implementation CI 40116856924](https://github.com/huschked/minnesota-land-intelligence/actions/runs/40116856924)
+pins `88d8201b636b5b766d91af9a50fe143c3d1ae526`. Both Linux jobs passed all
+**1,193 offline tests**, no skips, one opt-in live test deselected:
+
+| Platform/Python | Offline cases | Test duration | Job |
+|---|---:|---:|---|
+| Linux / 3.11 | 1,193 passed | 155.29 s | 120939949999 |
+| Linux / 3.12 | 1,193 passed | 202.75 s | 120939950072 |
+
+Lint, dependency consistency, exact Streamlit pin, board checks and explicit
+live-test collection passed. The genuine six-edge publication/replay and
+semantic-tamper cases ran in these full suites. No live government pytest ran.
+Slow hosted Windows jobs were cancelled after Linux success under the user's
+standing preference; the workflow is cancelled and unchanged CI gate fails.
+This is **not** full hosted Windows coverage or a four-job matrix pass. New and
+affected local Windows checks are recorded above; no test/gate was weakened.
+
+With the user's server permission, the project viewer was started on
+`127.0.0.1:8501` (no existing listener was present). Real browser checks explicitly
+loaded candidate review `4e2ebe46423d4f56aab999d7d9eb3a37`, then publication
+`69b81aefa23b4da685524b09780486d0`: focused count 15; loaded/preview counts
+nine numeric, six held, zero not assessed. Parcel `010131402` details show
+numeric wetland acreage but unknown SFHA/combined/remaining metrics, plus the
+unchanged numerical residue. The actual export preview fingerprint is
+`b711eb2c2ae9ca77a8a34a6536fa56319d0748b5b01f1f57e719a840b7c952a0`.
+Native CSV/JSON click-time revalidation was exercised separately from AppTest;
+browser-control download-event timeouts are not evidence of file delivery.
+Both buttons disabled during validation and re-enabled without a surfaced export
+error, but no downloaded file path was captured: native file delivery remains
+unverified. Offline export/callback assertions are not substituted for that check.
+Keyboard Shift+Tab from the status button reaches the JSON download control;
+the 1280×720 screenshot and exact observations are retained privately as
+`viewer-proof.jpg` and `browser-checks.json` in the ML-306 preparation folder.
+No new native 200% zoom, screen-reader certification or fresh-install pass is
+claimed. ML-206's historical checks are not relabelled as new ML-306 checks.
 
 ## ML-305 combined mapped constraints
 

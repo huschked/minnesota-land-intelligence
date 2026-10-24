@@ -1,7 +1,7 @@
 # Minnesota Land Intelligence Platform
 
 ML-306 adds [source-bound suitability CSV/JSON publication and optional viewer
-integration](docs/suitability.md), currently in verification. Explicitly load a
+integration](docs/suitability.md), verified on the saved 15-parcel pilot. Explicitly load a
 compatible publication after the candidate snapshot. Numeric, held and not-assessed
 parcels remain distinct; official-map review is preliminary, not legal buildability.
 
@@ -10,7 +10,7 @@ CLI](docs/constraints.md). Explicit completed wetland/flood inputs must share th
 same parcel geometry. Wetland/water and SFHA overlap is subtracted once from
 measured area; held inputs remain null. Estimated usable acres under this policy
 are not verified usable or legally buildable land. No source refresh or viewer
-integration occurs; official-map validation/publication remains ML-306.
+integration occurs in ML-305 itself; ML-306 separately adds validation/publication.
 
 ML-304 adds a separate [effective FEMA flood CLI screen](docs/floods.md): saved
 geometry input, independent study/panel/zone coverage, distinct SFHA/floodway/X
@@ -18,13 +18,13 @@ categories and spatial date/revision context. Unknowns hold metrics; no remainin
 acres, no-risk/buildability determination or viewer change is implied.
 The [verified pilot](docs/testing.md#ml-304-effective-floodplain-overlap) has nine
 numeric results and six explicitly held/null results, not 15 complete numeric
-flood estimates. ML-306 tracks the conservative panel-context/residual review.
+flood estimates. ML-306 reviewed the panel contexts/residual without relaxing holds.
 
 ML-303 adds a separate [mapped-wetland CLI screen](docs/wetlands.md) with explicit
 saved polygon selection, dated DNR capture, audited datum alignment, independent
 project coverage and mapped wetland acreage/percent. Deepwater/riverine and
 unknowns stay separate; no buildability or remaining-acre claim. These results
-are not yet integrated into the viewer. Flood overlays remain ML-304.
+can now be inspected through ML-306's optional publication. Flood overlays are ML-304.
 
 ML-302 adds a separate [parcel-polygon CLI foundation](docs/geometry.md): explicit
 completed-review selection, new dated native capture, topology/CRS checks and

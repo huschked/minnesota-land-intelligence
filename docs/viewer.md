@@ -9,6 +9,16 @@ CSV/JSON worklists with explicit preview and click-time validation. ML-206 recor
 including user-performed 200% zoom acceptance, not accessibility certification. This viewer is
 not a land acquisition recommendation.
 
+ML-306 adds [optional saved suitability evidence](suitability.md). Install the
+`gis` extra as well as `ui` to reproduce it offline. After explicitly loading the
+compatible candidate review, select a publication and **Load suitability evidence**;
+nothing chooses the latest run for you. The table/details distinguish numeric,
+held and not-assessed values. Separate suitability CSV/JSON exports preserve
+source dates/policy/holds and require preview plus click-time revalidation.
+These deliberate integrity checks can take time on deep Windows evidence trees;
+ordinary filter reruns reuse the immutable loaded observation. Existing acreage
+filters remain deeded-acre filters, not buildability or remaining-acre filters.
+
 ## Install and run locally
 
 Prerequisite: installed Python 3.11 or 3.12 available as `python`. Open PowerShell

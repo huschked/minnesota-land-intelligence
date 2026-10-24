@@ -54,7 +54,7 @@ is claimed. JSON preserves canonical types/nulls; no Excel workbook is introduce
 Both outputs are bounded at 8 MiB; failures produce no partial output.
 
 Offline validation checks all retained source bytes/semantics, report/evidence
-hashes, publication chronology, exact derived JSON/CSV bytes and row accounting.
+hashes, publication chronology, derived JSON values, exact CSV bytes and row accounting.
 Rehashing altered metrics or reports cannot silently promote old calculations.
 Only a child freshly validated within that same graph-validation call is reused
 by the export projection; nothing caches integrity checks across separate reads.
@@ -80,7 +80,7 @@ Cheap reruns reuse a per-session immutable observation; they do not repeatedly
 replay GIS. Explicit Load/Preview/Download revalidate. Suitability downloads are
 separate from the unchanged tax worklist export, with all-filtered-across-pages
 or selected-parcel scope. Preview reports numeric/held/not-assessed counts and
-pins filters/order/identities. Changing filters, loaded evidence, scope, selection
+pins filters/order/identities. Changing filters, loaded evidence, scope, selected-scope selection
 or reloading revokes old jobs. Deferred download checks before and after fresh
 validation; errors clear stale suitability values without silently replacing them.
 Reload never fetches a county/GIS service. The viewer remains loopback-only.
@@ -122,3 +122,19 @@ overlay. The [DNR FAQ](https://www.dnr.state.mn.us/wetlands/nwi_faq.html) separa
 describes source identification/classification and positional limitations; its
 published accuracy is not independently certified for these parcels. No legal
 buildability, jurisdictional delineation, insurance or purchase conclusion follows.
+
+## Verified saved-data publication — 2026-10-24
+
+Completed enrichment `69b81aefa23b4da685524b09780486d0` pins constraint run
+`2cac708e0d2044a4be3b28d381197467`, the original candidate review
+`4e2ebe46423d4f56aab999d7d9eb3a37` and eight map-review evidence files.
+It contains 15 parcels: **nine numeric and six held**, not 15 numeric estimates.
+The listing remains October 13; no tax or analytical source was refreshed.
+Completion SHA-256:
+`eee81d2561561f830d98dcda530bb33a60c82a92a0484ad37cb09160dca1d17b`.
+Independent replay and the preservation audit verified all 5,778 baseline files
+unchanged. The first failed publication remains failed, without a completion.
+See [dated verification and platform limits](testing.md#ml-306-suitability-validation-and-publication).
+Retained local evidence is under
+`data/processed/isanti/preparation/ml-306-2026-10-24/`; county outputs are ignored
+by Git, not uploaded with the implementation.
