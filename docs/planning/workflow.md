@@ -51,9 +51,9 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-305 is Ready and recommended next: define the explicit preliminary mapped-
-   constraint union/remaining-acre policy, preserving compatible geometry, source
-   dates and null/held results. Not automatically started. ML-303/304 screens are
+1. ML-305 is In Progress (Codex, selected by the user 2026-10-24): implement the
+   explicit preliminary mapped-constraint union/remaining-acre policy, preserving
+   compatible geometry, source dates and null/held results. ML-303/304 screens are
    Done; ML-306 retains official-map validation/integration and review of the
    neighboring not-printed panel holds and numerical residual. No scope extends
    to legal buildability, source-data redistribution, UI changes or scoring.

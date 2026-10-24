@@ -1,5 +1,12 @@
 # Minnesota Land Intelligence Platform
 
+ML-305 adds an [offline mapped-constraint union and preliminary remaining-acre
+CLI](docs/constraints.md). Explicit completed wetland/flood inputs must share the
+same parcel geometry. Wetland/water and SFHA overlap is subtracted once from
+measured area; held inputs remain null. Estimated usable acres under this policy
+are not verified usable or legally buildable land. No source refresh or viewer
+integration occurs; official-map validation/publication remains ML-306.
+
 ML-304 adds a separate [effective FEMA flood CLI screen](docs/floods.md): saved
 geometry input, independent study/panel/zone coverage, distinct SFHA/floodway/X
 categories and spatial date/revision context. Unknowns hold metrics; no remaining

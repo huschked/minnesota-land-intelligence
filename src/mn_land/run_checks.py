@@ -113,6 +113,11 @@ def _set(values: Any) -> set[int]:
 def validate_content(path: Path, completion: dict, manifest: dict) -> None:
     kind = completion["kind"]
     files = {entry["path"] for entry in completion["artifacts"]}
+    if kind == "constraint_analysis":
+        from mn_land.constraint_runs import validate_constraint_content
+
+        validate_constraint_content(path, completion, manifest)
+        return
     if kind == "flood_analysis":
         from mn_land.flood_runs import validate_flood_content
 

@@ -35,6 +35,13 @@ def build_parser() -> argparse.ArgumentParser:
         prog="mn-land", description="Minnesota Land Intelligence Platform"
     )
     sub = parser.add_subparsers(dest="command", required=True)
+    constraint_command = sub.add_parser("analyze-constraints", help="Offline mapped-water/SFHA union and preliminary remainder")
+    constraint_command.add_argument("--county", choices=("isanti",), required=True)
+    constraint_command.add_argument("--wetland-snapshot", type=Path, required=True)
+    constraint_command.add_argument("--flood-snapshot", type=Path, required=True)
+    constraint_command.add_argument("--output-root", type=Path, help="Dedicated constraint run root")
+    constraint_check = sub.add_parser("validate-constraints", help="Reproduce a saved combined constraint run offline")
+    constraint_check.add_argument("--snapshot", type=Path, required=True)
     flood_command = sub.add_parser("analyze-floods", help="Capture effective FEMA zones and independent coverage")
     flood_command.add_argument("--county", choices=("isanti",), required=True)
     flood_command.add_argument("--geometry-snapshot", type=Path, required=True)
@@ -114,6 +121,25 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = build_parser().parse_args(argv)
+    if args.command in {"analyze-constraints", "validate-constraints"}:
+        try:
+            from mn_land.constraint_runs import analyze_constraints
+            from mn_land.runs import validate_run
+
+            path = analyze_constraints(args.wetland_snapshot, args.flood_snapshot,
+                output_root=args.output_root or SETTINGS.processed_dir / "isanti" / "constraints"
+            ) if args.command == "analyze-constraints" else args.snapshot
+            validated = validate_run(path, "constraint_analysis")
+            print(f"Mapped constraint/remainder run: {validated.path}")
+            print(json.dumps(validated.manifest["summary"], sort_keys=True))
+            print("Estimated usable acres under the explicit mapped-constraint policy only; not legally buildable land. Held = null.")
+        except ImportError:
+            LOGGER.error('Constraints require the optional GIS extra: pip install -e ".[gis]"')
+            return 2
+        except (RunValidationError, OSError, ValueError, RuntimeError) as exc:
+            LOGGER.error("%s", exc)
+            return 2
+        return 0
     if args.command in {"analyze-floods", "validate-floods"}:
         try:
             from mn_land.flood_runs import acquire_floods

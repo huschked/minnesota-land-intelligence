@@ -55,6 +55,7 @@ DEPENDENCIES = {
     "parcel_geometry": {"candidates": "review"},
     "wetland_analysis": {"parcels": "parcel_geometry"},
     "flood_analysis": {"parcels": "parcel_geometry"},
+    "constraint_analysis": {"wetlands": "wetland_analysis", "floods": "flood_analysis"},
 }
 CONTROL_FILES = {"completion.json", "completion.pending.json", "failure.json"}
 MAX_MANIFEST_BYTES = 8 * 1024 * 1024
@@ -244,17 +245,22 @@ def read_artifact_json(run: ValidatedRun, name: str) -> Any:
         raise RunValidationError("Cannot read unchanged inventoried JSON artifact") from exc
 
 
-def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0) -> ValidatedRun:
+def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0,
+                 _max_depth: int = 4) -> ValidatedRun:
     """Validate relative inventory, bytes, accounting and the pinned source graph.
 
     This is integrity/completion validation, not a signature or a county authority.
     Legacy inputs never enter this path via an automatic fallback.
     """
     path = workspace_path(path)
+    # Only the new, fixed two-branch combination graph needs a fifth edge.
+    # Historical graphs retain their four-edge guard; the allowed kinds form a DAG.
+    if depth == 0 and kind == "constraint_analysis":
+        _max_depth = 5
     try:
         if (
             kind not in DEPENDENCIES
-            or depth > 4
+            or depth > _max_depth
             or path.is_symlink()
             or path.resolve(strict=True) != path.parent.resolve(strict=True) / path.name
             or (path / "failure.json").exists()
@@ -356,7 +362,7 @@ def validate_run(path: Path, kind: str, *, pending: bool = False, depth: int = 0
                 raise RunValidationError("Source must be a pinned contained snapshot")
             if sha256_file(source_path / "completion.json") != ref["completion_sha256"]:
                 raise RunValidationError("Source completion hash mismatch")
-            validate_run(source_path, ref["kind"], depth=depth + 1)
+            validate_run(source_path, ref["kind"], depth=depth + 1, _max_depth=_max_depth)
         manifest_name = "summary.json" if kind == "review" else "manifest.json"
         manifest = read_json(safe_path(path, manifest_name))
         if not isinstance(manifest, dict):

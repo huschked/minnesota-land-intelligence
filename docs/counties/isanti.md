@@ -1,5 +1,15 @@
 # Isanti County
 
+## Combined mapped constraints — 2026-10-24 (ML-305)
+
+[Offline water/SFHA union and remainder](../constraints.md) uses the existing
+audited Isanti geometry and DNR/FEMA transformations; no new county capture,
+datum substitution or contact. Measured area, saved/new deeded acres, source dates
+and upstream holds stay separate. Deepwater/riverine are explicit mapped water
+constraints, not reclassified wetlands. The six ML-304 flood holds remain null;
+ML-306 must review their applicability/residual diagnostics before any new policy.
+This is preliminary mapped screening, not legally buildable or verified usable land.
+
 ## Effective mapped flood screen — 2026-10-19 (ML-304)
 
 The [flood CLI/contract](../floods.md) is separate from the wetland screen and

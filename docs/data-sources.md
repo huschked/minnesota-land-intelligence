@@ -1,5 +1,15 @@
 # Data sources
 
+## Offline combined constraint derivation (ML-305)
+
+[The constraint operation](constraints.md) queries no source. It uses explicit
+completed DNR/FEMA observations with identical saved parcel geometry and verified
+alignment evidence. New processing does not refresh imagery, effective maps,
+parcel boundaries or tax balances. The versioned policy includes mapped wetlands,
+open water, deepwater and riverine as distinct water constraints plus SFHA;
+floodway is nested and 0.2%/minimal-hazard zones are not subtracted. Existing raw
+values, spatial dates, source notices and unknowns are preserved in pinned inputs.
+
 ## Effective FEMA flood acquisition (ML-304)
 
 [The separate flood path](floods.md) uses the selected official NFHL MapServer:

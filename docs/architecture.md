@@ -1,5 +1,17 @@
 # Architecture
 
+## Offline mapped constraint combination (ML-305)
+
+`constraint_runs.py` accepts two explicit completed wetland/flood runs, requires
+the identical pinned geometry, selections and CRS/reference evidence, then
+copies both graphs into a separate `constraint_analysis`. `constraints.py`
+unions explicitly included water/SFHA geometry and calculates the preliminary
+remainder against measured parcel area. Upstream holds propagate; coverage gaps
+are quantified, not filled. Validation reproduces sources and all derived results.
+Only this fixed two-branch graph receives a five-edge budget; existing graphs
+retain four. No new dependency, network, tax/geometry mutation, UI or score.
+See [policy, controls and commands](constraints.md).
+
 ## Separate effective flood observations (ML-304)
 
 `flood_runs.py` pins one explicit geometry graph into `flood_analysis`, separately
@@ -194,7 +206,8 @@ outside these recorded checks.
 
 This paragraph records the discovery boundary. ML-302 geometry, ML-303 wetland
 and ML-304 flood observations are now implemented separately as described above;
-ML-305/306 combination, validation and integration remain future work.
+ML-305 combination is implemented separately above; ML-306 official-map validation
+and integration remain future work.
 
 The [suitability contract](suitability-sources.md) selects DNR NWI/project footprints
 and FEMA effective NFHL/coverage/panel/revision evidence after bounded official

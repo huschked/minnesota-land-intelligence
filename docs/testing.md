@@ -1,5 +1,39 @@
 # Offline tests and CI (ML-118)
 
+## ML-305 combined mapped constraints
+
+Started 2026-10-24 (America/Chicago). Implementation verification is in progress;
+this entry does not yet claim full regression or actual-pilot success.
+
+All 40 new offline cases passed locally on Windows/Python 3.12 (137.55 s).
+Controls cover zero/full/partial/shared/subset masks, separate wetland/open-water/
+deepwater/riverine inclusion, SFHA/floodway and X distinctions, holes/multipart,
+boundary contact, measured/deeded separation, coverage gap union/quantification,
+tiny-gap preservation, upstream holds, missing/duplicate/extra identities, malformed
+geometry, exact geometry hashes, incompatible source graph/CRS/reference evidence,
+portable pinned completion/replay, forbidden output overlap and rehashed
+metric/policy/lineage/summary tamper refusal. An initial full-parcel fixture exposed
+a one-ULP ring-order area overshoot. The final calculation reuses the original
+parcel **only for exact topological equality**, not approximate area or distance;
+no clamping, snapping or coverage tolerance was added.
+
+Lint/board checks pass. Explicit collection outside the sandbox confirms 1,165
+offline cases and one separately opt-in live case; no live test executed. The
+first sandbox collection completed but reported a temporary-folder cleanup
+permission warning; escalated collection completed cleanly. Local `pip check`
+is unavailable because this environment has no pip module; hosted dependency
+consistency verification remains required. No dependency or OS configuration changed.
+
+The actual pilot explicitly selects wetland `cc72a8e3c282433696c19203f21b75ea`
+and flood `a4618c9a288e4742b60a96537231cf60`, sharing parcel geometry
+`3804ff3662ac4e63939defa218c09df3`. It performs no network requests. An offline
+preservation baseline pins 4,617 existing evidence files before the new run.
+The first broad sandbox baseline was interrupted before producing an output;
+the final bounded baseline extends ML-304's retained inventory with flood runs,
+outside the restricted sandbox to read OneDrive evidence. No files were removed.
+Result counts, preservation audit and hosted regression evidence will be appended
+before completion. See [the explicit formula and limitations](constraints.md).
+
 ## ML-304 effective floodplain overlap
 
 Completed 2026-10-19 (America/Chicago), with explicit held-result and hosted

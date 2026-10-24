@@ -1,5 +1,19 @@
 # Data model
 
+## Combined mapped constraint observations (ML-305)
+
+`constraint_analysis` pins both completed wetland/flood graphs and requires exact
+common geometry identity. `constraints.json` contains parcel/OID/WKB identities,
+measured geometry area, separate deeded acreage, upstream row fingerprints and
+statuses, each independent coverage gap and their union, included category masks,
+shared water/SFHA area, combined constraint and preliminary `estimated_usable`
+remainder (m²/acres/percent/WKB). Held rows have null combined/remaining metrics.
+The manifest pins the explicit inclusion policy, full analysis evidence, independent
+source capture/as-of times/policies and source hashes; imagery/panel contexts stay
+in contained source observations. Processing time is not new source observation
+time. Canonical `Parcel`, tax values and viewer DTOs remain unchanged.
+See [formula, exact bounds and reproduction](constraints.md).
+
 ## Effective flood observations (ML-304)
 
 `flood_analysis` pins completed geometry/review/join/raw source lineage separately
@@ -234,7 +248,8 @@ null markers and per-row context, not a canonical source rewrite or numeric work
 
 The discovery below did not implement enrichment. ML-302 geometry and ML-303/304
 wetland/flood observations now implement their separate models above; combined
-remaining-area observations remain future work.
+remaining-area observations are implemented separately in ML-305 above. ML-306
+official-map validation, canonical enrichment exports and UI integration remain future work.
 
 [Source discovery](suitability-sources.md) defines requirements for separate dated
 geometry/enrichment observations; it does not add fields to `Parcel`, DTOs or saved

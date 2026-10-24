@@ -1,6 +1,6 @@
 # Epics and story backlog
 
-Updated: 2026-10-19. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
+Updated: 2026-10-24. This is the authoritative source for story status, priority, dependencies, acceptance criteria, and completion evidence. The [Kanban board](kanban.md) is generated from this file. The [workflow](workflow.md) explains how to maintain both.
 
 The project has a working local CLI and [read-only viewer](../viewer.md) with explicit snapshot selection, filtered parcel tables and source-evidence details/links and contextual CSV/JSON worklists (ML-202–206). [ML-206 release evidence](../reviews/local-viewer-release-2026-10-17.md) records fresh installation, actual-data keyboard/download/refusal checks and user-confirmed 200% zoom, not accessibility certification; no deployed service or acquisition recommendation is implied. [ML-130 preparation](../reviews/isanti-viewer-preparation-2026-10-16.md) created eligible new runs from October 16 GIS plus the unchanged October 13 listing: 62 large prior-year parcels, 49 outside PILT/exempt and a 15-parcel focused view, with identical historical parcel IDs and unknown canonical balances. The reliability/replay stories themselves did not regenerate those results. ML-123 passed 645 offline tests in each of four hosted Windows/Linux, Python 3.11/3.12 jobs; the live integration test was collected but not executed. Historical pre-completion runs remain legacy/unverified, not deleted, certified or automatically selected. ML-123 implements [explicit replay for completed version-2 inputs](../replay.md). See [validation](../validation.md), [retrieval](../retrieval.md), [publication](../publication.md), and [testing evidence](../testing.md). Historical retained results: [corrected review](../reviews/isanti-prior-year-results-2026-10-14.md).
 
@@ -1046,7 +1046,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-305"></a>
 
-**Status:** Ready
+**Status:** In Progress
 
 **Priority:** P1
 
@@ -1063,9 +1063,9 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Validation:** Plan offline zero/full/partial/overlapping-constraint union controls, measured-area bounds, holes/multipart, duplicate/subset geometry and null propagation. Explicitly version included categories before calculation (wetland/open-water, separate deepwater/riverine, SFHA/floodway subset and 0.2%/minimal-hazard distinctions); no silent inclusion or legal land-use rule. Pin deliberately selected completed wetland/flood observations to identical parcel geometry hashes, preserve independent dates/policies and refuse incompatible/held inputs. No subtraction from deeded acres, no double-counting floodway or shared wetland/flood area, no numeric result for ML-304's six held rows. Add pinned reproduction/tamper controls; no UI or score scope.
 
-**Notes:** Owner: Unassigned. Refined/Ready after ML-303/304, not started. Define an explicit preliminary mapped-constraint policy when selected; remaining land is not legally buildable land. Keep six ML-304 held rows unknown rather than treating them as zero constraints. Their panel applicability/numerical diagnostics remain explicit review items in ML-306; any changed interpretation requires a new versioned observation, not edits to old results. No zoning, access, septic, market-price or legal/financial suitability inference.
+**Notes:** Owner: Codex. Started 2026-10-24 at the user's request. Implement an explicit preliminary mapped-constraint policy; remaining land is not legally buildable land. Keep six ML-304 held rows unknown rather than treating them as zero constraints. Their panel applicability/numerical diagnostics remain explicit review items in ML-306; any changed interpretation requires a new versioned observation, not edits to old results. No zoning, access, septic, market-price or legal/financial suitability inference.
 
-**Evidence / starting points:** To be attached when work starts; add dated source/code/test evidence before Done.
+**Evidence / starting points:** [Combined policy/commands](../constraints.md), `src/mn_land/constraints.py`, `src/mn_land/constraint_runs.py`, `tests/unit/test_constraints.py`, `tests/unit/test_constraint_runs.py`; [verification in progress](../testing.md#ml-305-combined-mapped-constraints).
 
 ### ML-306 - Validate and publish suitability results
 
