@@ -2,8 +2,8 @@
 
 ## ML-305 combined mapped constraints
 
-Started 2026-10-24 (America/Chicago). Implementation verification is in progress;
-this entry does not yet claim full regression or actual-pilot success.
+Completed 2026-10-24 (America/Chicago), with the explicit hosted Windows
+verification exception below. No full Windows matrix pass is claimed.
 
 All 40 new offline cases passed locally on Windows/Python 3.12 (137.55 s).
 Controls cover zero/full/partial/shared/subset masks, separate wetland/open-water/
@@ -31,8 +31,41 @@ preservation baseline pins 4,617 existing evidence files before the new run.
 The first broad sandbox baseline was interrupted before producing an output;
 the final bounded baseline extends ML-304's retained inventory with flood runs,
 outside the restricted sandbox to read OneDrive evidence. No files were removed.
-Result counts, preservation audit and hosted regression evidence will be appended
-before completion. See [the explicit formula and limitations](constraints.md).
+The completed run `2cac708e0d2044a4be3b28d381197467` independently reproduces
+offline. Completion SHA-256 is
+`31f632ba363baa8db256971c0225796590f390e66321f7c18500bf26204f72be`.
+All 4,617 baseline files are unchanged. Nine parcels have numeric mapped-policy
+remaining estimates (approximately 0.766–50.850 acres); the same six flood-held
+rows remain null. Eight numeric parcels have shared water/SFHA acreage that would
+be double-subtracted by a naive sum. No parcel has zero remaining in this pilot.
+Complete study-matched coverage does not override source panel holds; the tiny
+zone-union residue remains numerical diagnostic evidence, not a physical-gap claim.
+All results are bounded by measured parcel area, not deeded acreage. Source dates
+and category/panel policies are unchanged; no API request or viewer restart.
+Ignored evidence: `data/processed/isanti/preparation/ml-305-2026-10-24/audit.json`
+and `shortlist-results.md`. Pilot provenance records the preceding Git revision
+with dirty status because processing began before commit; its exact Python source
+hashes were separately verified to match implementation `4d399a3`.
+
+[Implementation CI 40109680632](https://github.com/huschked/minnesota-land-intelligence/actions/runs/40109680632)
+pins `4d399a35daa4d55b743cafbebde8db2e75b2e524`. Both Linux jobs passed all
+**1,165 offline cases**, with no skips, one live test deselected:
+
+| Platform/Python | Offline cases | Test duration | Job |
+|---|---:|---:|---|
+| Linux / 3.11 | 1,165 passed | 117.76 s | 120918619435 |
+| Linux / 3.12 | 1,165 passed | 83.57 s | 120918619486 |
+
+Hosted lint, dependency consistency, board and live-test collection also passed.
+New ML-305 cases passed locally on Windows as above; the shared publication
+regression separately passed 70 cases (103.46 s), with one existing local
+symlink-privilege skip, not an assertion pass. Both hosted Windows jobs were
+still running after Linux success and were cancelled under the user's standing
+preference. The implementation workflow is cancelled and the unchanged CI gate
+fails because Windows coverage is incomplete, not a successful four-job matrix.
+No test/gate was removed, weakened or relabelled. Documentation-only completion
+checks do not create new full-matrix runtime evidence.
+See [the explicit formula and limitations](constraints.md).
 
 ## ML-304 effective floodplain overlap
 

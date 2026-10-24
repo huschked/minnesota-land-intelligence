@@ -183,6 +183,7 @@ category geometry and area, and reconcile row counts. Rehashing a tampered deriv
 metric does not bypass semantic reproduction.
 
 See [dated verification](testing.md#ml-304-effective-floodplain-overlap) for actual
-results and platform limits. ML-305 will define any combined wetland/flood union
-or remaining-area formula; ML-306 will integrate/validate results. Neither starts
-as a side effect of this screen.
+results and platform limits. ML-305 subsequently implements the separate
+[explicit mapped-water/SFHA union and remainder](constraints.md), preserving
+this screen's six holds. ML-306 remains Ready for integration/official-map review;
+neither later operation is an automatic side effect of this screen.

@@ -101,3 +101,15 @@ reproduction. Completion is integrity evidence, not a digital authority signatur
 DNR/FEMA source attribution and notices remain in pinned captures. Nothing here
 grants source-data resale/public hosting clearance. ML-306 retains official-map
 comparison, canonical enrichment exports and integration into the review UI.
+
+## Verified saved-data pilot — 2026-10-24
+
+Run `2cac708e0d2044a4be3b28d381197467` deliberately combines completed wetland
+`cc72a8e3c282433696c19203f21b75ea` and flood `a4618c9a288e4742b60a96537231cf60`
+against geometry `3804ff3662ac4e63939defa218c09df3`. Nine rows have numeric
+preliminary remaining-acre estimates; the same six flood-held rows stay null.
+Eight numeric parcels have shared water/SFHA area counted only once. Independent
+offline reproduction and hash audit verify all 4,617 baseline files unchanged.
+See [dated test/platform evidence](testing.md#ml-305-combined-mapped-constraints).
+The private per-parcel report is
+`data/processed/isanti/preparation/ml-305-2026-10-24/shortlist-results.md`.

@@ -1046,7 +1046,7 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 <a id="ml-305"></a>
 
-**Status:** In Progress
+**Status:** Done
 
 **Priority:** P1
 
@@ -1058,20 +1058,20 @@ All stories inherit the shared Definition of Ready/Done in [workflow.md](workflo
 
 **Acceptance criteria:**
 
-- [ ] Define the screening formula using the union of constraint geometry so wetland/floodplain overlap is subtracted once.
-- [ ] Bound estimates by measured parcel area, quantify incomplete coverage, and label results as estimated usable acres rather than legally buildable acres.
+- [x] Define the screening formula using the union of constraint geometry so wetland/floodplain overlap is subtracted once.
+- [x] Bound estimates by measured parcel area, quantify incomplete coverage, and label results as estimated usable acres rather than legally buildable acres.
 
-**Validation:** Plan offline zero/full/partial/overlapping-constraint union controls, measured-area bounds, holes/multipart, duplicate/subset geometry and null propagation. Explicitly version included categories before calculation (wetland/open-water, separate deepwater/riverine, SFHA/floodway subset and 0.2%/minimal-hazard distinctions); no silent inclusion or legal land-use rule. Pin deliberately selected completed wetland/flood observations to identical parcel geometry hashes, preserve independent dates/policies and refuse incompatible/held inputs. No subtraction from deeded acres, no double-counting floodway or shared wetland/flood area, no numeric result for ML-304's six held rows. Add pinned reproduction/tamper controls; no UI or score scope.
+**Validation:** All 40 new cases passed locally on Windows/Python 3.12; shared publication checks passed 70 with one pre-existing privilege skip. Implementation 4d399a3 passed all 1,165 offline cases without skips on hosted Linux 3.11/3.12 plus lint/dependency/board/live collection. Hosted Windows jobs cancelled after Linux success under the standing user preference; workflow cancelled and unchanged gate failed, not full matrix coverage. Controls include zero/full/partial/shared/subset geometry, bounds, holes/multipart, separate water categories, SFHA/floodway/X policy, coverage-gap union/tiny-gap preservation, holds, exact identity/CRS and rehashed tamper refusal. Actual run 2cac708e0d2044a4be3b28d381197467 reproduces offline: nine numeric/six held; eight numeric parcels have shared water/SFHA. All 4,617 baseline files unchanged. [Dated verification](../testing.md#ml-305-combined-mapped-constraints).
 
-**Notes:** Owner: Codex. Started 2026-10-24 at the user's request. Implement an explicit preliminary mapped-constraint policy; remaining land is not legally buildable land. Keep six ML-304 held rows unknown rather than treating them as zero constraints. Their panel applicability/numerical diagnostics remain explicit review items in ML-306; any changed interpretation requires a new versioned observation, not edits to old results. No zoning, access, septic, market-price or legal/financial suitability inference.
+**Notes:** Owner: Codex. Started/completed 2026-10-24 at the user's request, with the disclosed hosted Windows exception. Explicit policy includes mapped wetland/open water and distinct deepwater/riverine water constraints plus SFHA. Floodway is not added twice; 0.2%/minimal-hazard categories are not subtracted. Preliminary estimated usable remainder is bounded by measured geometry, not legally buildable land. Exact full-parcel topology identity handles floating summation without clamping or gap filling. Six ML-304 held rows stay null; panel applicability/numerical diagnostics remain ML-306 review items, with any changed interpretation requiring a new versioned observation. No source/tax refresh, viewer/server change, score, zoning/access/septic/market/legal/financial suitability inference. ML-306 is recommended next, not started.
 
-**Evidence / starting points:** [Combined policy/commands](../constraints.md), `src/mn_land/constraints.py`, `src/mn_land/constraint_runs.py`, `tests/unit/test_constraints.py`, `tests/unit/test_constraint_runs.py`; [verification in progress](../testing.md#ml-305-combined-mapped-constraints).
+**Evidence / starting points:** [Combined policy/commands](../constraints.md), `src/mn_land/constraints.py`, `src/mn_land/constraint_runs.py`, `tests/unit/test_constraints.py`, `tests/unit/test_constraint_runs.py`; [verification](../testing.md#ml-305-combined-mapped-constraints); ignored local `data/processed/isanti/preparation/ml-305-2026-10-24/audit.json` and `shortlist-results.md`.
 
 ### ML-306 - Validate and publish suitability results
 
 <a id="ml-306"></a>
 
-**Status:** Backlog
+**Status:** Ready
 
 **Priority:** P1
 

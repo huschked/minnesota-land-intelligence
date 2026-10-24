@@ -156,5 +156,7 @@ edits to a derived area cannot bypass semantic reproduction.
 
 See [dated verification](testing.md#ml-303-mapped-wetland-overlap) for actual
 run results, preservation, platform coverage and the explicit Windows exception.
-ML-304 flood categories and ML-305/306 remaining-area integration are subsequent
-stories, not implemented by this card.
+ML-304 subsequently implements the [effective flood screen](floods.md), and ML-305
+the separate [mapped-water/SFHA union and remainder](constraints.md). These do not
+rewrite wetland results or reinterpret deepwater/riverine as all wetlands.
+ML-306 official-map review/publication/integration remains Ready, not started.

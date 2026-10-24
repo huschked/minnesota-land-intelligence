@@ -51,14 +51,24 @@ dates, staff assignments, or sprints are invented for the long-term backlog.
 
 Suggested near-term order:
 
-1. ML-305 is In Progress (Codex, selected by the user 2026-10-24): implement the
-   explicit preliminary mapped-constraint union/remaining-acre policy, preserving
-   compatible geometry, source dates and null/held results. ML-303/304 screens are
-   Done; ML-306 retains official-map validation/integration and review of the
+1. ML-306 is Ready and recommended next, not started: official-map validation,
+   canonical enrichment publication and bounded integration of the saved results.
+   ML-305 is Done (Codex, 2026-10-24): the explicit preliminary mapped-constraint
+   policy preserves compatible geometry, source dates and null/held results.
+   ML-303/304 screens are Done; ML-306 retains review of the
    neighboring not-printed panel holds and numerical residual. No scope extends
    to legal buildability, source-data redistribution, UI changes or scoring.
    County accounting/identity blockers ML-117/121/122 remain separate; no verified
    financial ranking, legal buildability or owner outreach is authorized here.
+
+ML-305 [combined constraint/remainder](../constraints.md) is Done with a disclosed
+hosted Windows exception. Both Linux jobs passed all 1,165 offline cases; 40 new
+cases passed locally on Windows. Slow hosted Windows jobs were cancelled after
+Linux success under the standing user preference; the unchanged gate failed.
+The actual 15-parcel run independently reproduces nine numeric/six held results,
+with shared water/SFHA counted once and all 4,617 baseline files unchanged.
+No source/tax refresh, viewer/server, score or legal determination. See
+[dated evidence](../testing.md#ml-305-combined-mapped-constraints).
 
 ML-304 is Done, owner Codex, 2026-10-19. [Effective FEMA observations](../floods.md)
 pin the same 15-parcel geometry into a separate dated run. Native geographic
