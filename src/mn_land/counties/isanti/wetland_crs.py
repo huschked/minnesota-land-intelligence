@@ -48,7 +48,11 @@ class WetlandAlignment:
             '+step +proj=hgridshift +grids="{grid}" '
             '+step +proj=unitconvert +xy_in=rad +xy_out=deg'
         )
-        self.grid = Transformer.from_pipeline(self.template.format(grid=grid.as_posix()))
+        # Preserve Windows' native \\?\ extended-path spelling. Converting it
+        # to //?/ with as_posix() makes PROJ fail once nested evidence exceeds
+        # MAX_PATH. This is the identical hash-verified retained file, not a
+        # different grid, search-path fallback, download or transformation.
+        self.grid = Transformer.from_pipeline(self.template.format(grid=str(grid)))
         self.controls = read_json(reference / "isanti_alignment_controls.json")
         if digest(self.controls) != "105f11494b3a604e5cc90a6cfff87ff0a80501a55684d01366b5b13bbf21050d":
             raise GeometryError("Reviewed MnDOT control definitions changed")

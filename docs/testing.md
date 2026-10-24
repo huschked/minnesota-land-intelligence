@@ -24,6 +24,15 @@ The pre-publication preservation baseline pins 5,778 original files. A new local
 publication and final offline audit are in progress; no source/tax refresh or
 new regulatory/insurance conclusion is claimed.
 
+The first actual publication `7f123136c79a4fe1816e50d71abb09ad` failed closed
+while pinning: Python could read the retained 264-character grid pathname but
+PROJ rejected its `//?/` forward-slash spelling. A read-only native `\\?\`
+path diagnostic loaded the exact same hash-pinned grid successfully. The adapter
+now preserves native path spelling, with a >260-character regression comparing
+the exact transformed coordinates and unchanged alignment evidence. No datum/grid
+fallback, temp copy, download, source repair or Windows setting change is used.
+That run retains failure evidence and no completion; a new retry will be separate.
+
 ## ML-305 combined mapped constraints
 
 Completed 2026-10-24 (America/Chicago), with the explicit hosted Windows

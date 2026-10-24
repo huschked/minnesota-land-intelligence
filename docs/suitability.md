@@ -21,6 +21,12 @@ historical graphs retain their four/five-edge budgets. Default output is
 overlap retained runs or review evidence. No implicit latest selection or source
 request occurs. Runs can complete with explicitly held parcel rows.
 
+Deep Windows evidence paths preserve native `\\?\` spelling when passed to
+PROJ. Converting this prefix to forward slashes prevented the same verified grid
+from opening beyond MAX_PATH. The fix changes file access spelling only: no
+grid/transform/source replacement, shorter external copy or system setting change.
+An actual initial failed publication remains failed and unselected.
+
 The source-bound `review.json` names its exact constraint completion hash, an
 aware review timestamp, method, findings and bounded representative parcel/official
 map URLs. Its 1–30 individually hash-pinned PNG/JPEG/JSON/Markdown evidence files

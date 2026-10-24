@@ -184,3 +184,21 @@ def test_filtered_selected_not_assessed_scope_and_stable_order(viewer_data, monk
     assert rows[0]["estimated_remaining_acres"] is None
     with pytest.raises(RunValidationError): service.prepare(observation, dataset, TableFilters(), scope="selected", selected="other")
     with pytest.raises(RunValidationError): service.prepare(observation, dataset, TableFilters(), scope="filtered", selected="02.001.0200")
+
+
+def test_long_retained_grid_native_path_preserves_operation_and_evidence(tmp_path):
+    pytest.importorskip("shapely")
+    pytest.importorskip("pyproj")
+    import shutil
+
+    from mn_land.counties.isanti.wetland_crs import GRID_NAME, REFERENCE_ROOT, WetlandAlignment
+    from mn_land.runs import workspace_path
+
+    reference = workspace_path(tmp_path/("a"*80)/("b"*80)/("c"*80))
+    reference.mkdir(parents=True)
+    for name in (GRID_NAME, "isanti_alignment_controls.json"):
+        shutil.copyfile(REFERENCE_ROOT/name, reference/name)
+    assert len(str(reference/GRID_NAME)) > 260
+    original, nested = WetlandAlignment(), WetlandAlignment(reference)
+    assert nested.grid.transform(-93.5, 45.7, errcheck=True) == original.grid.transform(-93.5, 45.7, errcheck=True)
+    assert nested.evidence() == original.evidence()
